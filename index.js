@@ -59,6 +59,8 @@ app.get('/supplements', async (req, res) => {
 });
 
 app.get('/getWeekOrders', (req, res) => {
+    const orders = await db.context.getOrders();
+    /*
     const db = require('./db.json');
     const menu = require('./menu.json');
 
@@ -74,7 +76,7 @@ app.get('/getWeekOrders', (req, res) => {
         dough: menu.doughs.find(d => d.id == order.dough) === undefined ? blank : menu.doughs.find(d => d.id == order.dough),
         supplements: menu.supplements.filter(m => order.supplements.includes(m.id.toString())) === undefined ? blank : menu.supplements.filter(m => order.supplements.includes(m.id.toString()))
     }));
-
+    */ 
     orders.map(order => order.total = order.pizza.price + order.food.price + order.sandwiche.price + order.dessert.price + order.dessert.price + order.dough.price + order.supplements.reduce((acc, x) => acc + x.price, 0));
 
     res.send(orders);
