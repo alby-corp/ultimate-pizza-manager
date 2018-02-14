@@ -37,7 +37,7 @@ function getColumnFromString(s) {
     return s + column.substring(1, column.length - s.length)
 }
 
-app.listen(22222, function () {
+app.listen(process.env.PORT || 8080, function () {
     //se il file non esiste lo crea
     fs.exists(fileName, function (exists) {
         if (!exists) { 
@@ -48,5 +48,5 @@ app.listen(22222, function () {
             });
         }
     });
-    console.log('Example app listening on port 3000!');
+    console.log('Example app listening on port: ' + (process.env.PORT || 8080));
 });
