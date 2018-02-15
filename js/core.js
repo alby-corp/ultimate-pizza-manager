@@ -23,8 +23,24 @@ function populateContainer(page, container) {
     });
 }
 
+function populateDropDown(ddl) {
+    get("menu").then(content => {
+        content = JSON.parse(content);
+
+        for (let pizza of content.pizze) {
+            ddl.append('<option value="' + pizza.cibo + '">' + capitalizeFirstLetter(pizza.cibo) + '</option>')
+        }
+    });
+}
+
 function pizzaSorter(a, b) {
     if (a.cibo < b.cibo) return -1;
     if (a.cibo > b.cibo) return 1;
     return 0;
+}
+
+function capitalizeFirstLetter(str) {
+    return str.replace(/\w\S*/g, function (txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
 }

@@ -5,15 +5,16 @@
     </div>
 
     <label for="pizza">Pizza:</label>
-    <select id="pizza" class="form-control" name="pizza" size=1 required>
-        <option value="margherita">Margherita</option>
-        <option value="diavola">Diavola</option>
-        <option value="viennese">Viennese</option>
-        <option value="prosciutto">Prosciutto</option>
-    </select>
+    <select id="pizza" class="form-control" name="pizza" size=1 required></select>
 
     <!-- E' un programmino del cazzo perdonatemi sta cosa -->
     <br/>
 
     <input class="btn btn-default" type="submit" value="Ordina"/>
 </form>
+
+<script>
+    $(document).ready(function () {
+        populateDropDown($("#pizza"));
+    });
+</script>
