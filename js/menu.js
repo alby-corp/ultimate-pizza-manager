@@ -1,20 +1,20 @@
 function pupulateMenu() {
-    const pizze = $("#pizze table tbody");
-    const supplementi = $("#supplementi table tbody");
-    const impasti = $("#impasti table tbody");
-    const cucina = $("#cucina table tbody");
-    const panini = $("#panini table tbody");
-    const dolci = $("#dolci table tbody");
+    const pizze = $("#pizze tbody");
+    const supplementi = $("#supplementi tbody");
+    const impasti = $("#impasti tbody");
+    const cucina = $("#cucina tbody");
+    const panini = $("#panini tbody");
+    const dolci = $("#dolci tbody");
 
     get("menu").then(content => {
         content = JSON.parse(content);
 
-        populateTable(content.pizze, pizze);
-        populateTable(content.supplementi, supplementi);
-        populateTable(content.impasti, impasti);
-        populateTable(content.cucina, cucina);
-        populateTable(content.panini, panini);
-        populateTable(content.dolci, dolci);
+        populateTable(content.pizze.sort(pizzaSorter), pizze);
+        populateTable(content.supplementi.sort(pizzaSorter), supplementi);
+        populateTable(content.impasti.sort(pizzaSorter), impasti);
+        populateTable(content.cucina.sort(pizzaSorter), cucina);
+        populateTable(content.panini.sort(pizzaSorter), panini);
+        populateTable(content.dolci.sort(pizzaSorter), dolci);
     });
 }
 

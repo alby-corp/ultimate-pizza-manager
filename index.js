@@ -6,8 +6,9 @@ const menu = require('./menu.json');
 
 const app = express();
 
-app.use(express.static('html'))
-app.use(express.static('js'))
+app.use(express.static('html'));
+app.use(express.static('js'));
+app.use(express.static('style'));
 
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));

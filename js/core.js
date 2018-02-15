@@ -13,12 +13,18 @@ function link(page, containerName) {
 
 function populateTable(data, table) {
     for (let item of data) {
-        table.append('<tr><th scope="row">' + item.cibo + '</th><td>' + item.prezzo.toFixed(2) + ' &euro;</td></tr>');
+        table.append('<tr><td scope="row">' + item.cibo + '</td><td scope="row">' + item.prezzo.toFixed(2) + ' &euro;</td></tr>');
     }
 }
 
-function populateContainer(page, container){
+function populateContainer(page, container) {
     get(page).then(content => {
         container.html(content);
     });
+}
+
+function pizzaSorter(a, b) {
+    if (a.cibo < b.cibo) return -1;
+    if (a.cibo > b.cibo) return 1;
+    return 0;
 }
