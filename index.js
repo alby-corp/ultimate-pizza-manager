@@ -1,9 +1,13 @@
-var express = require('express');
-var fs = require('fs');
-var path = require('path');
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
 const fileName = "pizzeList.txt";
+const menu = require('./menu.json');
 
-var app = express();
+const app = express();
+
+app.use(express.static('html'))
+app.use(express.static('js'))
 
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
@@ -15,12 +19,16 @@ app.get('/insert', function (req, res) {
     //TODO add promise
 });
 
+app.get('/menu', function (req, res) {
+    res.send(JSON.stringify(menu));
+});
+
 app.get('/getList', function (req, res) {
     res.sendFile(path.join(__dirname, './', 'pizzeList.txt'));
 });
 
 function addOrder(user, pizza) {
-    var order = createRow(user, pizza);
+    const order = createRow(user, pizza);
     fs.appendFile(fileName, order, "utf8", function (err) {
         if (err) {
             console.log(err);

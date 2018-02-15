@@ -1,0 +1,439 @@
+{  "pizze": [
+    {
+      "cibo": "Marinara",
+      "prezzo": 3.5
+    },{
+      "cibo": "Margherita",
+      "prezzo": 4
+    },{
+      "cibo": "Prosciutto",
+      "prezzo": 5
+    },{
+      "cibo": "Funghi",
+      "prezzo": 5
+    },{
+      "cibo": "Diavola",
+      "prezzo": 5
+    },{
+      "cibo": "Melanzane",
+      "prezzo": 5
+    },{
+      "cibo": "Romana",
+      "prezzo": 5.5
+    },{
+      "cibo": "Peperoni",
+      "prezzo": 5.5
+    },{
+      "cibo": "Viennese",
+      "prezzo": 5.5
+    },{
+      "cibo": "Rucola",
+      "prezzo": 5.5
+    },{
+      "cibo": "Capricciosa",
+      "prezzo": 6
+    },{
+      "cibo": "4 Stagioni",
+      "prezzo": 6
+    },{
+      "cibo": "4 Formaggi",
+      "prezzo": 6
+    },{
+      "cibo": "Calzone",
+      "prezzo": 6
+    },{
+      "cibo": "Calzone Farcito",
+      "prezzo": 7
+    },{
+      "cibo": "Tonno",
+      "prezzo": 6
+    },{
+      "cibo": "Caprese",
+      "prezzo": 6
+    },{
+      "cibo": "Bufala",
+      "prezzo": 6
+    },{
+      "cibo": "Verdure",
+      "prezzo": 6.5
+    },{
+      "cibo": "Fresca",
+      "prezzo": 6.5
+    },{
+      "cibo": "Mascarzone",
+      "prezzo": 6.5
+    },{
+      "cibo": "Calzone Fritto",
+      "prezzo": 6
+    },{
+      "cibo": "Carbonara",
+      "prezzo": 7
+    },{
+      "cibo": "Los Angeles",
+      "prezzo": 7.5
+    },{
+      "cibo": "Super-Crock",
+      "prezzo": 7.5
+    },{
+      "cibo": "Calzone Saporito",
+      "prezzo": 7.5
+    },{
+      "cibo": "Esplosiva",
+      "prezzo": 7.5
+    },{
+      "cibo": "Meditteranea",
+      "prezzo": 7.5
+    },{
+      "cibo": "Tris di Funghi",
+      "prezzo": 8
+    },{
+      "cibo": "Salmone",
+      "prezzo": 8
+    },{
+      "cibo": "Tartufata",
+      "prezzo": 8
+    },{
+      "cibo": "Boschetto",
+      "prezzo": 8.5
+    },{
+      "cibo": "Saporita",
+      "prezzo": 8.5
+    },{
+      "cibo": "Super-Tartufata",
+      "prezzo": 8.5
+    },{
+      "cibo": "Primavera",
+      "prezzo": 8.5
+    },{
+      "cibo": "Boys",
+      "prezzo": 6
+    },{
+      "cibo": "Provolina",
+      "prezzo": 7
+    },{
+      "cibo": "Montanara",
+      "prezzo": 7
+    },{
+      "cibo": "Trevigiana",
+      "prezzo": 7
+    },{
+      "cibo": "Tirolese",
+      "prezzo": 8.5
+    },{
+      "cibo": "Fantastica",
+      "prezzo": 7.5
+    },{
+      "cibo": "Siciliana",
+      "prezzo": 7
+    },{
+      "cibo": "Sfiziosa",
+      "prezzo": 7
+    },{
+      "cibo": "Bomba",
+      "prezzo": 7
+    },{
+      "cibo": "Rustica",
+      "prezzo": 7.5
+    },{
+      "cibo": "Delizia",
+      "prezzo": 7.5
+    },{
+      "cibo": "Delicata",
+      "prezzo": 7.5
+    },{
+      "cibo": "New York",
+      "prezzo": 7.5
+    },{
+      "cibo": "Piccantina",
+      "prezzo": 7.5
+    },{
+      "cibo": "Curry",
+      "prezzo": 7.5
+    },{
+      "cibo": "Bresaola",
+      "prezzo": 7.5
+    },{
+      "cibo": "Fattoria",
+      "prezzo": 8
+    },{
+      "cibo": "Simpson",
+      "prezzo": 8
+    },{
+      "cibo": "Inverno",
+      "prezzo": 8
+    },{
+      "cibo": "Imperiale",
+      "prezzo": 8.5
+    },{
+      "cibo": "Friulana",
+      "prezzo": 8.5
+    },{
+      "cibo": "Estate",
+      "prezzo": 8.5
+    },{
+      "cibo": "Vanessa",
+      "prezzo": 8.5
+    },{
+      "cibo": "Boris",
+      "prezzo": 9.5
+    },{
+      "cibo": "Artisti",
+      "prezzo": 9.5
+    },{
+      "cibo": "Salumi",
+      "prezzo": 10
+    }
+  ],
+  "supplementi": [
+    {
+      "cibo": "Pomodoro",
+      "prezzo": 1
+    },{
+      "cibo": "Mozzarella",
+      "prezzo": 1
+    },{
+      "cibo": "Prosciutto",
+      "prezzo": 1
+    },{
+      "cibo": "Funghi",
+      "prezzo": 1
+    },{
+      "cibo": "Olive",
+      "prezzo": 1
+    },{
+      "cibo": "Ricotta",
+      "prezzo": 1
+    },{
+      "cibo": "Mais",
+      "prezzo": 1
+    },{
+      "cibo": "Piselli",
+      "prezzo": 1
+    },{
+      "cibo": "Panna",
+      "prezzo": 1
+    },{
+      "cibo": "Grana",
+      "prezzo": 1
+    },{
+      "cibo": "Pomodoro Fresco",
+      "prezzo": 1.5
+    },{
+      "cibo": "Rucola",
+      "prezzo": 1.5
+    },{
+      "cibo": "Funghi Freschi",
+      "prezzo": 1.5
+    },{
+      "cibo": "Cipolla",
+      "prezzo": 1.5
+    },{
+      "cibo": "Carciofi",
+      "prezzo": 1.5
+    },{
+      "cibo": "Salamino Piccante",
+      "prezzo": 1.5
+    },{
+      "cibo": "Wurstel",
+      "prezzo": 1.5
+    },{
+      "cibo": "Melanzane",
+      "prezzo": 1.5
+    },{
+      "cibo": "Zucchine",
+      "prezzo": 1.5
+    },{
+      "cibo": "Peperoni",
+      "prezzo": 1.5
+    },{
+      "cibo": "Ricotta Affumicata",
+      "prezzo": 1.5
+    },{
+      "cibo": "Gorgonzola",
+      "prezzo": 1.5
+    },{
+      "cibo": "Danese",
+      "prezzo": 1.5
+    },{
+      "cibo": "Stracchino",
+      "prezzo": 1.5
+    },{
+      "cibo": "Spinaci",
+      "prezzo": 1.5
+    },{
+      "cibo": "Asparagi",
+      "prezzo": 1.5
+    },{
+      "cibo": "Radicchio di Treviso",
+      "prezzo": 1.5
+    },{
+      "cibo": "Acciughe",
+      "prezzo": 1.5
+    },{
+      "cibo": "Capperi",
+      "prezzo": 1.5
+    },{
+      "cibo": "Uovo",
+      "prezzo": 1.5
+    },{
+      "cibo": "Pecorino",
+      "prezzo": 1.5
+    },{
+      "cibo": "Bocconcini di Mozzarella",
+      "prezzo": 1.5
+    },{
+      "cibo": "Mascarpone",
+      "prezzo": 1.5
+    },{
+      "cibo": "Tonno",
+      "prezzo": 2
+    },{
+      "cibo": "Brie",
+      "prezzo": 2
+    },{
+      "cibo": "Tartufo",
+      "prezzo": 2
+    },{
+      "cibo": "Salsiccia Fresca",
+      "prezzo": 2
+    },{
+      "cibo": "Provola Affumicata",
+      "prezzo": 2
+    },{
+      "cibo": "Patate",
+      "prezzo": 2
+    },{
+      "cibo": "Patatine Fritte",
+      "prezzo": 2
+    },{
+      "cibo": "Salumi Vari",
+      "prezzo": 2
+    },{
+      "cibo": "Mozzarella di Bufala",
+      "prezzo": 2
+    },{
+      "cibo": "Porcini",
+      "prezzo": 2
+    },{
+      "cibo": "Chiodini",
+      "prezzo": 2
+    },{
+      "cibo": "Friarielli",
+      "prezzo": 2
+    },{
+      "cibo": "Gamberetti",
+      "prezzo": 2.5
+    },{
+      "cibo": "Salmone",
+      "prezzo": 2
+    }
+  ],
+  "impasti": [
+    {
+      "cibo": "alle Olive",
+      "prezzo": 1
+    }
+  ],
+  "cucina": [
+    {
+      "cibo": "Pollo al Forno e Patate",
+      "prezzo": 8
+    },{
+      "cibo": "Pollo Disossato e Patate",
+      "prezzo": 7.5
+    },{
+      "cibo": "Petto di Pollo e Patate",
+      "prezzo": 7.5
+    },{
+      "cibo": "Tagliata di Pollo",
+      "prezzo": 8
+    },{
+      "cibo": "Milanese e Patatine Fritte",
+      "prezzo": 7.5
+    },{
+      "cibo": "Scaloppine (al vino, al limone, ai funghi)",
+      "prezzo": 7
+    },{
+      "cibo": "Ljubljancka",
+      "prezzo": 9
+    },{
+      "cibo": "Lonza al Senape e Patate",
+      "prezzo": 8
+    },{
+      "cibo": "Grigliata Mista",
+      "prezzo": 13
+    },{
+      "cibo": "Calamari Fritti e Patatine",
+      "prezzo": 9
+    },{
+      "cibo": "Insalata",
+      "prezzo": 3
+    },{
+      "cibo": "Insalata Mista",
+      "prezzo": 4
+    },{
+      "cibo": "Insalatona",
+      "prezzo": 7.5
+    },{
+      "cibo": "Patatine Fritte",
+      "prezzo": 3
+    },{
+      "cibo": "Crocchette di Patate",
+      "prezzo": 3.5
+    },{
+      "cibo": "Verdure alla Piastra",
+      "prezzo": 3.5
+    }
+  ],
+  "panini": [
+    {
+      "cibo": "Sfizioso",
+      "prezzo": 6
+    },{
+      "cibo": "Classic Burgher",
+      "prezzo": 6.5
+    },{
+      "cibo": "Hot Dog",
+      "prezzo": 6
+    },{
+      "cibo": "Classico",
+      "prezzo": 6
+    },{
+      "cibo": "Boss",
+      "prezzo": 7
+    },{
+      "cibo": "Super",
+      "prezzo": 7
+    },{
+      "cibo": "Estate",
+      "prezzo": 7
+    },{
+      "cibo": "Vegetariano",
+      "prezzo": 6.5
+    },{
+      "cibo": "Rio Mare",
+      "prezzo": 6
+    }
+  ],
+  "dolci": [
+    {
+      "cibo": "Tiramisu",
+      "prezzo": 3.5
+    },{
+      "cibo": "Crepes Nutella / Marmellata",
+      "prezzo": 3.5
+    },{
+      "cibo": "Cornetto alla Nutella",
+      "prezzo": 3.5
+    },{
+      "cibo": "Tortino al Cioccolato",
+      "prezzo": 2.5
+    },{
+      "cibo": "Pizza Nutella",
+      "prezzo": 5
+    },{
+      "cibo": "Tartufo Bianco / Nero",
+      "prezzo": 2.5
+    }
+  ]
+}
