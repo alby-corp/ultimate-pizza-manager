@@ -24,9 +24,13 @@ function populateCheckBoxList(cbl, data) {
 }
 
 function populateTable(table, ...args) {
-    const transpose = column => column[0].map((_, i) => column.map(row => row[i]))
-
     table.append(`${transpose(args).map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}`);
+}
+
+
+
+function transpose(matrix) {
+    return Object.keys(matrix[0]).map(function (colIndex) { return matrix.map(function (column) { return column[colIndex]; }); });
 }
 
 // Strings Helpers
