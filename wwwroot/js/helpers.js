@@ -13,6 +13,7 @@ function populateDropDown(ddl, data) {
 }
 
 foodAndPrice = x => `${x.price.toFixed(2)} &euro; - ${capitalizeFirstLetter(x.food)}`;
+price = x => `${x.price.toFixed(2)} &euro;`;
 
 function populateCheckBoxList(cbl, data) {
     for (let item of data) {
