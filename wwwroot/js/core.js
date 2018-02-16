@@ -1,8 +1,6 @@
-function initIndex() {
-    link(null, $('#container'));
-}
+initIndex = () => link(null, $('#container'));
 
-function initMenu() {
+initMenu = () => {
     getMenu().then(data => {
         data = JSON.parse(data);
 
@@ -20,9 +18,9 @@ function initMenu() {
         populateTable($("#sandwiches tbody"), data.sandwiches.map(s => s.food), data.sandwiches.map(s => price(s)));
         populateTable($("#desserts tbody"), data.desserts.map(d => d.food), data.desserts.map(d => price(d)));
     });
-}
+};
 
-function initOrders() {
+initOrders = () => {
     getMenu().then(data => {
         data = JSON.parse(data);
 
@@ -34,4 +32,4 @@ function initOrders() {
         populateCheckBoxList($("#supplements"), data.supplements.map(s => foodAndPrice(s)));
         populateCheckBoxList($("#dough"), data.dough.map(d => foodAndPrice(d)));
     });
-}
+};

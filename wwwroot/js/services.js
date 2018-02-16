@@ -1,11 +1,5 @@
-function getMenu() {
-    return get("menu");
-};
+getMenu = () => get("menu");
 
-function getOrdersPage(){
-    return get('order.html');
-};
+getOrdersPage = () => get('order.html');
 
-function getMenuPage() {
-    return get('menu.html');
-}
+getMenuPage = () => get('menu.html');

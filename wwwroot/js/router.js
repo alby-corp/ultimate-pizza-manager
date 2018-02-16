@@ -1,5 +1,5 @@
 // Navigation
-function link(page, container) {
+link = (page, container) => {
     container.empty();
 
     switch (page) {
@@ -8,5 +8,5 @@ function link(page, container) {
             break;
         default:
             getOrdersPage().then(data => populateContainer(data, container));
-    }
+    };
 };

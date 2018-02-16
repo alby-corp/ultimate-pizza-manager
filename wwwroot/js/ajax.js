@@ -1,3 +1,1 @@
-function get(uri) {
-    return $.get(window.location.href + uri);
-}
+get = uri => $.get(window.location.href + uri);
