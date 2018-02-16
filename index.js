@@ -3,13 +3,13 @@ const fs = require('fs');
 const path = require('path');
 const fileName = "pizzeList.txt";
 const menu = require('./menu.json');
-
 const app = express();
 
-app.use(express.static('html'));
-app.use(express.static('js'));
-app.use(express.static('style'));
+// Static files
+app.use('/public', express.static('wwwroot'));
+app.use(express.static('resources'));
 
+// API
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
@@ -28,6 +28,7 @@ app.get('/getList', function (req, res) {
     res.sendFile(path.join(__dirname, './', 'pizzeList.txt'));
 });
 
+// Helpers
 function addOrder(user, pizza) {
     const order = createRow(user, pizza);
     fs.appendFile(fileName, order, "utf8", function (err) {
@@ -46,10 +47,11 @@ function getColumnFromString(s) {
     return s + column.substring(1, column.length - s.length)
 }
 
-app.listen(process.env.PORT || 8080, function () {
+// Server config
+app.listen(process.env.PORT || 8080, function () {
     //se il file non esiste lo crea
     fs.exists(fileName, function (exists) {
-        if (!exists) { 
+        if (!exists) {
             fs.appendFile(fileName, createRow("NOME", "PIZZA"), "utf8", function (err) {
                 if (err) {
                     console.log(err);
@@ -57,5 +59,5 @@ app.listen(process.env.PORT || 8080, function () {
             });
         }
     });
-    console.log('Example app listening on port: ' + (process.env.PORT || 8080));
+    console.log('Example app listening on port: ' + (process.env.PORT || 8080));
 });
