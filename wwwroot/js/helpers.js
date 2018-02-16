@@ -6,7 +6,7 @@ function populateContainer(data, container) {
 
 function populateDropDown(data, ddl) {
     for (let item of data) {
-        ddl.append('<option value="' + item.cibo + '">' + capitalizeFirstLetter(item.cibo) + '</option>')
+        ddl.append('<option value="' + item + '">' + capitalizeFirstLetter(item) + '</option>')
     }
 }
 

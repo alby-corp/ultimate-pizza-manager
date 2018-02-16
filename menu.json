@@ -1,439 +1,439 @@
-{  "pizze": [
+{  "pizzas": [
     {
-      "cibo": "Marinara",
-      "prezzo": 3.5
+      "food": "Marinara",
+      "price": 3.5
     },{
-      "cibo": "Margherita",
-      "prezzo": 4
+      "food": "Margherita",
+      "price": 4
     },{
-      "cibo": "Prosciutto",
-      "prezzo": 5
+      "food": "Prosciutto",
+      "price": 5
     },{
-      "cibo": "Funghi",
-      "prezzo": 5
+      "food": "Funghi",
+      "price": 5
     },{
-      "cibo": "Diavola",
-      "prezzo": 5
+      "food": "Diavola",
+      "price": 5
     },{
-      "cibo": "Melanzane",
-      "prezzo": 5
+      "food": "Melanzane",
+      "price": 5
     },{
-      "cibo": "Romana",
-      "prezzo": 5.5
+      "food": "Romana",
+      "price": 5.5
     },{
-      "cibo": "Peperoni",
-      "prezzo": 5.5
+      "food": "Peperoni",
+      "price": 5.5
     },{
-      "cibo": "Viennese",
-      "prezzo": 5.5
+      "food": "Viennese",
+      "price": 5.5
     },{
-      "cibo": "Rucola",
-      "prezzo": 5.5
+      "food": "Rucola",
+      "price": 5.5
     },{
-      "cibo": "Capricciosa",
-      "prezzo": 6
+      "food": "Capricciosa",
+      "price": 6
     },{
-      "cibo": "4 Stagioni",
-      "prezzo": 6
+      "food": "4 Stagioni",
+      "price": 6
     },{
-      "cibo": "4 Formaggi",
-      "prezzo": 6
+      "food": "4 Formaggi",
+      "price": 6
     },{
-      "cibo": "Calzone",
-      "prezzo": 6
+      "food": "Calzone",
+      "price": 6
     },{
-      "cibo": "Calzone Farcito",
-      "prezzo": 7
+      "food": "Calzone Farcito",
+      "price": 7
     },{
-      "cibo": "Tonno",
-      "prezzo": 6
+      "food": "Tonno",
+      "price": 6
     },{
-      "cibo": "Caprese",
-      "prezzo": 6
+      "food": "Caprese",
+      "price": 6
     },{
-      "cibo": "Bufala",
-      "prezzo": 6
+      "food": "Bufala",
+      "price": 6
     },{
-      "cibo": "Verdure",
-      "prezzo": 6.5
+      "food": "Verdure",
+      "price": 6.5
     },{
-      "cibo": "Fresca",
-      "prezzo": 6.5
+      "food": "Fresca",
+      "price": 6.5
     },{
-      "cibo": "Mascarzone",
-      "prezzo": 6.5
+      "food": "Mascarzone",
+      "price": 6.5
     },{
-      "cibo": "Calzone Fritto",
-      "prezzo": 6
+      "food": "Calzone Fritto",
+      "price": 6
     },{
-      "cibo": "Carbonara",
-      "prezzo": 7
+      "food": "Carbonara",
+      "price": 7
     },{
-      "cibo": "Los Angeles",
-      "prezzo": 7.5
+      "food": "Los Angeles",
+      "price": 7.5
     },{
-      "cibo": "Super-Crock",
-      "prezzo": 7.5
+      "food": "Super-Crock",
+      "price": 7.5
     },{
-      "cibo": "Calzone Saporito",
-      "prezzo": 7.5
+      "food": "Calzone Saporito",
+      "price": 7.5
     },{
-      "cibo": "Esplosiva",
-      "prezzo": 7.5
+      "food": "Esplosiva",
+      "price": 7.5
     },{
-      "cibo": "Meditteranea",
-      "prezzo": 7.5
+      "food": "Meditteranea",
+      "price": 7.5
     },{
-      "cibo": "Tris di Funghi",
-      "prezzo": 8
+      "food": "Tris di Funghi",
+      "price": 8
     },{
-      "cibo": "Salmone",
-      "prezzo": 8
+      "food": "Salmone",
+      "price": 8
     },{
-      "cibo": "Tartufata",
-      "prezzo": 8
+      "food": "Tartufata",
+      "price": 8
     },{
-      "cibo": "Boschetto",
-      "prezzo": 8.5
+      "food": "Boschetto",
+      "price": 8.5
     },{
-      "cibo": "Saporita",
-      "prezzo": 8.5
+      "food": "Saporita",
+      "price": 8.5
     },{
-      "cibo": "Super-Tartufata",
-      "prezzo": 8.5
+      "food": "Super-Tartufata",
+      "price": 8.5
     },{
-      "cibo": "Primavera",
-      "prezzo": 8.5
+      "food": "Primavera",
+      "price": 8.5
     },{
-      "cibo": "Boys",
-      "prezzo": 6
+      "food": "Boys",
+      "price": 6
     },{
-      "cibo": "Provolina",
-      "prezzo": 7
+      "food": "Provolina",
+      "price": 7
     },{
-      "cibo": "Montanara",
-      "prezzo": 7
+      "food": "Montanara",
+      "price": 7
     },{
-      "cibo": "Trevigiana",
-      "prezzo": 7
+      "food": "Trevigiana",
+      "price": 7
     },{
-      "cibo": "Tirolese",
-      "prezzo": 8.5
+      "food": "Tirolese",
+      "price": 8.5
     },{
-      "cibo": "Fantastica",
-      "prezzo": 7.5
+      "food": "Fantastica",
+      "price": 7.5
     },{
-      "cibo": "Siciliana",
-      "prezzo": 7
+      "food": "Siciliana",
+      "price": 7
     },{
-      "cibo": "Sfiziosa",
-      "prezzo": 7
+      "food": "Sfiziosa",
+      "price": 7
     },{
-      "cibo": "Bomba",
-      "prezzo": 7
+      "food": "Bomba",
+      "price": 7
     },{
-      "cibo": "Rustica",
-      "prezzo": 7.5
+      "food": "Rustica",
+      "price": 7.5
     },{
-      "cibo": "Delizia",
-      "prezzo": 7.5
+      "food": "Delizia",
+      "price": 7.5
     },{
-      "cibo": "Delicata",
-      "prezzo": 7.5
+      "food": "Delicata",
+      "price": 7.5
     },{
-      "cibo": "New York",
-      "prezzo": 7.5
+      "food": "New York",
+      "price": 7.5
     },{
-      "cibo": "Piccantina",
-      "prezzo": 7.5
+      "food": "Piccantina",
+      "price": 7.5
     },{
-      "cibo": "Curry",
-      "prezzo": 7.5
+      "food": "Curry",
+      "price": 7.5
     },{
-      "cibo": "Bresaola",
-      "prezzo": 7.5
+      "food": "Bresaola",
+      "price": 7.5
     },{
-      "cibo": "Fattoria",
-      "prezzo": 8
+      "food": "Fattoria",
+      "price": 8
     },{
-      "cibo": "Simpson",
-      "prezzo": 8
+      "food": "Simpson",
+      "price": 8
     },{
-      "cibo": "Inverno",
-      "prezzo": 8
+      "food": "Inverno",
+      "price": 8
     },{
-      "cibo": "Imperiale",
-      "prezzo": 8.5
+      "food": "Imperiale",
+      "price": 8.5
     },{
-      "cibo": "Friulana",
-      "prezzo": 8.5
+      "food": "Friulana",
+      "price": 8.5
     },{
-      "cibo": "Estate",
-      "prezzo": 8.5
+      "food": "Estate",
+      "price": 8.5
     },{
-      "cibo": "Vanessa",
-      "prezzo": 8.5
+      "food": "Vanessa",
+      "price": 8.5
     },{
-      "cibo": "Boris",
-      "prezzo": 9.5
+      "food": "Boris",
+      "price": 9.5
     },{
-      "cibo": "Artisti",
-      "prezzo": 9.5
+      "food": "Artisti",
+      "price": 9.5
     },{
-      "cibo": "Salumi",
-      "prezzo": 10
+      "food": "Salumi",
+      "price": 10
     }
   ],
-  "supplementi": [
+  "supplements": [
     {
-      "cibo": "Pomodoro",
-      "prezzo": 1
+      "food": "Pomodoro",
+      "price": 1
     },{
-      "cibo": "Mozzarella",
-      "prezzo": 1
+      "food": "Mozzarella",
+      "price": 1
     },{
-      "cibo": "Prosciutto",
-      "prezzo": 1
+      "food": "Prosciutto",
+      "price": 1
     },{
-      "cibo": "Funghi",
-      "prezzo": 1
+      "food": "Funghi",
+      "price": 1
     },{
-      "cibo": "Olive",
-      "prezzo": 1
+      "food": "Olive",
+      "price": 1
     },{
-      "cibo": "Ricotta",
-      "prezzo": 1
+      "food": "Ricotta",
+      "price": 1
     },{
-      "cibo": "Mais",
-      "prezzo": 1
+      "food": "Mais",
+      "price": 1
     },{
-      "cibo": "Piselli",
-      "prezzo": 1
+      "food": "Piselli",
+      "price": 1
     },{
-      "cibo": "Panna",
-      "prezzo": 1
+      "food": "Panna",
+      "price": 1
     },{
-      "cibo": "Grana",
-      "prezzo": 1
+      "food": "Grana",
+      "price": 1
     },{
-      "cibo": "Pomodoro Fresco",
-      "prezzo": 1.5
+      "food": "Pomodoro Fresco",
+      "price": 1.5
     },{
-      "cibo": "Rucola",
-      "prezzo": 1.5
+      "food": "Rucola",
+      "price": 1.5
     },{
-      "cibo": "Funghi Freschi",
-      "prezzo": 1.5
+      "food": "Funghi Freschi",
+      "price": 1.5
     },{
-      "cibo": "Cipolla",
-      "prezzo": 1.5
+      "food": "Cipolla",
+      "price": 1.5
     },{
-      "cibo": "Carciofi",
-      "prezzo": 1.5
+      "food": "Carciofi",
+      "price": 1.5
     },{
-      "cibo": "Salamino Piccante",
-      "prezzo": 1.5
+      "food": "Salamino Piccante",
+      "price": 1.5
     },{
-      "cibo": "Wurstel",
-      "prezzo": 1.5
+      "food": "Wurstel",
+      "price": 1.5
     },{
-      "cibo": "Melanzane",
-      "prezzo": 1.5
+      "food": "Melanzane",
+      "price": 1.5
     },{
-      "cibo": "Zucchine",
-      "prezzo": 1.5
+      "food": "Zucchine",
+      "price": 1.5
     },{
-      "cibo": "Peperoni",
-      "prezzo": 1.5
+      "food": "Peperoni",
+      "price": 1.5
     },{
-      "cibo": "Ricotta Affumicata",
-      "prezzo": 1.5
+      "food": "Ricotta Affumicata",
+      "price": 1.5
     },{
-      "cibo": "Gorgonzola",
-      "prezzo": 1.5
+      "food": "Gorgonzola",
+      "price": 1.5
     },{
-      "cibo": "Danese",
-      "prezzo": 1.5
+      "food": "Danese",
+      "price": 1.5
     },{
-      "cibo": "Stracchino",
-      "prezzo": 1.5
+      "food": "Stracchino",
+      "price": 1.5
     },{
-      "cibo": "Spinaci",
-      "prezzo": 1.5
+      "food": "Spinaci",
+      "price": 1.5
     },{
-      "cibo": "Asparagi",
-      "prezzo": 1.5
+      "food": "Asparagi",
+      "price": 1.5
     },{
-      "cibo": "Radicchio di Treviso",
-      "prezzo": 1.5
+      "food": "Radicchio di Treviso",
+      "price": 1.5
     },{
-      "cibo": "Acciughe",
-      "prezzo": 1.5
+      "food": "Acciughe",
+      "price": 1.5
     },{
-      "cibo": "Capperi",
-      "prezzo": 1.5
+      "food": "Capperi",
+      "price": 1.5
     },{
-      "cibo": "Uovo",
-      "prezzo": 1.5
+      "food": "Uovo",
+      "price": 1.5
     },{
-      "cibo": "Pecorino",
-      "prezzo": 1.5
+      "food": "Pecorino",
+      "price": 1.5
     },{
-      "cibo": "Bocconcini di Mozzarella",
-      "prezzo": 1.5
+      "food": "Bocconcini di Mozzarella",
+      "price": 1.5
     },{
-      "cibo": "Mascarpone",
-      "prezzo": 1.5
+      "food": "Mascarpone",
+      "price": 1.5
     },{
-      "cibo": "Tonno",
-      "prezzo": 2
+      "food": "Tonno",
+      "price": 2
     },{
-      "cibo": "Brie",
-      "prezzo": 2
+      "food": "Brie",
+      "price": 2
     },{
-      "cibo": "Tartufo",
-      "prezzo": 2
+      "food": "Tartufo",
+      "price": 2
     },{
-      "cibo": "Salsiccia Fresca",
-      "prezzo": 2
+      "food": "Salsiccia Fresca",
+      "price": 2
     },{
-      "cibo": "Provola Affumicata",
-      "prezzo": 2
+      "food": "Provola Affumicata",
+      "price": 2
     },{
-      "cibo": "Patate",
-      "prezzo": 2
+      "food": "Patate",
+      "price": 2
     },{
-      "cibo": "Patatine Fritte",
-      "prezzo": 2
+      "food": "Patatine Fritte",
+      "price": 2
     },{
-      "cibo": "Salumi Vari",
-      "prezzo": 2
+      "food": "Salumi Vari",
+      "price": 2
     },{
-      "cibo": "Mozzarella di Bufala",
-      "prezzo": 2
+      "food": "Mozzarella di Bufala",
+      "price": 2
     },{
-      "cibo": "Porcini",
-      "prezzo": 2
+      "food": "Porcini",
+      "price": 2
     },{
-      "cibo": "Chiodini",
-      "prezzo": 2
+      "food": "Chiodini",
+      "price": 2
     },{
-      "cibo": "Friarielli",
-      "prezzo": 2
+      "food": "Friarielli",
+      "price": 2
     },{
-      "cibo": "Gamberetti",
-      "prezzo": 2.5
+      "food": "Gamberetti",
+      "price": 2.5
     },{
-      "cibo": "Salmone",
-      "prezzo": 2
+      "food": "Salmone",
+      "price": 2
     }
   ],
-  "impasti": [
+  "dough": [
     {
-      "cibo": "alle Olive",
-      "prezzo": 1
+      "food": "alle Olive",
+      "price": 1
     }
   ],
-  "cucina": [
+  "food": [
     {
-      "cibo": "Pollo al Forno e Patate",
-      "prezzo": 8
+      "food": "Pollo al Forno e Patate",
+      "price": 8
     },{
-      "cibo": "Pollo Disossato e Patate",
-      "prezzo": 7.5
+      "food": "Pollo Disossato e Patate",
+      "price": 7.5
     },{
-      "cibo": "Petto di Pollo e Patate",
-      "prezzo": 7.5
+      "food": "Petto di Pollo e Patate",
+      "price": 7.5
     },{
-      "cibo": "Tagliata di Pollo",
-      "prezzo": 8
+      "food": "Tagliata di Pollo",
+      "price": 8
     },{
-      "cibo": "Milanese e Patatine Fritte",
-      "prezzo": 7.5
+      "food": "Milanese e Patatine Fritte",
+      "price": 7.5
     },{
-      "cibo": "Scaloppine (al vino, al limone, ai funghi)",
-      "prezzo": 7
+      "food": "Scaloppine (al vino, al limone, ai funghi)",
+      "price": 7
     },{
-      "cibo": "Ljubljancka",
-      "prezzo": 9
+      "food": "Ljubljancka",
+      "price": 9
     },{
-      "cibo": "Lonza al Senape e Patate",
-      "prezzo": 8
+      "food": "Lonza al Senape e Patate",
+      "price": 8
     },{
-      "cibo": "Grigliata Mista",
-      "prezzo": 13
+      "food": "Grigliata Mista",
+      "price": 13
     },{
-      "cibo": "Calamari Fritti e Patatine",
-      "prezzo": 9
+      "food": "Calamari Fritti e Patatine",
+      "price": 9
     },{
-      "cibo": "Insalata",
-      "prezzo": 3
+      "food": "Insalata",
+      "price": 3
     },{
-      "cibo": "Insalata Mista",
-      "prezzo": 4
+      "food": "Insalata Mista",
+      "price": 4
     },{
-      "cibo": "Insalatona",
-      "prezzo": 7.5
+      "food": "Insalatona",
+      "price": 7.5
     },{
-      "cibo": "Patatine Fritte",
-      "prezzo": 3
+      "food": "Patatine Fritte",
+      "price": 3
     },{
-      "cibo": "Crocchette di Patate",
-      "prezzo": 3.5
+      "food": "Crocchette di Patate",
+      "price": 3.5
     },{
-      "cibo": "Verdure alla Piastra",
-      "prezzo": 3.5
+      "food": "Verdure alla Piastra",
+      "price": 3.5
     }
   ],
-  "panini": [
+  "sandwiches": [
     {
-      "cibo": "Sfizioso",
-      "prezzo": 6
+      "food": "Sfizioso",
+      "price": 6
     },{
-      "cibo": "Classic Burgher",
-      "prezzo": 6.5
+      "food": "Classic Burgher",
+      "price": 6.5
     },{
-      "cibo": "Hot Dog",
-      "prezzo": 6
+      "food": "Hot Dog",
+      "price": 6
     },{
-      "cibo": "Classico",
-      "prezzo": 6
+      "food": "Classico",
+      "price": 6
     },{
-      "cibo": "Boss",
-      "prezzo": 7
+      "food": "Boss",
+      "price": 7
     },{
-      "cibo": "Super",
-      "prezzo": 7
+      "food": "Super",
+      "price": 7
     },{
-      "cibo": "Estate",
-      "prezzo": 7
+      "food": "Estate",
+      "price": 7
     },{
-      "cibo": "Vegetariano",
-      "prezzo": 6.5
+      "food": "Vegetariano",
+      "price": 6.5
     },{
-      "cibo": "Rio Mare",
-      "prezzo": 6
+      "food": "Rio Mare",
+      "price": 6
     }
   ],
-  "dolci": [
+  "desserts": [
     {
-      "cibo": "Tiramisu",
-      "prezzo": 3.5
+      "food": "Tiramisu",
+      "price": 3.5
     },{
-      "cibo": "Crepes Nutella / Marmellata",
-      "prezzo": 3.5
+      "food": "Crepes Nutella / Marmellata",
+      "price": 3.5
     },{
-      "cibo": "Cornetto alla Nutella",
-      "prezzo": 3.5
+      "food": "Cornetto alla Nutella",
+      "price": 3.5
     },{
-      "cibo": "Tortino al Cioccolato",
-      "prezzo": 2.5
+      "food": "Tortino al Cioccolato",
+      "price": 2.5
     },{
-      "cibo": "Pizza Nutella",
-      "prezzo": 5
+      "food": "Pizza Nutella",
+      "price": 5
     },{
-      "cibo": "Tartufo Bianco / Nero",
-      "prezzo": 2.5
+      "food": "Tartufo Bianco / Nero",
+      "price": 2.5
     }
   ]
 }

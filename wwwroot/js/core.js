@@ -19,6 +19,9 @@ function  initOrders() {
     getMenu().then(data => {
         data = JSON.parse(data);
 
-        populateDropDown(data.pizze, $("#pizza"));
+        populateDropDown(data.pizzas.map(pizza => pizza.food), $("#pizza"));
+        populateDropDown(data.food.map(food => food.food), $("#food"));
+        populateDropDown(data.sandwiches.map(sandwiche => sandwiche.food), $("#sandwiches"));
+        populateDropDown(data.desserts.map(dessert => dessert.food), $("#desserts"));
     });
 }
