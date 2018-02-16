@@ -1,8 +1,8 @@
-function initIndex(){
+function initIndex() {
     link(null, $('#container'));
 }
 
-function initMenu(){
+function initMenu() {
     getMenu().then(data => {
         data = JSON.parse(data);
 
@@ -22,13 +22,16 @@ function initMenu(){
     });
 }
 
-function  initOrders() {
+function initOrders() {
     getMenu().then(data => {
         data = JSON.parse(data);
 
-        populateDropDown(data.pizzas.sort(foodSorter).map(pizza => pizza.price.toFixed(2) + '&euro; - ' + pizza.food), $("#pizza"));
-        populateDropDown(data.food.sort(foodSorter).map(food => food.price.toFixed(2) + '&euro; - ' + food.food), $("#food"));
-        populateDropDown(data.sandwiches.sort(foodSorter).map(sandwiche => sandwiche.price.toFixed(2) + '&euro; - ' + sandwiche.food), $("#sandwiches"));
-        populateDropDown(data.desserts.sort(foodSorter).map(dessert => dessert.price.toFixed(2) + '&euro; - ' + dessert.food), $("#desserts"));
+        populateDropDown($("#pizza"), data.pizzas.sort(foodSorter).map(p => foodAndPrice(p)));
+        populateDropDown($("#food"), data.food.sort(foodSorter).map(f => foodAndPrice(f)));
+        populateDropDown($("#sandwiches"), data.sandwiches.sort(foodSorter).map(s => foodAndPrice(s)));
+        populateDropDown($("#desserts"), data.desserts.sort(foodSorter).map(d => foodAndPrice(d)));
+
+        populateCheckBoxList($("#supplements"), data.supplements.map(s => foodAndPrice(s)));
+        populateCheckBoxList($("#dough"), data.dough.map(d => foodAndPrice(d)));
     });
 }
