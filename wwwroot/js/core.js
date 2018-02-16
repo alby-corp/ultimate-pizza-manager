@@ -6,12 +6,12 @@ function initMenu(){
     getMenu().then(data => {
         data = JSON.parse(data);
 
-        populateTable(data.pizze, $("#pizze tbody"));
-        populateTable(data.supplementi, $("#supplementi tbody"));
-        populateTable(data.impasti, $("#impasti tbody"));
-        populateTable(data.cucina, $("#cucina tbody"));
-        populateTable(data.panini, $("#panini tbody"));
-        populateTable(data.dolci, $("#dolci tbody"));
+        populateTable(data.pizze.sort(foodSorter), $("#pizze tbody"));
+        populateTable(data.supplementi.sort(foodSorter), $("#supplementi tbody"));
+        populateTable(data.impasti.sort(foodSorter), $("#impasti tbody"));
+        populateTable(data.cucina.sort(foodSorter), $("#cucina tbody"));
+        populateTable(data.panini.sort(foodSorter), $("#panini tbody"));
+        populateTable(data.dolci.sort(foodSorter), $("#dolci tbody"));
     });
 }
 
