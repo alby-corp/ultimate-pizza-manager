@@ -5,15 +5,18 @@ function populateContainer(data, container) {
 }
 
 function populateDropDown(data, ddl) {
+
+    ddl.append('<option>-</option>')
+
     for (let item of data) {
         ddl.append('<option value="' + item + '">' + capitalizeFirstLetter(item) + '</option>')
     }
 }
 
-function populateTable(data, table) {
-    for (let item of data) {
-        table.append('<tr><td scope="row">' + item.cibo + '</td><td scope="row">' + item.prezzo.toFixed(2) + ' &euro;</td></tr>');
-    }
+function populateTable(table, ...args) {
+    const transpose = column => column[0].map((_,i) => column.map(row => row[i]))
+
+    table.append(`${transpose(args).map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}`);
 }
 
 // Strings Helpers
@@ -25,7 +28,7 @@ function capitalizeFirstLetter(str) {
 
 // Sorting area
 function foodSorter(a, b) {
-    if (a.cibo < b.cibo) return -1;
-    if (a.cibo > b.cibo) return 1;
+    if (a.food < b.food) return -1;
+    if (a.food > b.food) return 1;
     return 0;
 };
