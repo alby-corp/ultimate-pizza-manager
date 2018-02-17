@@ -14,7 +14,7 @@ initMenu = () => {
         populateTable($("#pizzas tbody"), data.pizzas.map(p => p.food), data.pizzas.map(p => price(p)));
         populateTable($("#supplements tbody"), data.supplements.map(s => s.food), data.supplements.map(s => price(s)));
         populateTable($("#dough tbody"), data.dough.map(d => d.food), data.dough.map(d => price(d)));
-        populateTable($("#dough tbody"), data.food.map(f => f.food), data.food.map(f => price(f)));
+        populateTable($("#food tbody"), data.food.map(f => f.food), data.food.map(f => price(f)));
         populateTable($("#sandwiches tbody"), data.sandwiches.map(s => s.food), data.sandwiches.map(s => price(s)));
         populateTable($("#desserts tbody"), data.desserts.map(d => d.food), data.desserts.map(d => price(d)));
     });
