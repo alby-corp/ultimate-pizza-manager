@@ -12,13 +12,16 @@
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="collapse navbar-collapse pointer" id="navbarNav">
         <ul class="navbar-nav">
-            <li class="nav-item pointer">
-                <span onclick="link(null, $('#container'))" href="" class="nav-link" href="#">Home</span>
+            <li class="nav-item">
+                <span onclick="link(null, $('#container'))" class="nav-link" href="#">Home</span>
             </li>
-            <li class="nav-item pointer">
-                <span onclick="link('menu', $('#container'))" href="" class="nav-link" href="#">Menu</span>
+            <li class="nav-item">
+                <span onclick="link('menu', $('#container'))" class="nav-link" href="#">Menu</span>
+            </li>
+            <li class="nav-item">
+                <span onclick="link('week-orders', $('#container'))" class="nav-link" href="#">Ordini</span>
             </li>
         </ul>
     </div>

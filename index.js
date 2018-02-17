@@ -24,7 +24,7 @@ app.get('/menu', function (req, res) {
     res.send(JSON.stringify(menu));
 });
 
-app.get('/getList', function (req, res) {
+app.get('/getWeekOrders', function (req, res) {
     res.sendFile(path.join(__dirname, './', 'pizzeList.txt'));
 });
 

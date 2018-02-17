@@ -6,7 +6,7 @@ populateDropDown = (ddl, data) => {
 
     for (let item of data) {
         ddl.append(`<option value="${item}">${(item)}</option>`)
-    }
+    };
 };
 
 populateCheckBoxList = (cbl, data) => {
@@ -14,12 +14,18 @@ populateCheckBoxList = (cbl, data) => {
 
         let checkbox = `<div class="form-check"><input class="form-check-input" type="checkbox" name=${item} id=${item} value=${item}><label class="form-check-label" for=${item}>${item}</label></div>`;
         cbl.append(checkbox);
-    }
+    };
 };
 
 populateTable = (table, ...args) => {
     const transpose = (matrix) => Object.keys(matrix[0]).map(function (colIndex) { return matrix.map(function (column) { return column[colIndex]; }); });
     table.append(`${transpose(args).map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}`)
+};
+
+populateList = (list, data) => {
+    for (let item of data) {
+        list.append(`<li>${item}</li>`);
+    };
 };
 
 // Strings

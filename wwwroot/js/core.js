@@ -33,3 +33,11 @@ initOrders = () => {
         populateCheckBoxList($("#dough"), data.dough.map(d => foodAndPrice(d)));
     });
 };
+
+initWeekOrders = () => {
+    getWeekOrders().then(data => {
+        // data = JSON.parse(data);
+
+        populateList($("#week-orders"), data);
+    });
+};
