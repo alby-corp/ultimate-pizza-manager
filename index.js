@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 app.post('/insert', (req, res) => {
     addOrder(req.body);
 
-    res.send('Ordine registrato :)');
+    res.send('Ordine registrato <br /> <a href="/">Home</a>');
 
     //TODO add promise
 });
@@ -35,7 +35,19 @@ app.get('/menu', (req, res) => {
 });
 
 app.get('/getWeekOrders', (req, res) => {
-    res.send(JSON.stringify(require('./db.json')));
+    let db = require('./db.json');
+    const menu = require('./menu.json');
+
+    const order = db.orders.map(order => ({
+        user: order.user,
+        data: order.data,
+        pizza: menu.pizzas.find(p => p.id == order.pizza),
+        food: menu.foods.find(p => p.id == order.food),
+        sandwiche: menu.sandwiches.find(p => p.id == order.sandwiche),
+        dessert: menu.desserts.find(p => p.id == order.dessert)
+    }));
+
+    res.send(order);
 });
 
 // Helpers

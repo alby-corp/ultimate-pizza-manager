@@ -3,12 +3,17 @@ populateContainer = (data, container) => container.html(data);
 
 populateDropDown = (ddl, data) => {
 
-    ValidateKeyValuePairModel(data);
-
     ddl.append('<option>-</option>');
 
     for (let item of data) {
-        ddl.append(`<option value="${item.key}">${(item.value)}</option>`)
+        ddl.append(`<option value="${item.key}">${(item.value.toString())}</option>`)
+    }
+};
+
+populateList = (list, data) => {
+
+    for (let item of data) {
+        list.append(`<li>${item.value.toString()}</li>`);
     }
 };
 
@@ -28,15 +33,6 @@ populateTable = (table, ...args) => {
     table.append(`${transpose(args).map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}`)
 };
 
-populateList = (list, data) => {
-
-    ValidateListModel(data);
-
-    for (let item of data) {
-        list.append(`<li>${item.value}</li>`);
-    }
-};
-
 // Strings
 capitalizeFirstLetter = str => {
     return str.replace(/\w\S*/g, function (txt) {
@@ -44,13 +40,7 @@ capitalizeFirstLetter = str => {
     });
 };
 
-foodAndPrice = x => `${x.price.toFixed(2)} &euro; - ${capitalizeFirstLetter(x.food)}`;
 
-userAndFoods = x => `${x.user} - ${x.pizza}`;
-
-price = x => `${x.price.toFixed(2)} &euro;`;
-
-replaceWhiteSpaceWithUndescore = (object) => object.replace(/\s/g, "_");
 
 // Sorting
 foodSorter = (a, b) => {
