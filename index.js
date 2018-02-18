@@ -1,58 +1,65 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const fileName = "pizzeList.txt";
+const filename = "./db.json";
 const menu = require('./menu.json');
 const app = express();
+const bodyParser = require('body-parser');
+
 
 // Static files
 app.use('/public', express.static('wwwroot'));
 app.use(express.static('resources'));
 
+// Body parser
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
+
 // API
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-app.get('/insert', function (req, res) {
-    addOrder(req.query.user, req.query.pizza)
+app.post('/insert', (req, res) => {
+    addOrder(req.body);
+
     res.send('Ordine registrato :)');
+
     //TODO add promise
 });
 
-app.get('/menu', function (req, res) {
+app.get('/menu', (req, res) => {
     res.send(JSON.stringify(menu));
 });
 
-app.get('/getWeekOrders', function (req, res) {
-    res.sendFile(path.join(__dirname, './', 'pizzeList.txt'));
+app.get('/getWeekOrders', (req, res) => {
+    res.send(JSON.stringify(require('./db.json')));
 });
 
 // Helpers
-function addOrder(user, pizza) {
-    const order = createRow(user, pizza);
-    fs.appendFile(fileName, order, "utf8", function (err) {
-        if (err) {
-            console.log(err);
-        }
-    });
-}
+addOrder = (body) => {
+    body.data = new Date().toJSON();
 
-function createRow(user, pizza) {
-    return getColumnFromString("______") + getColumnFromString(user) + getColumnFromString(pizza) + '\r\n';
-}
+    const db = require('./db.json');
 
-function getColumnFromString(s) {
-    const column = "                    ";
-    return s + column.substring(1, column.length - s.length)
-}
+    const deathLine = (d => new Date(d.setDate(d.getDate() - 14)))(new Date).toJSON();
+
+    db.orders = db.orders.filter(o => o.data > deathLine);
+
+    db.orders.push(body);
+
+    fs.writeFile(filename, JSON.stringify(db));
+};
+
 
 // Server config
-app.listen(process.env.PORT || 8080, function () {
+app.listen(process.env.PORT || 8080, () => {
     //se il file non esiste lo crea
-    fs.exists(fileName, function (exists) {
+    fs.exists(filename, function (exists) {
         if (!exists) {
-            fs.appendFile(fileName, createRow("NOME", "PIZZA"), "utf8", function (err) {
+            fs.appendFile(filename, '{"orders": []}', "utf8", function (err) {
                 if (err) {
                     console.log(err);
                 }

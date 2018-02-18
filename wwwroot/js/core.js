@@ -36,7 +36,26 @@ initOrders = () => {
 
 initWeekOrders = () => {
     getWeekOrders().then(data => {
-        // data = JSON.parse(data);
+
+        const yesterday = (d => new Date(d.setDate(d.getDate() - 1)))(new Date).toJSON();
+
+        data = JSON.parse(data).orders
+            .filter(o => o.data > yesterday)
+            .reduce((acc, x) => {
+                if (acc.length === 0) {
+                    acc.push(x)
+                } else {
+                    if (!acc.map(element => element.user).includes(x.user)) {
+                        acc.push(x)
+                    } else {
+                        if (acc.filter((obj) => obj.user === x.user) < x.data) {
+                            acc.splice(array.indexOf(5), 1);
+                            acc.push(x);
+                        }
+                    }
+                }
+                return acc
+            }, []);
 
         populateList($("#week-orders"), data);
     });

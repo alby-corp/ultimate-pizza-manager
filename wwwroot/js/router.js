@@ -11,5 +11,5 @@ link = (page, container) => {
             break;
         default:
             getOrdersPage().then(data => populateContainer(data, container));
-    };
+    }
 };
