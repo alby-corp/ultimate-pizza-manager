@@ -37,10 +37,10 @@ initOrders = () => {
 initWeekOrders = () => {
     getWeekOrders().then(data => {
 
-        const yesterday = (d => new Date(d.setDate(d.getDate() - 1)))(new Date).toJSON();
+        // const yesterday = (d => new Date(d.setDate(d.getDate() - 1)))(new Date).toJSON();
 
         data = JSON.parse(data).orders
-            .filter(o => o.data > yesterday)
+            // .filter(o => o.data > yesterday)
             .reduce((acc, x) => {
                 if (acc.length === 0) {
                     acc.push(x)
@@ -48,8 +48,10 @@ initWeekOrders = () => {
                     if (!acc.map(element => element.user).includes(x.user)) {
                         acc.push(x)
                     } else {
-                        if (acc.filter((obj) => obj.user === x.user) < x.data) {
-                            acc.splice(array.indexOf(5), 1);
+                        const saved = acc.find((obj) => obj.user === x.user);
+                        if(saved.data < x.data) {
+                            const index = acc.indexOf(saved);
+                            acc.splice(index, 1);
                             acc.push(x);
                         }
                     }
