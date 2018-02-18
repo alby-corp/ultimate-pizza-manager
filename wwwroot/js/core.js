@@ -24,23 +24,20 @@ initOrders = () => {
     getMenu().then(data => {
         data = JSON.parse(data);
 
-        populateDropDown($("#pizza"), data.pizzas.sort(foodSorter).map(p => foodAndPrice(p)));
-        populateDropDown($("#food"), data.food.sort(foodSorter).map(f => foodAndPrice(f)));
-        populateDropDown($("#sandwiches"), data.sandwiches.sort(foodSorter).map(s => foodAndPrice(s)));
-        populateDropDown($("#desserts"), data.desserts.sort(foodSorter).map(d => foodAndPrice(d)));
+        populateDropDown($("#pizza"), data.pizzas.sort(foodSorter).map(p => new KeyValuePairModel(p.food, foodAndPrice(p))));
+        populateDropDown($("#food"), data.food.sort(foodSorter).map(f => new KeyValuePairModel(f.food, foodAndPrice(f))));
+        populateDropDown($("#sandwiches"), data.sandwiches.sort(foodSorter).map(s => new KeyValuePairModel(s.food, foodAndPrice(s))));
+        populateDropDown($("#desserts"), data.desserts.sort(foodSorter).map(d => new KeyValuePairModel(d.food, foodAndPrice(d))));
 
-        populateCheckBoxList($("#supplements"), data.supplements.map(s => foodAndPrice(s)));
-        populateCheckBoxList($("#dough"), data.dough.map(d => foodAndPrice(d)));
+        populateCheckBoxList($("#supplements"), data.supplements.map(s => new KeyValuePairModel(s.food, foodAndPrice(s))));
+        populateCheckBoxList($("#dough"), data.dough.map(d => new KeyValuePairModel(d.food, foodAndPrice(d))));
     });
 };
 
 initWeekOrders = () => {
     getWeekOrders().then(data => {
 
-        // const yesterday = (d => new Date(d.setDate(d.getDate() - 1)))(new Date).toJSON();
-
         data = JSON.parse(data).orders
-            // .filter(o => o.data > yesterday)
             .reduce((acc, x) => {
                 if (acc.length === 0) {
                     acc.push(x)
@@ -49,7 +46,7 @@ initWeekOrders = () => {
                         acc.push(x)
                     } else {
                         const saved = acc.find((obj) => obj.user === x.user);
-                        if(saved.data < x.data) {
+                        if (saved.data < x.data) {
                             const index = acc.indexOf(saved);
                             acc.splice(index, 1);
                             acc.push(x);
@@ -59,6 +56,7 @@ initWeekOrders = () => {
                 return acc
             }, []);
 
-        populateList($("#week-orders"), data.map(o => userAndFoods(o)));
+
+        populateList($("#week-orders"), data.map(o => new ListModel(userAndFoods(o))));
     });
 };

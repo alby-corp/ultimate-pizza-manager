@@ -2,19 +2,25 @@
 populateContainer = (data, container) => container.html(data);
 
 populateDropDown = (ddl, data) => {
-    ddl.append('<option>-</option>')
+
+    ValidateKeyValuePairModel(data);
+
+    ddl.append('<option>-</option>');
 
     for (let item of data) {
-        ddl.append(`<option value="${item}">${(item)}</option>`)
-    };
+        ddl.append(`<option value="${item.key}">${(item.value)}</option>`)
+    }
 };
 
 populateCheckBoxList = (cbl, data) => {
+
+    ValidateKeyValuePairModel(data);
+
     for (let item of data) {
 
-        let checkbox = `<div class="form-check"><input class="form-check-input" type="checkbox" name=${item} id=${item} value=${item}><label class="form-check-label" for=${item}>${item}</label></div>`;
+        let checkbox = `<div class="form-check"><input class="form-check-input" type="checkbox" name=${item.key} id=${item.key} value=${item.key}><label class="form-check-label" for=${item.key}>${item.value}</label></div>`;
         cbl.append(checkbox);
-    };
+    }
 };
 
 populateTable = (table, ...args) => {
@@ -23,8 +29,11 @@ populateTable = (table, ...args) => {
 };
 
 populateList = (list, data) => {
+
+    ValidateListModel(data);
+
     for (let item of data) {
-        list.append(`<li>${item}</li>`);
+        list.append(`<li>${item.value}</li>`);
     }
 };
 
@@ -40,6 +49,8 @@ foodAndPrice = x => `${x.price.toFixed(2)} &euro; - ${capitalizeFirstLetter(x.fo
 userAndFoods = x => `${x.user} - ${x.pizza}`;
 
 price = x => `${x.price.toFixed(2)} &euro;`;
+
+replaceWhiteSpaceWithUndescore = (object) => object.replace(/\s/g, "_");
 
 // Sorting
 foodSorter = (a, b) => {
