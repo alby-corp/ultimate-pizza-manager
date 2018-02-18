@@ -25,7 +25,7 @@ populateTable = (table, ...args) => {
 populateList = (list, data) => {
     for (let item of data) {
         list.append(`<li>${item}</li>`);
-    };
+    }
 };
 
 // Strings
@@ -36,6 +36,8 @@ capitalizeFirstLetter = str => {
 };
 
 foodAndPrice = x => `${x.price.toFixed(2)} &euro; - ${capitalizeFirstLetter(x.food)}`;
+
+userAndFoods = x => `${x.user} - ${x.pizza}`;
 
 price = x => `${x.price.toFixed(2)} &euro;`;
 

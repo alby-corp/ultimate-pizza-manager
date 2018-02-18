@@ -57,6 +57,6 @@ initWeekOrders = () => {
                 return acc
             }, []);
 
-        populateList($("#week-orders"), data);
+        populateList($("#week-orders"), data.map(o => userAndFoods(o)));
     });
 };
