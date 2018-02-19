@@ -21,9 +21,9 @@ initOrders = () => {
         populateDropDown($("#foods"), data.foods.sort(foodSorter).map(f => new KeyValuePairModel(f)));
         populateDropDown($("#sandwiches"), data.sandwiches.sort(foodSorter).map(s => new KeyValuePairModel(s)));
         populateDropDown($("#desserts"), data.desserts.sort(foodSorter).map(d => new KeyValuePairModel(d)));
+        populateDropDown($("#doughs"), data.doughs.map(d => new KeyValuePairModel(d)));
 
         // populateCheckBoxList($("#supplements"), data.supplements.map(s => new KeyValuePairModel(s.id, foodAndPrice(s))));
-        // populateCheckBoxList($("#dough"), data.dough.map(d => new KeyValuePairModel(d.id, foodAndPrice(d))));
     });
 };
 

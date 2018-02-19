@@ -44,7 +44,8 @@ app.get('/getWeekOrders', (req, res) => {
         pizza: menu.pizzas.find(p => p.id == order.pizza),
         food: menu.foods.find(p => p.id == order.food),
         sandwiche: menu.sandwiches.find(p => p.id == order.sandwiche),
-        dessert: menu.desserts.find(p => p.id == order.dessert)
+        dessert: menu.desserts.find(p => p.id == order.dessert),
+        dough: menu.doughs.find(d => d.id == order.dough)
     }));
 
     res.send(order);
