@@ -24,8 +24,11 @@ initOrders = () => {
         populateDropDown($("#doughs"), data.doughs.map(d => new KeyValuePairModel(d)));
         populateDropDown($("#supplements"), data.supplements.map(s => new KeyValuePairModel(s)));
 
-        conditionalDDL($("#pizzas"), $("#doughs"));
-        conditionalDDL($("#pizzas"), $("#supplements"));
+        optionalPopulateDropDown($("#removals"), $("#pizzas"));
+
+        enableConditionalDDL($("#pizzas"), $("#removals"));
+        enableConditionalDDL($("#pizzas"), $("#doughs"));
+        enableConditionalDDL($("#pizzas"), $("#supplements"));
     });
 };
 

@@ -34,8 +34,21 @@ app.get('/menu', (req, res) => {
     res.send(JSON.stringify(menu));
 });
 
+app.get('/getIngredients', (req, res) => {
+    const menu = require('./menu.json');
+    const pizza = menu.pizzas.find(p => p.id == req.query.id);
+
+    const ingredients = pizza.ingredients.reduce((acc, x) => {
+        const ingredient = menu.ingredients.find(p => p.id == x);
+        acc.push(ingredient);
+        return acc;
+    }, []);
+
+    res.send(ingredients);
+});
+
 app.get('/getWeekOrders', (req, res) => {
-    let db = require('./db.json');
+    const db = require('./db.json');
     const menu = require('./menu.json');
 
     const order = db.orders.map(order => ({
@@ -55,7 +68,7 @@ app.get('/getWeekOrders', (req, res) => {
 // Helpers
 addOrder = (body) => {
     body.data = new Date().toJSON();
-    body.supplements =body.supplements || [];
+    body.supplements = body.supplements || [];
 
 
     const db = require('./db.json');

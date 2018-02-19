@@ -1,11 +1,14 @@
-function FoodAndPrice(f, p) {
+function Food(f, p) {
     this.food = f;
     this.price = p;
 }
 
-FoodAndPrice.prototype = {
+Food.prototype = {
     toString: function () {
         return `${this.price.toFixed(2)} &euro; - ${capitalizeFirstLetter(this.food)}`;
+    },
+    getFood: function () {
+        return `${capitalizeFirstLetter(this.food)}`;
     }
 };
 
@@ -44,7 +47,7 @@ function TableModel(h, b) {
 
 function KeyValuePairModel(obj) {
     this.key = obj.id;
-    this.value = new FoodAndPrice(obj.food, obj.price);
+    this.value = new Food(obj.food, obj.price);
 }
 
 function ListModel(obj) {
