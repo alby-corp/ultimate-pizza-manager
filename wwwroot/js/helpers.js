@@ -19,8 +19,6 @@ populateList = (list, data) => {
 
 populateCheckBoxList = (cbl, data) => {
 
-    ValidateKeyValuePairModel(data);
-
     for (let item of data) {
 
         let checkbox = `<div class="form-check"><input class="form-check-input" type="checkbox" name=${item.key} id=${item.key} value=${item.key}><label class="form-check-label" for=${item.key}>${item.value}</label></div>`;
@@ -28,9 +26,15 @@ populateCheckBoxList = (cbl, data) => {
     }
 };
 
-populateTable = (table, ...args) => {
-    const transpose = (matrix) => Object.keys(matrix[0]).map(function (colIndex) { return matrix.map(function (column) { return column[colIndex]; }); });
-    table.append(`${transpose(args).map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}`)
+populateTable = (table, model) => {
+
+    const tds = model.header.map(h => `<td>${h}</td>`);
+    table.find("thead").append(`<tr>${tds.join('')}</tr>`);
+
+    for (let item of model.body) {
+        let tr = item.ingredients === undefined ? `<tr><td>${item.food}</td><td>${item.getPrice()}</td></tr>` : `<tr><td>${item.food}</td><td>${item.getPrice()}</td><td>${item.ingredients.join()}</td></tr>`;
+        table.find("tbody").append(tr);
+    }
 };
 
 // Strings
@@ -39,7 +43,6 @@ capitalizeFirstLetter = str => {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
 };
-
 
 
 // Sorting

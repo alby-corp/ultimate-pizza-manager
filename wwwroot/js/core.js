@@ -4,19 +4,12 @@ initMenu = () => {
     getMenu().then(data => {
         data = JSON.parse(data);
 
-        data.pizzas.sort(foodSorter);
-        // data.supplements.sort(foodSorter);
-        // data.dough.sort(foodSorter);
-        data.foods.sort(foodSorter);
-        data.sandwiches.sort(foodSorter);
-        data.desserts.sort(foodSorter);
-
-        populateTable($("#pizzas tbody"), data.pizzas.map(p => p.food), data.pizzas.map(p => price(p)));
-        // populateTable($("#supplements tbody"), data.supplements.map(s => s.food), data.supplements.map(s => price(s)));
-        // populateTable($("#dough tbody"), data.dough.map(d => d.food), data.dough.map(d => price(d)));
-        populateTable($("#food tbody"), data.food.map(f => f.food), data.food.map(f => price(f)));
-        populateTable($("#sandwiches tbody"), data.sandwiches.map(s => s.food), data.sandwiches.map(s => price(s)));
-        populateTable($("#desserts tbody"), data.desserts.map(d => d.food), data.desserts.map(d => price(d)));
+        populateTable($("#pizzas"), new TableModel(["Pizza", "Prezzo", "Ingredienti"], data.pizzas.sort(foodSorter)));
+        populateTable($("#supplements"), new TableModel(["Supplementi", "Prezzo"], data.supplements.sort(foodSorter)));
+        populateTable($("#doughs"), new TableModel(["Impasti", "Prezzo"], data.doughs.sort(foodSorter)));
+        populateTable($("#foods"), new TableModel(["Pietanze", "Prezzo", "Ingredienti"], data.foods.sort(foodSorter)));
+        populateTable($("#sandwiches"), new TableModel(["Panini", "Prezzo", "Ingredienti"], data.sandwiches.sort(foodSorter)));
+        populateTable($("#desserts"), new TableModel(["Dolci", "Prezzo", "Ingredienti"], data.desserts.sort(foodSorter)));
     });
 };
 
@@ -38,22 +31,22 @@ initWeekOrders = () => {
     getWeekOrders().then(data => {
 
         data = data.reduce((acc, x) => {
-                if (acc.length === 0) {
+            if (acc.length === 0) {
+                acc.push(x)
+            } else {
+                if (!acc.map(element => element.user).includes(x.user)) {
                     acc.push(x)
                 } else {
-                    if (!acc.map(element => element.user).includes(x.user)) {
-                        acc.push(x)
-                    } else {
-                        const saved = acc.find((obj) => obj.user === x.user);
-                        if (saved.data < x.data) {
-                            const index = acc.indexOf(saved);
-                            acc.splice(index, 1);
-                            acc.push(x);
-                        }
+                    const saved = acc.find((obj) => obj.user === x.user);
+                    if (saved.data < x.data) {
+                        const index = acc.indexOf(saved);
+                        acc.splice(index, 1);
+                        acc.push(x);
                     }
                 }
-                return acc
-            }, []);
+            }
+            return acc
+        }, []);
 
 
         populateList($("#week-orders"), data.map(o => new ListModel(o)));

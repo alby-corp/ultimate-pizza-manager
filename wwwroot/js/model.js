@@ -11,10 +11,10 @@ FoodAndPrice.prototype = {
 
 function Order(u, p, f, s, d) {
     this.user = u;
-    this.pizza = p === undefined ? {food : "", price : 0} : p;
-    this.food = f === undefined ? {food : "", price : 0} : f;
-    this.sandwiche = s === undefined ? {food : "", price : 0} : s;
-    this.dessert = d === undefined ? {food : "", price : 0} : d;
+    this.pizza = p === undefined ? {food: "", price: 0} : p;
+    this.food = f === undefined ? {food: "", price: 0} : f;
+    this.sandwiche = s === undefined ? {food: "", price: 0} : s;
+    this.dessert = d === undefined ? {food: "", price: 0} : d;
 }
 
 Order.prototype = {
@@ -22,6 +22,23 @@ Order.prototype = {
         return `${this.user} - ${this.pizza.food} - ${this.food.food} - ${this.sandwiche.food} - ${this.dessert.food} - Totale: ${this.pizza.price + this.food.price + this.sandwiche.price + this.dessert.price} &euro;`;
     }
 };
+
+function Menu(obj) {
+    this.food = obj.food;
+    this.price = obj.price;
+    this.ingredients = obj.ingredients;
+}
+
+Menu.prototype = {
+    getPrice: function () {
+        return `${this.price.toFixed(2)} &euro;`;
+    }
+};
+
+function TableModel(h, b) {
+    this.header = h;
+    this.body = b.map(m => new Menu(m));
+}
 
 function KeyValuePairModel(obj) {
     this.key = obj.id;

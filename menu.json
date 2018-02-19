@@ -3,307 +3,612 @@
     {
       "food": "Marinara",
       "price": 3.5,
-      "id": 0
+      "id": 0,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Margherita",
       "price": 4,
-      "id": 1
+      "id": 1,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Prosciutto",
       "price": 5,
-      "id": 2
+      "id": 2,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Funghi",
       "price": 5,
-      "id": 3
+      "id": 3,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Diavola",
       "price": 5,
-      "id": 4
+      "id": 4,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Melanzane",
       "price": 5,
-      "id": 5
+      "id": 5,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Romana",
       "price": 5.5,
-      "id": 6
+      "id": 6,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Peperoni",
       "price": 5.5,
-      "id": 7
+      "id": 7,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Viennese",
       "price": 5.5,
-      "id": 8
+      "id": 8,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Rucola",
       "price": 5.5,
-      "id": 9
+      "id": 9,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Capricciosa",
       "price": 6,
-      "id": 10
+      "id": 10,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "4 Stagioni",
       "price": 6,
-      "id": 11
+      "id": 11,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "4 Formaggi",
       "price": 6,
-      "id": 12
+      "id": 12,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Calzone",
       "price": 6,
-      "id": 13
+      "id": 13,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Calzone Farcito",
       "price": 7,
-      "id": 14
+      "id": 14,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Tonno",
       "price": 6,
-      "id": 15
+      "id": 15,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Caprese",
       "price": 6,
-      "id": 16
+      "id": 16,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Bufala",
       "price": 6,
-      "id": 17
+      "id": 17,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Verdure",
       "price": 6.5,
-      "id": 18
+      "id": 18,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Fresca",
       "price": 6.5,
-      "id": 19
+      "id": 19,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Mascarzone",
       "price": 6.5,
-      "id": 20
+      "id": 20,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Calzone Fritto",
       "price": 6,
-      "id": 21
+      "id": 21,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Carbonara",
       "price": 7,
-      "id": 22
+      "id": 22,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Los Angeles",
       "price": 7.5,
-      "id": 23
+      "id": 23,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Super-Crock",
       "price": 7.5,
-      "id": 24
+      "id": 24,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Calzone Saporito",
       "price": 7.5,
-      "id": 25
+      "id": 25,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Esplosiva",
       "price": 7.5,
-      "id": 26
+      "id": 26,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Meditteranea",
       "price": 7.5,
-      "id": 27
+      "id": 27,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Tris di Funghi",
       "price": 8,
-      "id": 28
+      "id": 28,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Salmone",
       "price": 8,
-      "id": 29
+      "id": 29,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Tartufata",
       "price": 8,
-      "id": 30
+      "id": 30,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Boschetto",
       "price": 8.5,
-      "id": 31
+      "id": 31,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Saporita",
       "price": 8.5,
-      "id": 32
+      "id": 32,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Super-Tartufata",
       "price": 8.5,
-      "id": 33
+      "id": 33,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Primavera",
       "price": 8.5,
-      "id": 34
+      "id": 34,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Boys",
       "price": 6,
-      "id": 35
+      "id": 35,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Provolina",
       "price": 7,
-      "id": 36
+      "id": 36,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Montanara",
       "price": 7,
-      "id": 37
+      "id": 37,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Trevigiana",
       "price": 7,
-      "id": 38
+      "id": 38,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Tirolese",
       "price": 8.5,
-      "id": 39
+      "id": 39,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Fantastica",
       "price": 7.5,
-      "id": 40
+      "id": 40,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Siciliana",
       "price": 7,
-      "id": 41
+      "id": 41,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Sfiziosa",
       "price": 7,
-      "id": 42
+      "id": 42,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Bomba",
       "price": 7,
-      "id": 43
+      "id": 43,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Rustica",
       "price": 7.5,
-      "id": 44
+      "id": 44,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Delizia",
       "price": 7.5,
-      "id": 45
+      "id": 45,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Delicata",
       "price": 7.5,
-      "id": 46
+      "id": 46,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "New York",
       "price": 7.5,
-      "id": 47
+      "id": 47,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Piccantina",
       "price": 7.5,
-      "id": 48
+      "id": 48,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Curry",
       "price": 7.5,
-      "id": 49
+      "id": 49,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Bresaola",
       "price": 7.5,
-      "id": 50
+      "id": 50,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Fattoria",
       "price": 8,
-      "id": 51
+      "id": 51,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Simpson",
       "price": 8,
-      "id": 52
+      "id": 52,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Inverno",
       "price": 8,
-      "id": 53
+      "id": 53,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Imperiale",
       "price": 8.5,
-      "id": 54
+      "id": 54,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Friulana",
       "price": 8.5,
-      "id": 55
+      "id": 55,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Estate",
       "price": 8.5,
-      "id": 56
+      "id": 56,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Vanessa",
       "price": 8.5,
-      "id": 57
+      "id": 57,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Boris",
       "price": 9.5,
-      "id": 58
+      "id": 58,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Artisti",
       "price": 9.5,
-      "id": 59
+      "id": 59,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Salumi",
       "price": 10,
-      "id": 60
+      "id": 60,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     }
   ],
   "supplements": [
@@ -543,7 +848,7 @@
       "id": 46
     }
   ],
-  "dough": [
+  "doughs": [
     {
       "food": "alle Olive",
       "price": 1,
@@ -554,161 +859,316 @@
     {
       "food": "Pollo al Forno e Patate",
       "price": 8,
-      "id": 0
+      "id": 0,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Pollo Disossato e Patate",
       "price": 7.5,
-      "id": 1
+      "id": 1,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Petto di Pollo e Patate",
       "price": 7.5,
-      "id": 2
+      "id": 2,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Tagliata di Pollo",
       "price": 8,
-      "id": 3
+      "id": 3,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Milanese e Patatine Fritte",
       "price": 7.5,
-      "id": 4
+      "id": 4,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Scaloppine (al vino, al limone, ai funghi)",
       "price": 7,
-      "id": 5
+      "id": 5,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Ljubljancka",
       "price": 9,
-      "id": 6
+      "id": 6,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Lonza al Senape e Patate",
       "price": 8,
-      "id": 7
+      "id": 7,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Grigliata Mista",
       "price": 13,
-      "id": 8
+      "id": 8,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Calamari Fritti e Patatine",
       "price": 9,
-      "id": 9
+      "id": 9,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Insalata",
       "price": 3,
-      "id": 10
+      "id": 10,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Insalata Mista",
       "price": 4,
-      "id": 11
+      "id": 11,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Insalatona",
       "price": 7.5,
-      "id": 12
+      "id": 12,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Patatine Fritte",
       "price": 3,
-      "id": 13
+      "id": 13,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Crocchette di Patate",
       "price": 3.5,
-      "id": 14
+      "id": 14,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Verdure alla Piastra",
       "price": 3.5,
-      "id": 15
+      "id": 15,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     }
   ],
   "sandwiches": [
     {
       "food": "Sfizioso",
       "price": 6,
-      "id": 0
+      "id": 0,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Classic Burgher",
       "price": 6.5,
-      "id": 1
+      "id": 1,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Hot Dog",
       "price": 6,
-      "id": 2
+      "id": 2,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Classico",
       "price": 6,
-      "id": 3
+      "id": 3,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Boss",
       "price": 7,
-      "id": 4
+      "id": 4,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Super",
       "price": 7,
-      "id": 5
+      "id": 5,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Estate",
       "price": 7,
-      "id": 6
+      "id": 6,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Vegetariano",
       "price": 6.5,
-      "id": 7
+      "id": 7,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Rio Mare",
       "price": 6,
-      "id": 8
+      "id": 8,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     }
   ],
   "desserts": [
     {
       "food": "Tiramisu",
       "price": 3.5,
-      "id": 0
+      "id": 0,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Crepes Nutella / Marmellata",
       "price": 3.5,
-      "id": 1
+      "id": 1,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Cornetto alla Nutella",
       "price": 3.5,
-      "id": 2
+      "id": 2,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Tortino al Cioccolato",
       "price": 2.5,
-      "id": 3
+      "id": 3,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Pizza Nutella",
       "price": 5,
-      "id": 4
+      "id": 4,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     },
     {
       "food": "Tartufo Bianco / Nero",
       "price": 2.5,
-      "id": 5
+      "id": 5,
+      "ingredients": [
+        "Mozzarella",
+        "Pomodoro",
+        "Basilico"
+      ]
     }
   ]
 }
