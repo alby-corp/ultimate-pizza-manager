@@ -45,7 +45,8 @@ app.get('/getWeekOrders', (req, res) => {
         food: menu.foods.find(p => p.id == order.food),
         sandwiche: menu.sandwiches.find(p => p.id == order.sandwiche),
         dessert: menu.desserts.find(p => p.id == order.dessert),
-        dough: menu.doughs.find(d => d.id == order.dough)
+        dough: menu.doughs.find(d => d.id == order.dough),
+        supplements: menu.supplements.filter(m => order.supplements.includes(m.id.toString()))
     }));
 
     res.send(order);
@@ -54,6 +55,8 @@ app.get('/getWeekOrders', (req, res) => {
 // Helpers
 addOrder = (body) => {
     body.data = new Date().toJSON();
+    body.supplements =body.supplements || [];
+
 
     const db = require('./db.json');
 

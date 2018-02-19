@@ -17,6 +17,10 @@ populateList = (list, data) => {
     }
 };
 
+conditionalDDL= (ddl1, ddl2) => {
+    ddl1.change(() => ddl2.prop("disabled", ddl1.val() == '-'));
+}
+
 populateCheckBoxList = (cbl, data) => {
 
     for (let item of data) {
