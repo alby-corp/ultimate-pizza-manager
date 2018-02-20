@@ -12,21 +12,26 @@ Food.prototype = {
     }
 };
 
-function Order(u, p, f, s, d, i, su) {
-    this.user = u;
-    this.pizza = p === undefined ? {food: "", price: 0} : p;
-    this.food = f === undefined ? {food: "", price: 0} : f;
-    this.sandwiche = s === undefined ? {food: "", price: 0} : s;
-    this.dessert = d === undefined ? {food: "", price: 0} : d;
-    this.dough = i === undefined ? {food: "", price: 0} : i;
-    this.supplements = su === undefined ? [] : su;
+function Order(user, pizza, food, sandwiche, dessert, dough, supplements, total) {
+
+    this.blank = {food: "", price: 0};
+    this.user = user;
+    this.pizza = pizza === undefined ? this.blank : pizza;
+    this.food = food === undefined ? this.blank : food;
+    this.sandwiche = sandwiche === undefined ? this.blank : sandwiche;
+    this.dessert = dessert === undefined ? this.blank : dessert;
+    this.dough = dough === undefined ? this.blank : dough;
+    this.supplements = supplements === undefined ? [] : supplements;
+    this.total = total;
+
 }
 
 Order.prototype = {
     toString: function () {
-        return `${this.user} - ${this.pizza.food} - ${this.food.food} - ${this.sandwiche.food} - ${this.dessert.food} - ${this.dough.food}, ${this.supplements.map(s => s.food).join()} - Totale: ${this.pizza.price + this.food.price + this.sandwiche.price + this.dessert.price + this.dough.price + this.supplements.map(s => s.price).reduce((a, b) => a + b, 0)} &euro;`;
+        return `${this.user} - ${this.pizza.food} - ${this.food.food} - ${this.sandwiche.food} - ${this.dessert.food} - ${this.dough.food}, ${this.supplements.map(s => s.food).join()} - Totale: ${this.total} &euro;`;
     }
 };
+
 
 function Menu(obj) {
     this.food = obj.food;
@@ -51,7 +56,7 @@ function KeyValuePairModel(obj) {
 }
 
 function ListModel(obj) {
-    this.value = new Order(obj.user, obj.pizza, obj.food, obj.sandwiche, obj.dessert, obj.dough, obj.supplements);
+    this.value = new Order(obj.user, obj.pizza, obj.food, obj.sandwiche, obj.dessert, obj.dough, obj.supplements, obj.total);
 }
 
 

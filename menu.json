@@ -1204,19 +1204,23 @@
   "ingredients": [
     {
       "id": 0,
-      "food": "Mozzarella"
+      "food": "Mozzarella",
+      "price": 0
     },
     {
       "id": 1,
-      "food": "Pomodoro"
+      "food": "Pomodoro",
+      "price": 0
     },
     {
       "id": 2,
-      "food": "Basilico"
+      "food": "Basilico",
+      "price": 0
     },
     {
       "id": 3,
-      "food": "Salamino"
+      "food": "Salamino",
+      "price": 0
     }
   ]
 }

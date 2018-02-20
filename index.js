@@ -47,18 +47,22 @@ app.get('/getWeekOrders', (req, res) => {
     const db = require('./db.json');
     const menu = require('./menu.json');
 
-    const order = db.orders.map(order => ({
+    const blank = {food: "", price: 0};
+
+    let orders = db.orders.map(order => ({
         user: order.user,
         data: order.data,
-        pizza: menu.pizzas.find(p => p.id == order.pizza),
-        food: menu.foods.find(p => p.id == order.food),
-        sandwiche: menu.sandwiches.find(p => p.id == order.sandwiche),
-        dessert: menu.desserts.find(p => p.id == order.dessert),
-        dough: menu.doughs.find(d => d.id == order.dough),
-        supplements: menu.supplements.filter(m => order.supplements.includes(m.id.toString()))
+        pizza: menu.pizzas.find(p => p.id == order.pizza) === undefined ? blank : menu.pizzas.find(p => p.id == order.pizza),
+        food: menu.foods.find(p => p.id == order.food) === undefined ? blank  : menu.foods.find(p => p.id == order.food),
+        sandwiche: menu.sandwiches.find(p => p.id == order.sandwiche) === undefined ? blank :  menu.sandwiches.find(p => p.id == order.sandwiche),
+        dessert: menu.desserts.find(p => p.id == order.dessert) === undefined ? blank : menu.desserts.find(p => p.id == order.dessert),
+        dough: menu.doughs.find(d => d.id == order.dough) === undefined ? blank : menu.doughs.find(d => d.id == order.dough),
+        supplements: menu.supplements.filter(m => order.supplements.includes(m.id.toString())) === undefined ? blank : menu.supplements.filter(m => order.supplements.includes(m.id.toString()))
     }));
 
-    res.send(order);
+    orders.map(order => order.total = order.pizza.price + order.food.price + order.sandwiche.price + order.dessert.price + order.dessert.price + order.dough.price +  order.supplements.reduce((acc, x) => acc + x.price, 0));
+    
+    res.send(orders);
 });
 
 // Helpers
