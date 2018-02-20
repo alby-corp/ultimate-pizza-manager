@@ -17,12 +17,12 @@ initOrders = () => {
     getMenu().then(data => {
         data = JSON.parse(data);
 
-        populateDropDown($("#pizzas"), data.pizzas.sort(foodSorter).map(p => new KeyValuePairModel(p)));
-        populateDropDown($("#foods"), data.foods.sort(foodSorter).map(f => new KeyValuePairModel(f)));
-        populateDropDown($("#sandwiches"), data.sandwiches.sort(foodSorter).map(s => new KeyValuePairModel(s)));
-        populateDropDown($("#desserts"), data.desserts.sort(foodSorter).map(d => new KeyValuePairModel(d)));
-        populateDropDown($("#doughs"), data.doughs.map(d => new KeyValuePairModel(d)));
-        populateDropDown($("#supplements"), data.supplements.map(s => new KeyValuePairModel(s)));
+        populateDropDown($("#pizzas"), data.pizzas.sort(foodSorter).map(p => new KeyValuePairModel(p)),Food.prototype.toString);
+        populateDropDown($("#foods"), data.foods.sort(foodSorter).map(f => new KeyValuePairModel(f)), Food.prototype.toString);
+        populateDropDown($("#sandwiches"), data.sandwiches.sort(foodSorter).map(s => new KeyValuePairModel(s)), Food.prototype.toString);
+        populateDropDown($("#desserts"), data.desserts.sort(foodSorter).map(d => new KeyValuePairModel(d)), Food.prototype.toString);
+        populateDropDown($("#doughs"), data.doughs.map(d => new KeyValuePairModel(d)), Food.prototype.toString);
+        populateDropDown($("#supplements"), data.supplements.map(s => new KeyValuePairModel(s)), Food.prototype.toString);
 
         optionalPopulateDropDown($("#removals"), $("#pizzas"));
 

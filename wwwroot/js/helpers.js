@@ -1,19 +1,19 @@
 // Pupulate Elements
 populateContainer = (data, container) => container.html(data);
 
-populateDropDown = (ddl, data) => {
+populateDropDown = (ddl, data, func) => {
 
     ddl.append('<option>-</option>');
 
     for (let item of data) {
-        ddl.append(`<option value="${item.key}">${(item.value.toString())}</option>`)
+        ddl.append(`<option value="${item.key}">${(func.call(item.value))}</option>`)
     }
 };
 
 optionalPopulateDropDown = (conditionalDDL, mainDDL) => {
     mainDDL.change(() => {
         getIngredients(mainDDL.val()).then(is => {
-            populateDropDown(conditionalDDL, is.map(i => new KeyValuePairModel(i)));
+            populateDropDown(conditionalDDL, is.map(i => new KeyValuePairModel(i)), Food.prototype.getFood);
         });
     });
 };
@@ -25,8 +25,8 @@ populateList = (list, data) => {
     }
 };
 
-enableConditionalDDL = (ddl1, ddl2) => {
-    ddl1.change(() => ddl2.prop("disabled", ddl1.val() == '-'));
+enableConditionalDDL = (mainDDL, conditionalDDL) => {
+    mainDDL.change(() => conditionalDDL.prop("disabled", mainDDL.val() == '-'));
 };
 
 populateCheckBoxList = (cbl, data) => {

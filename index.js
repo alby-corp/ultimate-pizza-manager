@@ -38,11 +38,7 @@ app.get('/getIngredients', (req, res) => {
     const menu = require('./menu.json');
     const pizza = menu.pizzas.find(p => p.id == req.query.id);
 
-    const ingredients = pizza.ingredients.reduce((acc, x) => {
-        const ingredient = menu.ingredients.find(p => p.id == x);
-        acc.push(ingredient);
-        return acc;
-    }, []);
+    const ingredients = pizza.ingredients.map(i => menu.ingredients.find(is => is.id == i));
 
     res.send(ingredients);
 });
