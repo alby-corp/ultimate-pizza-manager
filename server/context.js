@@ -17,12 +17,11 @@ const Context = function () {
 
         const client = this.clientFactory();
 
-        await client.connect(err => {
-            if (err) throw err;
-        });
-
         try {
+
+            await client.connect();
             return await client.query(query);
+
         } catch (err) {
             console.log(err);
         }

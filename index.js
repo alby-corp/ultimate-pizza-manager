@@ -5,7 +5,7 @@ const filename = "./db.json";
 // const menu = require('./infrastructure/_menu.json');
 const app = express();
 const bodyParser = require('body-parser');
-const validator  = require('express-validator');
+const validator = require('express-validator');
 const db = require('./server/data-layer');
 
 
@@ -16,7 +16,7 @@ app.use(express.static('resources'));
 app.use(bodyParser.urlencoded());
 
 app.use(validator());
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     for (let item in req.body) {
         req.sanitize(item).escape();
     }
@@ -42,10 +42,9 @@ app.post('/insert', (req, res) => {
     //TODO add promise
 });
 
-app.get('/menu', (req, res) => {
-    db.context.getUsers().then(p => console.log(p.rows));
+app.get('/menu', async (req, res) => {
 
-    res.send('Yes Man!!!!!!!!')
+    res.send((await db.context.getFoods()).rows);
 });
 
 app.get('/getIngredients', (req, res) => {
@@ -67,15 +66,15 @@ app.get('/getWeekOrders', (req, res) => {
         user: order.user,
         data: order.data,
         pizza: menu.pizzas.find(p => p.id == order.pizza) === undefined ? blank : menu.pizzas.find(p => p.id == order.pizza),
-        food: menu.foods.find(p => p.id == order.food) === undefined ? blank  : menu.foods.find(p => p.id == order.food),
-        sandwiche: menu.sandwiches.find(p => p.id == order.sandwiche) === undefined ? blank :  menu.sandwiches.find(p => p.id == order.sandwiche),
+        food: menu.foods.find(p => p.id == order.food) === undefined ? blank : menu.foods.find(p => p.id == order.food),
+        sandwiche: menu.sandwiches.find(p => p.id == order.sandwiche) === undefined ? blank : menu.sandwiches.find(p => p.id == order.sandwiche),
         dessert: menu.desserts.find(p => p.id == order.dessert) === undefined ? blank : menu.desserts.find(p => p.id == order.dessert),
         dough: menu.doughs.find(d => d.id == order.dough) === undefined ? blank : menu.doughs.find(d => d.id == order.dough),
         supplements: menu.supplements.filter(m => order.supplements.includes(m.id.toString())) === undefined ? blank : menu.supplements.filter(m => order.supplements.includes(m.id.toString()))
     }));
 
-    orders.map(order => order.total = order.pizza.price + order.food.price + order.sandwiche.price + order.dessert.price + order.dessert.price + order.dough.price +  order.supplements.reduce((acc, x) => acc + x.price, 0));
-    
+    orders.map(order => order.total = order.pizza.price + order.food.price + order.sandwiche.price + order.dessert.price + order.dessert.price + order.dough.price + order.supplements.reduce((acc, x) => acc + x.price, 0));
+
     res.send(orders);
 });
 
