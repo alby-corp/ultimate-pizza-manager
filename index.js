@@ -2,10 +2,12 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const filename = "./db.json";
-const menu = require('./menu.json');
+// const menu = require('./infrastructure/_menu.json');
 const app = express();
 const bodyParser = require('body-parser');
 const validator  = require('express-validator');
+const db = require('./server/data-layer');
+
 
 // Static files
 app.use('/public', express.static('wwwroot'));
@@ -41,7 +43,9 @@ app.post('/insert', (req, res) => {
 });
 
 app.get('/menu', (req, res) => {
-    res.send(JSON.stringify(menu));
+    db.context.getUsers().then(p => console.log(p.rows));
+
+    res.send('Yes Man!!!!!!!!')
 });
 
 app.get('/getIngredients', (req, res) => {

@@ -1,12 +1,12 @@
 // Pupulate Elements
 populateContainer = (data, container) => container.html(data);
 
-populateDropDown = (ddl, data, func) => {
+populateDropDown = (ddl, keyValuePair, func) => {
 
-    ddl.append('<option>-</option>');
+    ddl.append('<option selected value><span> -- selezionare un opzione -- </span></option>');
 
-    for (let item of data) {
-        ddl.append(`<option value="${item.key}">${(func.call(item.value))}</option>`)
+    for (let keyValue of keyValuePair) {
+        ddl.append(`<option value="${keyValue.key}">${(func.call(keyValue))}</option>`)
     }
 };
 
@@ -58,8 +58,8 @@ capitalizeFirstLetter = str => {
 
 
 // Sorting
-foodSorter = (a, b) => {
-    if (a.food < b.food) return -1;
-    if (a.food > b.food) return 1;
+foodSorter = (firstFood, secondFood) => {
+    if (firstFood.name < secondFood.name) return -1;
+    if (firstFood.name > secondFood.name) return 1;
     return 0;
 };

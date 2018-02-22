@@ -4,12 +4,12 @@ initMenu = () => {
     getMenu().then(data => {
         data = JSON.parse(data);
 
-        populateTable($("#pizzas"), new TableModel(["Pizza", "Prezzo", "Ingredienti"], data.pizzas.sort(foodSorter)));
-        populateTable($("#supplements"), new TableModel(["Supplementi", "Prezzo"], data.supplements.sort(foodSorter)));
-        populateTable($("#doughs"), new TableModel(["Impasti", "Prezzo"], data.doughs.sort(foodSorter)));
-        populateTable($("#foods"), new TableModel(["Pietanze", "Prezzo", "Ingredienti"], data.foods.sort(foodSorter)));
-        populateTable($("#sandwiches"), new TableModel(["Panini", "Prezzo", "Ingredienti"], data.sandwiches.sort(foodSorter)));
-        populateTable($("#desserts"), new TableModel(["Dolci", "Prezzo", "Ingredienti"], data.desserts.sort(foodSorter)));
+        populateTable($('#pizzas'), new TableModel(['Pizza', 'Prezzo', 'Ingredienti'], data.pizzas.sort(foodSorter)));
+        populateTable($('#supplements'), new TableModel(['Supplementi', 'Prezzo'], data.supplements.sort(foodSorter)));
+        populateTable($('#doughs'), new TableModel(['Impasti', 'Prezzo'], data.doughs.sort(foodSorter)));
+        populateTable($('#foods'), new TableModel(['Pietanze', 'Prezzo', 'Ingredienti'], data.foods.sort(foodSorter)));
+        populateTable($('#sandwiches'), new TableModel(['Panini', 'Prezzo', 'Ingredienti'], data.sandwiches.sort(foodSorter)));
+        populateTable($('#desserts'), new TableModel(['Dolci', 'Prezzo', 'Ingredienti'], data.desserts.sort(foodSorter)));
     });
 };
 
@@ -17,18 +17,25 @@ initOrders = () => {
     getMenu().then(data => {
         data = JSON.parse(data);
 
-        populateDropDown($("#pizzas"), data.pizzas.sort(foodSorter).map(p => new KeyValuePairModel(p)),Food.prototype.toString);
-        populateDropDown($("#foods"), data.foods.sort(foodSorter).map(f => new KeyValuePairModel(f)), Food.prototype.toString);
-        populateDropDown($("#sandwiches"), data.sandwiches.sort(foodSorter).map(s => new KeyValuePairModel(s)), Food.prototype.toString);
-        populateDropDown($("#desserts"), data.desserts.sort(foodSorter).map(d => new KeyValuePairModel(d)), Food.prototype.toString);
-        populateDropDown($("#doughs"), data.doughs.map(d => new KeyValuePairModel(d)), Food.prototype.toString);
-        populateDropDown($("#supplements"), data.supplements.map(s => new KeyValuePairModel(s)), Food.prototype.toString);
+        const pizzasDDL = $('#pizzas');
+        const kitchenDDL = $('#kitchen');
+        const sandwichesDDL = $('#sandwiches');
+        const dessertsDDL = $('#desserts');
+        const doughsDDL = $('#doughs');
+        const supplementsDDL = $('#supplements');
+        const removalsDDL = $('#removals');
 
-        optionalPopulateDropDown($("#removals"), $("#pizzas"));
+        populateDropDown(pizzasDDL, data.foods.filter(data => data.type === 0).sort(foodSorter).map(p => new KeyValuePairModel(new Food(p.id, p.name, p.price, p.ingredients, p.type))), KeyValuePairModel.prototype.toPriceNameString);
+        populateDropDown(doughsDDL, data.foods.filter(data => data.type === 1).sort(foodSorter).map(p => new KeyValuePairModel(new Food(p.id, p.name, p.price, p.ingredients, p.type))), KeyValuePairModel.prototype.toPriceNameString);
+        populateDropDown(kitchenDDL, data.foods.filter(data => data.type === 2).sort(foodSorter).map(p => new KeyValuePairModel(new Food(p.id, p.name, p.price, p.ingredients, p.type))), KeyValuePairModel.prototype.toPriceNameString);
+        populateDropDown(sandwichesDDL, data.foods.filter(data => data.type === 3).sort(foodSorter).map(p => new KeyValuePairModel(new Food(p.id, p.name, p.price, p.ingredients, p.type))), KeyValuePairModel.prototype.toPriceNameString);
+        populateDropDown(dessertsDDL, data.foods.filter(data => data.type === 4).sort(foodSorter).map(p => new KeyValuePairModel(new Food(p.id, p.name, p.price, p.ingredients, p.type))), KeyValuePairModel.prototype.toPriceNameString);
+        populateDropDown(supplementsDDL, data.ingredients.filter(data => data.isSupplement === true).sort(foodSorter).map(p => new KeyValuePairModel(new Ingredient(p.id, p.name, p.price, p.isSupplement))), KeyValuePairModel.prototype.toPriceNameString);
+        // optionalPopulateDropDown(removalsDDL, pizzasDDL);
 
-        enableConditionalDDL($("#pizzas"), $("#removals"));
-        enableConditionalDDL($("#pizzas"), $("#doughs"));
-        enableConditionalDDL($("#pizzas"), $("#supplements"));
+        // enableConditionalDDL(pizzasDDL, removalsDDL);
+        enableConditionalDDL(pizzasDDL, doughsDDL);
+        // enableConditionalDDL(pizzasDDL, supplementsDDL);
     });
 };
 
@@ -54,6 +61,6 @@ initWeekOrders = () => {
         }, []);
 
 
-        populateList($("#week-orders"), data.map(o => new ListModel(o)));
+        populateList($('#week-orders'), data.map(o => new ListModel(o)));
     });
 };
