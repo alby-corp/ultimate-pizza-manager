@@ -1,19 +1,24 @@
 CREATE TABLE ingredient (
     id 			SERIAL PRIMARY KEY,
     name       	text NOT NULL,
-    price       money NOT NULL DEFAULT 0
+    price       money
 );
 
-CREATE TABLE typology(
+CREATE TABLE type(
 	id 			SERIAL PRIMARY KEY,
 	description text	NOT NULL
 );
 
+CREATE TABLE dough(
+    id 			SERIAL PRIMARY KEY,
+    description text
+);
+
 CREATE TABLE food (
-	id 			SERIAL PRIMARY KEY,
+	  id 			SERIAL PRIMARY KEY,
     name       	text 	NOT NULL,
     price       money 	NOT NULL DEFAULT 0,
-    typology    integer	NOT NULL REFERENCES typology (id)
+    type    integer	NOT NULL REFERENCES type (id)
 );
 
 CREATE TABLE food_ingredient (
@@ -27,24 +32,22 @@ CREATE TABLE muppet (
 	password	text
 );
 
-CREATE TABLE delivery (
+CREATE TABLE "order" (
     id 			SERIAL PRIMARY KEY,
     muppet     	integer NOT NULL REFERENCES muppet (id),
-	data		time
+	  data		    timestamp
 );
 
-CREATE TABLE food_delivery (
+CREATE TABLE food_order (
 	id			SERIAL PRIMARY KEY,
 	food 		integer REFERENCES food (id),
-	delivery 	integer REFERENCES delivery (id)
+	"order" 	integer REFERENCES "order" (id)
 );
 
-CREATE TABLE food_delivery_ingredient(
+CREATE TABLE food_order_ingredient(
 	id 				SERIAL PRIMARY KEY,
-	food_delivery	integer NOT NULL REFERENCES food_delivery (id),
+	food_order	integer NOT NULL REFERENCES food_order (id),
 	ingredient 		integer NOT NULL REFERENCES ingredient (id),
 	isRemoval		boolean NOT NULL
 );
-
-
 
