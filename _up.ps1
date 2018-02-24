@@ -1,5 +1,5 @@
-# Root
+# root
 
 Push-Location .\infrastructure
-	.\up.ps1;
+    .\_up.ps1;
 Pop-Location

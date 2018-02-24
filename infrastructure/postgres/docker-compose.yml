@@ -2,11 +2,11 @@ version: '3'
 
 services:
     ultimate-pizza-manager:
-        image: postgres:${POSTGRES_VERSION}
+        image: postgres:10.2
         environment:
             - POSTGRES_USER=teamYOOX
             - POSTGRES_PASSWORD=we<3YOOX
-            - POSTGRES_DB=postgres
+            - POSTGRES_DB=ultimatepizzamanager
         ports:
             - 5432:5432
         volumes:
