@@ -1,48 +1,79 @@
-// function Food(f, p) {
-//     this.food = f;
-//     this.price = p;
-// }
-//
-// Food.prototype = {
-//     toString: function () {
-//         return `${this.price.toFixed(2)} &euro; - ${capitalizeFirstLetter(this.food)}`;
-//     },
-//     getFood: function () {
-//         return `${capitalizeFirstLetter(this.food)}`;
-//     }
-// };
-//
-// function Menu(obj) {
-//     this.food = obj.food;
-//     this.price = obj.price;
-//     this.ingredients = obj.ingredients;
-// }
-// Menu.prototype = {
-//     getPrice: function () {
-//         return `${this.price.toFixed(2)} &euro;`;
-//     }
-// };
+// Documentation:
+// 1) https://stackoverflow.com/questions/22156326/private-properties-in-javascript-es6-classes;
+// 2) https://coryrylan.com/blog/javascript-es6-class-syntax;
 
-function TableModel(h, b) {
-    this.header = h;
-    this.body = b.map(m => new Menu(m));
-}
+const DropDownList = (function () {
+    const privateProps = new WeakMap();
 
-function KeyValuePairModel(value) {
-    this.key = value.id;
-    this.value = value
-}
+    class DropDownList {
+        constructor(select, options) {
+            privateProps.set(this, {
+                select: select,
+                options: options
+            });
+        };
 
-KeyValuePairModel.prototype = {
-    toPriceNameString: function () {
-        return  `${this.value.GetPrice()} &euro; - ${this.value.name}`
+        populate() {
+            privateProps.get(this).select.empty();
+            for (let option of privateProps.get(this).options) {
+                privateProps.get(this).select.append(option.render())
+            }
+
+            return this;
+        };
+
+        conditionalEnable(master) {
+            master.change(() => privateProps.get(this).select.prop("disabled", master.val() === "null"));
+
+            return this;
+        };
+
+        autoRefresh(master, func){
+            master.change(() => {
+                privateProps.get(this).options = func(+master.val());
+                this.populate();
+            });
+
+            return this;
+        }
     }
-};
 
-function ListModel(obj) {
-    this.value = new Order(obj.user, obj.pizza, obj.food, obj.sandwiche, obj.dessert, obj.dough, obj.supplements, obj.total);
-}
+    return DropDownList;
+})();
 
+const Option = (function () {
+    const privateProps = new WeakMap();
 
+    class Option {
+        constructor(key, value, selected, disabled) {
+            privateProps.set(this, {
+                key: key,
+                value: value,
+                selected: selected,
+                disabled: disabled
+            });
+        };
 
+        get key() {
+            return privateProps.get(this).key
+        };
+        get value() {
+            return privateProps.get(this).value;
+        }
 
+        render() {
+            return `<option value=${ privateProps.get(this).key} ${ privateProps.get(this).selected ? 'selected' : ''} ${ privateProps.get(this).disabled ? 'disabled' : ''}>${ privateProps.get(this).value}</option>`;
+        };
+
+        static getBlankDisabledOption() {
+            return new Option(null, '-- ! Selezionare un&#39;Opzione ! --', true, true)
+        };
+
+        static getBlankOption() {
+            return new Option(null, ' -- -- ', false, false);
+        };
+
+    }
+
+    return Option;
+})();

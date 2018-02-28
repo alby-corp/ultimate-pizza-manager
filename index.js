@@ -42,18 +42,19 @@ app.post('/insert', (req, res) => {
     //TODO add promise
 });
 
-app.get('/menu', async (req, res) => {
 
-    res.send((await db.context.getFoods()).rows);
+app.get('/users', async (req, res) => {
+    res.send((await db.context.getUsers()).rows);
 });
 
-app.get('/getIngredients', (req, res) => {
-    const menu = require('./menu.json');
-    const pizza = menu.pizzas.find(p => p.id == req.query.id);
+app.get('/foods', async (req, res) => {
 
-    const ingredients = pizza.ingredients.map(i => menu.ingredients.find(is => is.id == i));
+    const foods = (await db.context.getFoods()).rows.map(row => row.json);
+    res.send(foods);
+});
 
-    res.send(ingredients);
+app.get('/supplements', async (req, res) => {
+    res.send((await db.context.getIngredients()).rows);
 });
 
 app.get('/getWeekOrders', (req, res) => {

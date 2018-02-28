@@ -1,53 +1,96 @@
-const proto = {
-    /**
-     * @return {string}
-     */
-    GetPrice: function () {
-        return `${this.price.toFixed(2)}`;
+// Documentation:
+// 1) https://stackoverflow.com/questions/22156326/private-properties-in-javascript-es6-classes;
+// 2) https://coryrylan.com/blog/javascript-es6-class-syntax;
+
+const Food = (function () {
+    const privateProps = new WeakMap();
+
+    class Food {
+        constructor(id, name, price, ingredients, type) {
+            privateProps.set(this, {
+                id: id,
+                name: name,
+                price: price,
+                ingredients: ingredients,
+                type: type
+            });
+        };
+
+        get id() {
+            return privateProps.get(this).id;
+        };
+
+        get name() {
+            return privateProps.get(this).name;
+        }
+
+        get price() {
+            return privateProps.get(this).price;
+        }
+
+        get ingredients() {
+            return privateProps.get(this).ingredients;
+        }
+
+        get type() {
+            return privateProps.get(this).type;
+        }
+
+        toString() {
+            return `${privateProps.get(this).price} - ${privateProps.get(this).name}`;
+        };
     }
-};
 
-function Food(id, name, price, ingredients, type) {
+    return Food;
+})();
 
-    this.id = id;
-    this.name = name === undefined ? '' : name;
-    this.price = price === undefined ? 0 : price;
-    this.ingredients = ingredients;
+const User = (function () {
+    const privateProps = new WeakMap();
 
-    if (type === undefined) {
-        throw "Type have to be declared";
+    class User {
+        constructor(id, name) {
+            privateProps.set(this, {
+                id: id,
+                name: name
+            });
+        };
+
+        get id() {
+            return privateProps.get(this).id;
+        };
+
+        get name() {
+            return privateProps.get(this).name;
+        }
     }
 
-    this.type = type
-}
+    return User;
+})();
 
+const Ingredient = (function () {
+    const privateProps = new WeakMap();
 
-Food.prototype = proto;
+    class Ingredient {
+        constructor(id, name, price) {
+            privateProps.set(this, {
+                id: id,
+                name: name,
+                price: price
+            });
+        };
 
-function Ingredient(id, name, price, isSupplement) {
-    this.id = id;
-    this.name = name === undefined ? '' : name;
-    this.price = price === undefined ? 0 : undefined;
-}
+        get id() {
+            return privateProps.get(this).id;
+        };
 
-Ingredient.prototype = proto;
+        get name() {
+            return privateProps.get(this).name;
+        }
 
-function Order(user, pizza, kitchen, sandwich, dessert, dough, supplements) {
-
-    this.user = user;
-    this.pizza = new Food(pizza.id, pizza.name, pizza.price, pizza.ingredients);
-    this.kitchen = new Food(kitchen.id, kitchen.name, kitchen.price, kitchen.ingredients);
-    this.sandwich = new Food(sandwich.id, sandwich.name, sandwich.price, sandwich.ingredients);
-    this.dessert = new Food(dessert.id, dessert.name, dessert.price, dessert.ingredients);
-    this.dough = new Food(dough.id, dough.name, dough.price, dough.ingredients);
-
-
-Order.prototype = {
-    getTotal: function () {
-        return this.pizza.price + this.kitchen.price + this.sandwich.price + this.dessert.price + this.dough.price + this.supplements.reduce((acc, element) => (acc + element), 0)
-    },
-    toString: function () {
-        return `User: ${this.user} - Pizza: ${this.pizza.food} - Piatto: ${this.kitchen.food} - Panino: ${this.sandwich.food} Dolce: - ${this.dessert.food} - Impasto: ${this.dough.food}, Supplementi: ${this.supplements.map(s => s.food).join()}`;
+        toString() {
+            return `${privateProps.get(this).price} - ${privateProps.get(this).name}`;
+        };
     }
-};
 
+    return Ingredient;
+})();

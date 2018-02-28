@@ -3,9 +3,9 @@ const pg = require('pg');
 const Context = function () {
 
     this.connectionString = {           // const config_PROD = process.env.DATABASE_URL;
-        host: 'localhost',
+        host: 'albiberto.ddns.net',
         user: 'teamYOOX',
-        password: 'we<3YOOX',
+        password: '$cSmG6fn',
         database: 'ultimate_pizza_manager',
         port: 5432,
         ssl: false

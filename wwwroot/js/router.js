@@ -4,12 +4,12 @@ link = (page, container) => {
 
     switch (page) {
         case "menu":
-            getMenuPage().then(data => populateContainer(data, container));
+            getMenuPage().then(data => Helpers.populateContainer(data, container));
             break;
         case 'week-orders':
-            getWeekOrdersPage().then(data => populateContainer(data, container));
+            getWeekOrdersPage().then(data => Helpers.populateContainer(data, container));
             break;
         default:
-            getOrdersPage().then(data => populateContainer(data, container));
+            getOrdersPage().then(data => Helpers.populateContainer(data, container));
     }
 };

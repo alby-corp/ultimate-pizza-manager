@@ -1,40 +1,33 @@
-// Pupulate Elements
-populateContainer = (data, container) => container.html(data);
-
-populateDropDown = (ddl, keyValuePair, func) => {
-
-    ddl.append('<option selected value><span> -- selezionare un opzione -- </span></option>');
-
-    for (let keyValue of keyValuePair) {
-        ddl.append(`<option value="${keyValue.key}">${(func.call(keyValue))}</option>`)
+class Helpers {
+    static populateContainer(data, container) {
+        container.html(data);
     }
-};
 
-optionalPopulateDropDown = (conditionalDDL, mainDDL) => {
-    mainDDL.change(() => {
-        getIngredients(mainDDL.val()).then(is => {
-            populateDropDown(conditionalDDL, is.map(i => new KeyValuePairModel(i)), Food.prototype.getFood);
+    static populateDropDown(ddl, options) {
+
+        for (let option of options) {
+            ddl.append(option.render())
+        }
+    };
+
+    static enableConditionalDDL(mainDDL, conditionalDDL) {
+        mainDDL.change(() => conditionalDDL.prop("disabled", mainDDL.val() === "null"));
+    };
+
+    static optionalPopulateDropDown(mainDDL, conditionalDDL) {
+        mainDDL.change(() => {
+
         });
-    });
-};
+    };
+}
+
+// Populate Elements
+
 
 populateList = (list, data) => {
 
     for (let item of data) {
         list.append(`<li>${item.value.toString()}</li>`);
-    }
-};
-
-enableConditionalDDL = (mainDDL, conditionalDDL) => {
-    mainDDL.change(() => conditionalDDL.prop("disabled", mainDDL.val() == '-'));
-};
-
-populateCheckBoxList = (cbl, data) => {
-
-    for (let item of data) {
-
-        let checkbox = `<div class="form-check"><input class="form-check-input" type="checkbox" name=${item.key} id=${item.key} value=${item.key}><label class="form-check-label" for=${item.key}>${item.value}</label></div>`;
-        cbl.append(checkbox);
     }
 };
 
@@ -49,17 +42,9 @@ populateTable = (table, model) => {
     }
 };
 
-// Strings
-capitalizeFirstLetter = str => {
-    return str.replace(/\w\S*/g, function (txt) {
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    });
-};
-
-
 // Sorting
-foodSorter = (firstFood, secondFood) => {
-    if (firstFood.name < secondFood.name) return -1;
-    if (firstFood.name > secondFood.name) return 1;
+optionsSorter = (firstItem, secondItem) => {
+    if (firstItem.key < secondItem.key) return -1;
+    if (firstItem.key > secondItem.key) return 1;
     return 0;
 };

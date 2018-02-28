@@ -1,7 +1,7 @@
 initIndex = () => link(null, $('#container'));
 
 initMenu = () => {
-    getMenu().then(data => {
+    getFoods().then(data => {
         data = JSON.parse(data);
 
         populateTable($('#pizzas'), new TableModel(['Pizza', 'Prezzo', 'Ingredienti'], data.pizzas.sort(foodSorter)));
@@ -13,30 +13,56 @@ initMenu = () => {
     });
 };
 
-initOrders = () => {
-    getMenu().then(data => {
-        data = JSON.parse(data);
+initOrders = async () => {
 
-        const pizzasDDL = $('#pizzas');
-        const kitchenDDL = $('#kitchen');
-        const sandwichesDDL = $('#sandwiches');
-        const dessertsDDL = $('#desserts');
-        const doughsDDL = $('#doughs');
-        const supplementsDDL = $('#supplements');
-        const removalsDDL = $('#removals');
+    const users = await getUsers();
+    const usersDDL = $('#users');
+    new DropDownList(usersDDL, getUsersOptions(users)).populate();
 
-        populateDropDown(pizzasDDL, data.foods.filter(data => data.type === 0).sort(foodSorter).map(p => new KeyValuePairModel(new Food(p.id, p.name, p.price, p.ingredients, p.type))), KeyValuePairModel.prototype.toPriceNameString);
-        populateDropDown(doughsDDL, data.foods.filter(data => data.type === 1).sort(foodSorter).map(p => new KeyValuePairModel(new Food(p.id, p.name, p.price, p.ingredients, p.type))), KeyValuePairModel.prototype.toPriceNameString);
-        populateDropDown(kitchenDDL, data.foods.filter(data => data.type === 2).sort(foodSorter).map(p => new KeyValuePairModel(new Food(p.id, p.name, p.price, p.ingredients, p.type))), KeyValuePairModel.prototype.toPriceNameString);
-        populateDropDown(sandwichesDDL, data.foods.filter(data => data.type === 3).sort(foodSorter).map(p => new KeyValuePairModel(new Food(p.id, p.name, p.price, p.ingredients, p.type))), KeyValuePairModel.prototype.toPriceNameString);
-        populateDropDown(dessertsDDL, data.foods.filter(data => data.type === 4).sort(foodSorter).map(p => new KeyValuePairModel(new Food(p.id, p.name, p.price, p.ingredients, p.type))), KeyValuePairModel.prototype.toPriceNameString);
-        populateDropDown(supplementsDDL, data.ingredients.filter(data => data.isSupplement === true).sort(foodSorter).map(p => new KeyValuePairModel(new Ingredient(p.id, p.name, p.price, p.isSupplement))), KeyValuePairModel.prototype.toPriceNameString);
-        // optionalPopulateDropDown(removalsDDL, pizzasDDL);
+    const foods = await getFoods();
 
-        // enableConditionalDDL(pizzasDDL, removalsDDL);
-        enableConditionalDDL(pizzasDDL, doughsDDL);
-        // enableConditionalDDL(pizzasDDL, supplementsDDL);
-    });
+    const pizzasDDL = $('#pizzas');
+    new DropDownList(pizzasDDL, getFoodsOptions(foods, 1)).populate();
+
+    const kitchenDDL = $('#kitchen');
+    new DropDownList(kitchenDDL, getFoodsOptions(foods, 2)).populate();
+
+    const dessertsDDL = $('#desserts');
+    new DropDownList(dessertsDDL, getFoodsOptions(foods, 3)).populate();
+
+    const sandwichesDDL = $('#sandwiches');
+    new DropDownList(sandwichesDDL, getFoodsOptions(foods, 4)).populate();
+
+    const supplementsDDL = $('#supplements');
+
+    const removalsDDL = $('#removals');
+    new DropDownList(removalsDDL, null)
+        .conditionalEnable(pizzasDDL)
+        .autoRefresh(pizzasDDL, (id) => getIngredientsOptions(foods.find(f => f.id === id).ingredients, Object.getOwnPropertyDescriptor(Ingredient.prototype, 'name').get));
+};
+
+getFoodsOptions = (foods, type) => {
+    const options = foods.filter(food => food.type === type).map(food => new Option(food.id, food.toString(), false, false));
+    options.push(Option.getBlankOption());
+    options.sort(optionsSorter);
+
+    return options;
+};
+
+getIngredientsOptions = (data, func) => {
+    const options = data.map(s => new Option(s.id, func.call(s), false, false));
+    options.push(Option.getBlankOption());
+    options.sort(optionsSorter);
+
+    return options;
+};
+
+getUsersOptions = (data) => {
+    const options = data.map(user => new Option(user.id, user.name, false, false));
+    options.push(Option.getBlankDisabledOption());
+    options.sort(optionsSorter);
+
+    return options;
 };
 
 initWeekOrders = () => {
