@@ -5,7 +5,7 @@ getUsers = async () => {
 
 getFoods = async () => {
     const foods = await get('foods');
-    return foods.map(f => new Food(f.id, f.name, f.price, (f.ingredients || []).map(i => new IngredientIngredient(i.id, i.name, i.price)), f.type));
+    return foods.map(f => new Food(f.id, f.name, f.price, (f.ingredients || []).map(i => new Ingredient(i.id, i.name, i.price)), f.type));
 };
 
 getSupplements = async () => {
