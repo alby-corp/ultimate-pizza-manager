@@ -37,7 +37,7 @@ const Food = (function () {
         }
 
         toString() {
-            return `${privateProps.get(this).price} - ${privateProps.get(this).name}`;
+            return `${privateProps.get(this).name} - ${privateProps.get(this).price}`;
         };
     }
 
@@ -88,7 +88,7 @@ const Ingredient = (function () {
         }
 
         toString() {
-            return `${privateProps.get(this).price} - ${privateProps.get(this).name}`;
+            return privateProps.get(this).price === undefined ? `${privateProps.get(this).name}` : `${privateProps.get(this).name} - ${privateProps.get(this).price}`;
         };
     }
 

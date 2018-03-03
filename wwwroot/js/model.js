@@ -23,14 +23,17 @@ const DropDownList = (function () {
         };
 
         conditionalEnable(master) {
-            master.change(() => privateProps.get(this).select.prop("disabled", master.val() === "null"));
+            master.change(() => privateProps.get(this).select.prop("disabled", master.val() === ''));
 
             return this;
         };
 
-        autoRefresh(master, func){
+        autoRefresh(master, func) {
             master.change(() => {
-                privateProps.get(this).options = func(+master.val());
+
+                const id = master.val();
+
+                privateProps.get(this).options = func(id);
                 this.populate();
             });
 
@@ -49,7 +52,6 @@ const Option = (function () {
             privateProps.set(this, {
                 key: key,
                 value: value,
-                selected: selected,
                 disabled: disabled
             });
         };
@@ -57,22 +59,19 @@ const Option = (function () {
         get key() {
             return privateProps.get(this).key
         };
+
         get value() {
             return privateProps.get(this).value;
         }
 
         render() {
-            return `<option value=${ privateProps.get(this).key} ${ privateProps.get(this).selected ? 'selected' : ''} ${ privateProps.get(this).disabled ? 'disabled' : ''}>${ privateProps.get(this).value}</option>`;
-        };
-
-        static getBlankDisabledOption() {
-            return new Option(null, '-- ! Selezionare un&#39;Opzione ! --', true, true)
+            const value = privateProps.get(this).key;
+            return `<option value=${ value !== undefined ? value : '' } ${ privateProps.get(this).disabled ? 'disabled' : ''}>${ privateProps.get(this).value}</option>`;
         };
 
         static getBlankOption() {
-            return new Option(null, ' -- -- ', false, false);
+            return new Option(undefined, ' -- -- ', false);
         };
-
     }
 
     return Option;

@@ -54,7 +54,8 @@ app.get('/foods', async (req, res) => {
 });
 
 app.get('/supplements', async (req, res) => {
-    res.send((await db.context.getIngredients()).rows);
+    const supplements = await db.context.getSupplements();
+    res.send(supplements.rows);
 });
 
 app.get('/getWeekOrders', (req, res) => {

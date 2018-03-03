@@ -1,50 +1,30 @@
-class Helpers {
-    static populateContainer(data, container) {
-        container.html(data);
-    }
+const Helpers = (function () {
 
-    static populateDropDown(ddl, options) {
+    class Helpers {
 
-        for (let option of options) {
-            ddl.append(option.render())
+        static getFoodsOptions(foods, type) {
+            const options = foods.filter(food => food.type === type).map(food => new Option(food.id, food.toString(), false));
+            options.unshift(Option.getBlankOption());
+
+            return options;
+        };
+
+        static getIngredientsOptions(data, func) {
+            const options = data.map(s => new Option(s.id, func.call(s), false));
+            options.unshift(Option.getBlankOption());
+
+            return options;
+        };
+
+        static exception(arr1, arr2) {
+            return arr1.filter((e) => arr2.map(a => a.id).indexOf(e.id) === -1)
+        };
+
+        static populateContainer(data, container) {
+            container.html(data);
         }
-    };
-
-    static enableConditionalDDL(mainDDL, conditionalDDL) {
-        mainDDL.change(() => conditionalDDL.prop("disabled", mainDDL.val() === "null"));
-    };
-
-    static optionalPopulateDropDown(mainDDL, conditionalDDL) {
-        mainDDL.change(() => {
-
-        });
-    };
-}
-
-// Populate Elements
-
-
-populateList = (list, data) => {
-
-    for (let item of data) {
-        list.append(`<li>${item.value.toString()}</li>`);
     }
-};
 
-populateTable = (table, model) => {
+    return Helpers
 
-    const tds = model.header.map(h => `<td>${h}</td>`);
-    table.find("thead").append(`<tr>${tds.join('')}</tr>`);
-
-    for (let item of model.body) {
-        let tr = item.ingredients === undefined ? `<tr><td>${item.food}</td><td>${item.getPrice()}</td></tr>` : `<tr><td>${item.food}</td><td>${item.getPrice()}</td><td>${item.ingredients.join()}</td></tr>`;
-        table.find("tbody").append(tr);
-    }
-};
-
-// Sorting
-optionsSorter = (firstItem, secondItem) => {
-    if (firstItem.key < secondItem.key) return -1;
-    if (firstItem.key > secondItem.key) return 1;
-    return 0;
-};
+})();

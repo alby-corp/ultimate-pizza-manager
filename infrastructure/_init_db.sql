@@ -27,7 +27,7 @@ CREATE TABLE food_ingredient (
 );
 
 CREATE TABLE muppet (
-	id			SERIAL PRIMARY KEY,
+	id			  SERIAL PRIMARY KEY,
 	username	text,
 	password	text
 );
@@ -50,4 +50,3 @@ CREATE TABLE food_order_ingredient(
 	ingredient 		integer NOT NULL REFERENCES ingredient (id),
 	isRemoval		boolean NOT NULL
 );
-
