@@ -77,6 +77,7 @@ const Ingredient = (function () {
                 name: name,
                 price: price
             });
+            this.isRemoval;
         };
 
         get id() {
@@ -93,4 +94,18 @@ const Ingredient = (function () {
     }
 
     return Ingredient;
+})();
+
+const Order = (function () {
+
+    class Order {
+        constructor(user, foods, ingredients, data) {
+            this.user = user === undefined ? '' : user;
+            this.foods = foods === undefined ? [] : foods;
+            this.ingredients = ingredients === undefined ? [] : ingredients;
+            this.data = data;
+        }
+    }
+
+    return Order;
 })();

@@ -15,13 +15,13 @@ app.use(express.static('resources'));
 
 app.use(bodyParser.urlencoded());
 
-app.use(validator());
-app.use(function (req, res, next) {
-    for (let item in req.body) {
-        req.sanitize(item).escape();
-    }
-    next();
-});
+// app.use(validator());
+// app.use(function (req, res, next) {
+//     for (let item in req.body) {
+//         req.sanitize(item).escape();
+//     }
+//     next();
+// });
 
 // Body parser
 app.use(bodyParser.urlencoded({

@@ -22,7 +22,45 @@ const Helpers = (function () {
 
         static populateContainer(data, container) {
             container.html(data);
-        }
+        };
+
+        static overrideOnSubmit(users, ingredients, foods) {
+            $('#order-form').removeAttr('onsubmit').submit(function (event) {
+
+                event.preventDefault();
+
+                const inputs = $('#order-form :input');
+                const order = new Order();
+
+                const val = $(this).val();
+                const keys = $.isArray(val) ? parseInt(val.toString()) : val.map(keys => parseInt(keys));
+
+                inputs.each(function () {
+
+                    switch (this.name) {
+                        case 'user':
+                            order.user = users.find(user => user.id === keys);
+                            break;
+                        case 'supplements':
+                            const supplement = ingredients.filter(supplement => $.inArray(supplement.id, keys) > -1);
+                            supplement.isRemoval = false;
+                            order.ingredients.push(supplement);
+                            break;
+                        case 'removals':
+                            const removal = ingredients.filter(supplement => $.inArray(supplement.id, keys) > -1);
+                            removal.isRemoval = true;
+                            order.ingredients.push(removal);
+                            break;
+                        default:
+                            order.foods.push(foods.find(food => food.id === keys));
+                    }
+                });
+
+                $.post('insert', JSON.stringify(order));
+
+                return false;
+            });
+        };
     }
 
     return Helpers

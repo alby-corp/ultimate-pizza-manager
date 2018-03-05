@@ -9,10 +9,13 @@ const Core = (function () {
         static async initOrders() {
 
             const users = await getUsers();
+            const foods = await getFoods();
+            const ingredients = await getSupplements();
+
+            Helpers.overrideOnSubmit(users, ingredients, foods);
+
             const usersDDL = $('#users');
             new DropDownList(usersDDL, users.map(user => new Option(user.id, user.name, false))).populate();
-
-            const foods = await getFoods();
 
             const pizzasDDL = $('#pizzas');
             new DropDownList(pizzasDDL, Helpers.getFoodsOptions(foods, 1)).populate();
@@ -36,17 +39,15 @@ const Core = (function () {
                         : []
                 );
 
-            const supplements = await
-                getSupplements();
             const supplementsDDL = $('#supplements');
-            new DropDownList(supplementsDDL, Helpers.getIngredientsOptions(supplements, Ingredient.prototype.toString))
+            new DropDownList(supplementsDDL, Helpers.getIngredientsOptions(ingredients, Ingredient.prototype.toString))
                 .populate()
                 .conditionalEnable(pizzasDDL)
                 .autoRefresh(
                     pizzasDDL,
                     (id) => id
-                        ? Helpers.getIngredientsOptions(Helpers.exception(supplements, foods.find(f => f.id === +id).ingredients), Ingredient.prototype.toString)
-                        : Helpers.getIngredientsOptions(supplements, Ingredient.prototype.toString)
+                        ? Helpers.getIngredientsOptions(Helpers.exception(ingredients, foods.find(f => f.id === +id).ingredients), Ingredient.prototype.toString)
+                        : Helpers.getIngredientsOptions(ingredients, Ingredient.prototype.toString)
                 );
         };
     }
