@@ -24,41 +24,66 @@ const Helpers = (function () {
             container.html(data);
         };
 
+        static alert(message) {
+            alert(message);
+        }
+
         static overrideOnSubmit(users, ingredients, foods) {
             $('#order-form').removeAttr('onsubmit').submit(function (event) {
 
                 event.preventDefault();
 
-                const inputs = $('#order-form :input');
-                const order = new Order();
+                const pizzas = $('#pizzas');
+                let inputs;
 
-                const val = $(this).val();
-                const keys = $.isArray(val) ? parseInt(val.toString()) : val.map(keys => parseInt(keys));
+                const order = new Order();
+                const pizzaKey = parseInt(pizzas.val());
+                let pizza;
+
+                if ($.isNumeric(pizzaKey)) {
+                    pizza = foods.find(f => f.id === pizzaKey);
+                    inputs = $('#order-form select').not('#pizzas');
+                } else {
+                    inputs = $('#order-form select').not('#pizzas').not('#supplements').not('#removals');
+                }
 
                 inputs.each(function () {
+
+                    const val = $(this).val();
+                    const keys = $.isArray(val) ? val.map(keys => parseInt(keys)) : parseInt(val.toString());
 
                     switch (this.name) {
                         case 'user':
                             order.user = users.find(user => user.id === keys);
                             break;
                         case 'supplements':
-                            const supplement = ingredients.filter(supplement => $.inArray(supplement.id, keys) > -1);
-                            supplement.isRemoval = false;
-                            order.ingredients.push(supplement);
+                            const supplements = ingredients.filter(supplement => $.inArray(supplement.id, keys) > -1);
+                            pizza.supplements.push(supplements);
                             break;
                         case 'removals':
-                            const removal = ingredients.filter(supplement => $.inArray(supplement.id, keys) > -1);
-                            removal.isRemoval = true;
-                            order.ingredients.push(removal);
+                            const removals = ingredients.filter(supplement => $.inArray(supplement.id, keys) > -1);
+                            pizza.removals.push(removals);
                             break;
                         default:
-                            order.foods.push(foods.find(food => food.id === keys));
+                            const food = foods.find(food => food.id === keys);
+                            if (food !== undefined) {
+                                order.foods.push(food);
+                            }
                     }
                 });
 
-                $.post('insert', JSON.stringify(order));
+                if (pizza !== undefined) {
+                    order.foods.push(pizza);
+                }
 
-                return false;
+                try {
+                    order.validate()
+                } catch (exception) {
+                    alertService(exception.message);
+                    return false; // from within a jQuery event handler is effectively the same as calling both e.preventDefault and e.stopPropagation on the passed.
+                }
+
+                $.post('insert', JSON.stringify(order));
             });
         };
     }

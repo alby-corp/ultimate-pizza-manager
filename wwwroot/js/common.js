@@ -14,6 +14,8 @@ const Food = (function () {
                 ingredients: ingredients,
                 type: type
             });
+            this.removals = [];
+            this.supplements = [];
         };
 
         get id() {
@@ -77,7 +79,6 @@ const Ingredient = (function () {
                 name: name,
                 price: price
             });
-            this.isRemoval;
         };
 
         get id() {
@@ -99,13 +100,31 @@ const Ingredient = (function () {
 const Order = (function () {
 
     class Order {
-        constructor(user, foods, ingredients, data) {
+        constructor(user, foods, data) {
+
+            if (foods !== undefined) {
+                if ($.isArray(foods) === false) {
+                    throw 'Foods property have to be type Array';
+                }
+            }
+
             this.user = user === undefined ? '' : user;
             this.foods = foods === undefined ? [] : foods;
-            this.ingredients = ingredients === undefined ? [] : ingredients;
             this.data = data;
+        }
+
+        validate() {
+            if (this.foods.length < 1) {
+                throw new Exception('select at least one food');
+            }
         }
     }
 
     return Order;
 })();
+
+class Exception {
+    constructor(message) {
+        this.message = message;
+    }
+}

@@ -13,6 +13,10 @@ getSupplements = async () => {
     return supplements.map(s => new Ingredient(s.id, s.name, s.price));
 };
 
+alertService = (message) => {
+      alert(message);
+};
+
 getMenu = () => get('menu');
 
 getWeekOrders = () => get('getWeekOrders');
