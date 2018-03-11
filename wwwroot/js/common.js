@@ -2,16 +2,84 @@
 // 1) https://stackoverflow.com/questions/22156326/private-properties-in-javascript-es6-classes;
 // 2) https://coryrylan.com/blog/javascript-es6-class-syntax;
 
+const User = (function () {
+    const privateProps = new WeakMap();
+
+    class User {
+        constructor(id, name) {
+            privateProps.set(this, {
+                id: id,
+                name: name
+            });
+        };
+
+        get id() {
+            return privateProps.get(this).id;
+        };
+
+        get name() {
+            return privateProps.get(this).name;
+        }
+
+        toDTO() {
+            return new UserDTO(this.id, this.name);
+        }
+    }
+
+    return User;
+})();
+
+const Ingredient = (function () {
+    const privateProps = new WeakMap();
+
+    class Ingredient {
+        constructor(id, name, price) {
+            privateProps.set(this, {
+                id: id,
+                name: name,
+                price: price
+            });
+        };
+
+        get id() {
+            return privateProps.get(this).id;
+        };
+
+        get name() {
+            return privateProps.get(this).name;
+        }
+
+        get price() {
+            return privateProps.get(this).price;
+        }
+
+        toString() {
+            return privateProps.get(this).price === undefined ? `${privateProps.get(this).name}` : `${privateProps.get(this).name} - ${privateProps.get(this).price}`;
+        };
+
+        toDTO() {
+            return new IngredientDTO(this.id, this.name, this.price);
+        }
+    }
+
+    return Ingredient;
+})();
+
 const Food = (function () {
     const privateProps = new WeakMap();
 
     class Food {
         constructor(id, name, price, ingredients, type) {
+
+            if (!Number.isInteger(id)) {
+                throw new Error('Id have to be a number');
+            }
+
             privateProps.set(this, {
                 id: id,
                 name: name,
                 price: price,
-                ingredients: ingredients,
+                ingredients: ingredients === undefined? [] : ingredients,
                 type: type
             });
             this.removals = [];
@@ -41,60 +109,13 @@ const Food = (function () {
         toString() {
             return `${privateProps.get(this).name} - ${privateProps.get(this).price}`;
         };
+
+        toDTO() {
+            return new FoodDTO(this.id, this.name, this.ingredients, this.price, this.type, this.supplements, this.removals);
+        }
     }
 
     return Food;
-})();
-
-const User = (function () {
-    const privateProps = new WeakMap();
-
-    class User {
-        constructor(id, name) {
-            privateProps.set(this, {
-                id: id,
-                name: name
-            });
-        };
-
-        get id() {
-            return privateProps.get(this).id;
-        };
-
-        get name() {
-            return privateProps.get(this).name;
-        }
-    }
-
-    return User;
-})();
-
-const Ingredient = (function () {
-    const privateProps = new WeakMap();
-
-    class Ingredient {
-        constructor(id, name, price) {
-            privateProps.set(this, {
-                id: id,
-                name: name,
-                price: price
-            });
-        };
-
-        get id() {
-            return privateProps.get(this).id;
-        };
-
-        get name() {
-            return privateProps.get(this).name;
-        }
-
-        toString() {
-            return privateProps.get(this).price === undefined ? `${privateProps.get(this).name}` : `${privateProps.get(this).name} - ${privateProps.get(this).price}`;
-        };
-    }
-
-    return Ingredient;
 })();
 
 const Order = (function () {
@@ -103,28 +124,30 @@ const Order = (function () {
         constructor(user, foods, data) {
 
             if (foods !== undefined) {
-                if ($.isArray(foods) === false) {
+                if (!Array.isArray(foods)) {
                     throw 'Foods property have to be type Array';
                 }
             }
 
-            this.user = user === undefined ? '' : user;
+            this.user = user;
             this.foods = foods === undefined ? [] : foods;
             this.data = data;
         }
 
         validate() {
             if (this.foods.length < 1) {
-                throw new Exception('select at least one food');
+                throw new Error('Select at least one food');
             }
+
+            if (!this.user) {
+                throw new Error('User cannot be undefined or empty!');
+            }
+        }
+
+        toDTO() {
+            return new OrderDTO(this.user, this.foods, this.data);
         }
     }
 
     return Order;
 })();
-
-class Exception {
-    constructor(message) {
-        this.message = message;
-    }
-}
