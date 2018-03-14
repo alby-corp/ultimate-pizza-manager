@@ -17,15 +17,15 @@ class FoodDTO {
     constructor(id, name, ingredients, price, type, supplements, removals) {
 
         if (!ingredients instanceof Array && !ingredients.some((ingredient) => ingredient instanceof Food)) {
-            throw 'Ingredients property have to be instance of Array of Ingredient';
+            throw 'Ingredients property has to be instance of Array of Ingredient';
         }
 
         if (!supplements instanceof Array && !supplements.some((supplement) => supplement instanceof Food)) {
-            throw 'Supplements property have to be instance of Array of Ingredient';
+            throw 'Supplements property has to be instance of Array of Ingredient';
         }
 
         if (!removals instanceof Array && !removals.some((removal) => removal instanceof Food)) {
-            throw 'Removals property have to be instance of Array of Ingredient';
+            throw 'Removals property has to be instance of Array of Ingredient';
         }
 
         this.id = id;
@@ -42,15 +42,15 @@ class OrderDTO {
     constructor(user, foods, data) {
 
         if (!user instanceof User) {
-            throw 'User property have to be instance of User';
+            throw 'User property has to be instance of User';
         }
 
         if (!foods instanceof Array && !foods.some((food) => food instanceof Food)) {
-            throw 'Foods property have to be instance of Array of Foods';
+            throw 'Foods property has to be instance of Array of Foods';
         }
 
         if (!data instanceof Date) {
-            throw 'Date property have to be instance of Date';
+            throw 'Date property has to be instance of Date';
         }
 
         this.user = user.toDTO();

@@ -1,4 +1,4 @@
-const db = require('./context');
+const context = require('./context');
 const uuid = require('uuid-v4');
 
 const usersQuery = "SELECT * FROM muppet m ORDER BY m.username";
@@ -61,40 +61,39 @@ const getOrdersQuery = `SELECT json_build_object(
                     ORDER BY data`;
 
 
-const insertOrderQuery = (orders) => orders.map(
-    (order) => {
-        const orderID = uuid();
-        orderQuery = `DO $$ BEGIN PERFORM InsertOrder('${orderID}',${order.user.id},LOCALTIMESTAMP); END$$; \n`
-        orderQuery +=   order.foods.map(
-                            (food) => {
-                                const foodID = uuid();
-                                foodQuery = `DO $$ BEGIN PERFORM InsertFood('${foodID}',${food.id},'${orderID}'); END$$;  \n`;
-                                foodQuery += food.removals.map(
-                                    (removal) =>  `DO $$ BEGIN PERFORM InsertIngredients('${foodID}',${removal.id},true); END$$; \n`
-                                ).join('');
-                                foodQuery += food.supplements.map(
-                                     (supplement) =>  `DO $$ BEGIN PERFORM InsertIngredients('${foodID}',${supplement.id},false); END$$; \n`
-                                ).join('');
-                                return foodQuery}
-                        ).join('');
-                        return orderQuery;        
-                    }
-        ).join();
-                    
+const insertOrderQuery = (order) => {
+
+    const queries = [];
+
+    const orderId = uuid();
+
+    queries.push(`INSERT INTO "order"(id, muppet, data) VALUES ('${orderId}', ${order.user}, NOW());`);
+
+    order.foods.forEach(f => {
+        const foodOrderId = uuid();
+        queries.push(`INSERT INTO "food_order"(id, food, "order") VALUES ('${foodOrderId}', ${f.id}, '${orderId}');`);
+        f.removals.forEach(s => queries.push(`INSERT INTO food_order_ingredient (food_order,ingredient, isRemoval) VALUES ('${foodOrderId}', ${s.id}, TRUE);`));
+        f.supplements.forEach(s => queries.push(`INSERT INTO food_order_ingredient (food_order,ingredient, isRemoval) VALUES ('${foodOrderId}', ${s.id}, FALSE);`));
+    });
+
+    return queries;
+};
+
 
 function Context() {
-    this.getUsers = () => db.context.execute(usersQuery);
+    this.getUsers = () => context.query(usersQuery);
 
-    this.getFoods = () => db.context.execute(foodWithIngredientsQuery);
+    this.getFoods = () => context.query(foodWithIngredientsQuery);
 
-    this.getIngredients = () => db.context.execute(ingredientsQuery);
+    this.getIngredients = () => context.query(ingredientsQuery);
 
-    this.getSupplements = () => db.context.execute(supplementsQuery);
+    this.getSupplements = () => context.query(supplementsQuery);
 
-    this.getOrders = () => db.context.execute(getOrdersQuery);
+    this.getOrders = () => context.query(getOrdersQuery);
 
-    this.insertOrders = (orders) => db.context.execute(insertOrderQuery(orders));
-    
+    this.insertOrders = (order) => {
+        return context.execute(insertOrderQuery(order));
+    };
 }
 
-module.exports.context = new Context();
+module.exports = new Context();

@@ -13,7 +13,7 @@ const Context = function () {
 
     this.clientFactory = () => new pg.Client(this.connectionString);
 
-    this.execute = async (query) => {
+    this.query = async (query) => {
 
         const client = this.clientFactory();
 
@@ -27,7 +27,29 @@ const Context = function () {
         }
 
         client.end();
-    }
+    };
+
+    this.execute = async (queries) => {
+
+        const client = this.clientFactory();
+
+        try {
+            await client.connect();
+
+            await client.query('BEGIN');
+
+            for(let query of queries){
+                await client.query(query);
+            }
+
+            await client.query('COMMIT');
+
+        } catch (err) {
+            console.log(err);
+        }
+
+        client.end();
+    };
 };
 
-module.exports.context = new Context();
+module.exports = new Context();

@@ -6,8 +6,10 @@ const filename = "./db.json";
 const app = express();
 const bodyParser = require('body-parser');
 const validator = require('express-validator');
-const db = require('./server/data-layer');
+const context = require('./server/data-layer');
 
+const model = require('./server/model');
+const common = require('./wwwroot/js/common');
 
 // Static files
 app.use('/public', express.static('wwwroot'));
@@ -35,26 +37,35 @@ app.get('/', (req, res) => {
 });
 
 app.post('/insert', async (req, res) => {
-    const orders = [req.body];
-    console.log(orders)
-    //await db.context.insertOrders(orders);
-    console.log(orders)
-    res.send('Ordine registrato <br /> <a href="/">Home</a>');
-});
+
+    const data = req.body;
+
+    const order = new model.Order(+data.user.id,  data.foods.map(f => {
+        const food = new common.Food(+f.id);
+        food.supplements = (f.supplements || []).map(s => new common.Ingredient(+s.id));
+        food.removals = (f.removals || []).map(s => new common.Ingredient(+s.id));
+
+        return food;
+    }));
+
+    await order.Save();
+
+    res.send('Ordine Registrato');
+ });
 
 
 app.get('/users', async (req, res) => {
-    res.send((await db.context.getUsers()).rows);
+    res.send((await context.getUsers()).rows);
 });
 
 app.get('/foods', async (req, res) => {
 
-    const foods = (await db.context.getFoods()).rows.map(row => row.json);
+    const foods = (await context.getFoods()).rows.map(row => row.json);
     res.send(foods);
 });
 
 app.get('/supplements', async (req, res) => {
-    const supplements = await db.context.getSupplements();
+    const supplements = await context.getSupplements();
     res.send(supplements.rows);
 });
 

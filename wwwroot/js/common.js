@@ -72,7 +72,7 @@ const Food = (function () {
         constructor(id, name, price, ingredients, type) {
 
             if (!Number.isInteger(id)) {
-                throw new Error('Id have to be a number');
+                throw new Error('Id has to be a number');
             }
 
             privateProps.set(this, {
@@ -125,7 +125,7 @@ const Order = (function () {
 
             if (foods !== undefined) {
                 if (!Array.isArray(foods)) {
-                    throw 'Foods property have to be type Array';
+                    throw 'Foods property has to be type Array';
                 }
             }
 
@@ -151,3 +151,7 @@ const Order = (function () {
 
     return Order;
 })();
+
+module.exports.Order = Order;
+module.exports.Food = Food;
+module.exports.Ingredient = Ingredient;
