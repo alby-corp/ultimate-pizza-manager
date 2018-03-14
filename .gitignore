@@ -3,3 +3,4 @@ package-lock.json
 .idea/
 .vs/
 pizzeList.txt
+test.js

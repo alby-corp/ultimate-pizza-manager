@@ -1,3 +1,5 @@
+CREATE EXTENSION "uuid-ossp";
+
 CREATE TABLE ingredient (
     id 			SERIAL PRIMARY KEY,
     name       	text NOT NULL,
@@ -33,20 +35,20 @@ CREATE TABLE muppet (
 );
 
 CREATE TABLE "order" (
-    id 			SERIAL PRIMARY KEY,
+    id 			uuid PRIMARY KEY,
     muppet     	integer NOT NULL REFERENCES muppet (id),
-	  data		    timestamp
+  	data		    timestamp
 );
 
 CREATE TABLE food_order (
-	id			SERIAL PRIMARY KEY,
+	id			uuid PRIMARY KEY,
 	food 		integer REFERENCES food (id),
-	"order" 	integer REFERENCES "order" (id)
+	"order" 	uuid REFERENCES "order" (id)
 );
 
 CREATE TABLE food_order_ingredient(
 	id 				SERIAL PRIMARY KEY,
-	food_order	integer NOT NULL REFERENCES food_order (id),
+	food_order		uuid NOT NULL REFERENCES food_order (id),
 	ingredient 		integer NOT NULL REFERENCES ingredient (id),
 	isRemoval		boolean NOT NULL
 );

@@ -1,4 +1,5 @@
 const db = require('./context');
+const uuid = require('uuid-v4');
 
 const usersQuery = "SELECT * FROM muppet m ORDER BY m.username";
 
@@ -19,7 +20,7 @@ const supplementsQuery = `  SELECT DISTINCT i.id, i.name, i.price
 
 const ingredientsQuery = `  SELECT * FROM Ingredient`;
 
-const ordersQuery = `SELECT json_build_object(
+const getOrdersQuery = `SELECT json_build_object(
                         'user',m.username, 'data',o.data, 'foods',      
                         (SELECT json_agg(
                             json_build_object(
@@ -60,30 +61,26 @@ const ordersQuery = `SELECT json_build_object(
                     ORDER BY data`;
 
 
-
-const insertOrderQuery = function getInsertOrderQuery(newOrderList){
-    newOrderList.Foreach(
-        function (newOrder) {
-            orderQuery = "INSERT INTO \"order\" (muppet,data)" + 
-            "VALUES ((SELECT id FROM muppet WHERE userName = '" + newOrder.user +" '),LOCALTIMESTAMP);" ;
-            newOrder.foodOrdered.Foreach(
-                function (foodOrdered) {
-                    orderQuery += "INSERT INTO food_order (food,\"order\")" +
-                    "VALUES ((SELECT id FROM food WHERE name = '" + foodOrdered.foodName + "')," +
-                    "        (SELECT id FROM \"order\" ORDER BY id DESC LIMIT 1));";
-                    foodOrdered.ingredientOrderedList.Foreach(
-                        function(ingredientOrdered){
-                            orderQuery += "INSERT INTO food_order_ingredient (food_order,ingredient,isremoval)" +
-                            "VALUES ((SELECT id FROM food_order ORDER BY id DESC LIMIT 1)," +
-                            "(SELECT id FROM ingredient WHERE name = '" + ingredientOrdered.ingredientName + 
-                            "')," + ingredientOrdered.isremoval +");";
-                        })
+const insertOrderQuery = (orders) => orders.map(
+    (order) => {
+        const orderID = uuid();
+        orderQuery = `DO $$ BEGIN PERFORM InsertOrder('${orderID}',${order.user.id},LOCALTIMESTAMP); END$$; \n`
+        orderQuery +=   order.foods.map(
+                            (food) => {
+                                const foodID = uuid();
+                                foodQuery = `DO $$ BEGIN PERFORM InsertFood('${foodID}',${food.id},'${orderID}'); END$$;  \n`;
+                                foodQuery += food.removals.map(
+                                    (removal) =>  `DO $$ BEGIN PERFORM InsertIngredients('${foodID}',${removal.id},true); END$$; \n`
+                                ).join('');
+                                foodQuery += food.supplements.map(
+                                     (supplement) =>  `DO $$ BEGIN PERFORM InsertIngredients('${foodID}',${supplement.id},false); END$$; \n`
+                                ).join('');
+                                return foodQuery}
+                        ).join('');
+                        return orderQuery;        
+                    }
+        ).join();
                     
-                })
-        }
-    )
-    return orderQuery;
-}
 
 function Context() {
     this.getUsers = () => db.context.execute(usersQuery);
@@ -94,7 +91,10 @@ function Context() {
 
     this.getSupplements = () => db.context.execute(supplementsQuery);
 
-    this.getOrders = () => db.context.execute(ordersQuery);
+    this.getOrders = () => db.context.execute(getOrdersQuery);
+
+    this.insertOrders = (orders) => db.context.execute(insertOrderQuery(orders));
+    
 }
 
 module.exports.context = new Context();
