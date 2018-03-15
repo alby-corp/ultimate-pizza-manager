@@ -20,45 +20,41 @@ const supplementsQuery = `  SELECT DISTINCT i.id, i.name, i.price
 
 const ingredientsQuery = `  SELECT * FROM Ingredient`;
 
-const getOrdersQuery = `SELECT json_build_object(
-                        'user',m.username, 'data',o.data, 'foods',      
-                        (SELECT json_agg(
-                            json_build_object(
-                                'id', f.id, 'name', f.name, 'type', f.type, 'price', f.price,
-                                'ingredients',
-                                    (SELECT json_agg(json_build_object('id', i.id, 'name', i.name, 'price', i.price))
-                                        FROM food_ingredient fi
-                                        INNER JOIN ingredient i ON fi.ingredient = i.id
-                                        WHERE f.id = fi.food
-                                    ),           
-                                'removals', 
-                                    (SELECT json_agg(i.name)
-                                        FROM "order" o
-                                        JOIN food_order fo on fo.order = o.id
-                                        JOIN food f on f.id = fo.food
-                                        JOIN food_order_ingredient foi on foi.food_order = fo.id
-                                        JOIN ingredient i on i.id = foi.ingredient
-                                        WHERE foi.isremoval = true
-                                    ),
-                                'supplements', 
-                                    (SELECT json_agg(i.name)
-                                        FROM "order" o
-                                        JOIN food_order fo on fo.order = o.id
-                                        JOIN food f on f.id = fo.food
-                                        JOIN food_order_ingredient foi on foi.food_order = fo.id
-                                        JOIN ingredient i on i.id = foi.ingredient
-                                        WHERE foi.isremoval = false
-                                    )
-                                )--end json
-                            )--end json_agg      
-                            FROM "order" o
-                            JOIN food_order fo on fo.order = o.id
-                            JOIN food f on f.id = fo.food        
-                        )--end select      
-                    )json --end json 
-                    FROM "order" o
-                    JOIN muppet m on m.id = o.muppet
-                    ORDER BY data`;
+const getOrdersQuery = `WITH foodCte AS 
+    (
+	    SELECT fo.order as orderID, json_build_object(
+                'id', f.id, 'name', f.name, 'type', f.type, 'price', f.price
+                ,'ingredients'
+                , COALESCE(json_agg(json_build_object(
+                    'id', i.id, 'name', i.name, 'price', i.price)) 
+			    	FILTER ( WHERE ( i.id IS NOT NULL)),'[]')
+     	    	,'removals', COALESCE(json_agg(
+                    CASE WHEN foi.isremoval = true THEN json_build_object(
+                        'id', i.id, 'name', i.name, 'price', i.price) END) 
+                    FILTER ( WHERE (CASE WHEN foi.isremoval = true 
+                        THEN json_build_object(
+                            'id', i.id, 'name', i.name, 'price', i.price) 
+                        END) IS NOT NULL),'[]')	
+			    ,'supplements', COALESCE(json_agg(
+                    CASE WHEN foi.isremoval = false THEN json_build_object(
+                        'id', i.id, 'name', i.name, 'price', i.price) END) 
+                    FILTER ( WHERE (CASE WHEN foi.isremoval = false 
+                        THEN json_build_object(
+                            'id', i.id, 'name', i.name, 'price', i.price)
+                        END) IS NOT NULL),'[]')	
+                ) as foodJson
+    	FROM food_order fo 
+	    JOIN food f on f.id = fo.food
+    	LEFT JOIN food_order_ingredient foi on foi.food_order = fo.id
+	    LEFT JOIN ingredient i on i.id = foi.ingredient
+	    GROUP BY fo.id,f.id, f.name, f.type, f.price 
+    ) 
+    SELECT json_build_object('user', m.username, 'data', o.data, 'foods', json_agg(foodJson))
+    FROM foodCte fcte
+    JOIN "order" o on o.id = fcte.OrderId
+    JOIN muppet m on m.id = o.muppet
+    GROUP BY o.id,m.username,o.data
+    ORDER BY data`;
 
 
 const insertOrderQuery = (order) => {
