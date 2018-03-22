@@ -76,3 +76,96 @@ const Option = (function () {
 
     return Option;
 })();
+
+const Table = (function () {
+    const privateProps = new WeakMap();
+
+    class Table {
+        constructor(table, orders) {
+            privateProps.set(this, {
+                table: table,
+                orders: orders
+            });
+        }
+
+        populate() {
+            privateProps.get(this).table.children('tbody').append(privateProps.get(this).orders.map(order => new Row(order.user, order.foods).render()));
+        }
+    }
+
+    return Table;
+})();
+
+const Row = (function () {
+    const privateProps = new WeakMap();
+
+    class Row {
+        constructor(user, foods) {
+            privateProps.set(this, {
+                user: user,
+                foods: foods
+            });
+        }
+
+        // render() {
+        //     return `<tr><td>${privateProps.get(this).user}</td>
+        //                 <td><table>${privateProps.get(this).foods.map(food => `<tr><td>${food.name}</td></tr>`).join('')}
+        //                 </table></td>
+        //             </tr>`;
+        // }
+
+
+
+            render() {
+                return `<tr><td>${privateProps.get(this).user}</td>
+                            <td><table>${privateProps.get(this).foods.map(food => { return `<tr><td>${food.name}</td>
+                                                                                           <td><table>${food.supplements.map(s => { return `<tr><td>${s.name}</td></tr>`}).join('')}</table></td>
+                                                                                           <td><table>${food.removals.map(r => { return `<tr><td>${r.name}</td></tr>`}).join('')}</table></td>
+                                                                                       </tr>`}).join('')
+                            }</table></td>
+                        </tr>`;
+            }
+    }
+
+    return Row;
+})();
+
+const Order = class Order extends AlbyJs.Common.Order {
+    constructor(user, foods, data) {
+        super(user, foods, data);
+    }
+
+    toDTO() {
+        return new OrderDTO(this.user, this.foods, this.data);
+    }
+};
+
+const Food = class Food extends AlbyJs.Common.Food {
+    constructor(id, name, price, ingredients, type, supplements, removals) {
+        super(id, name, price, ingredients, type, supplements, removals)
+    }
+
+    toDTO() {
+        return new FoodDTO(this.id, this.name, this.ingredients, this.price, this.type, this.supplements, this.removals);
+    }
+};
+
+const Ingredient = class Ingredient extends AlbyJs.Common.Ingredient {
+    constructor(id, name, price) {
+        super(id, name, price);
+    }
+
+    toDTO() {
+        return new IngredientDTO(this.id, this.name, this.price);
+    }
+};
+
+const User = class User extends AlbyJs.Common.User {
+    constructor(id, name) {
+        super(id, name);
+    }
+
+    toDTO() {
+        return new UserDTO(this.id, this.name);
+    }
+};

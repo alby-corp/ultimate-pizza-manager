@@ -14,12 +14,30 @@ getSupplements = async () => {
 };
 
 alertService = (message) => {
-      alert(message);
+    alert(message);
 };
 
 getMenu = () => get('menu');
 
-getWeekOrders = () => get('getWeekOrders');
+
+getWeekOrders = async () => {
+    let orders = await get('getWeekOrders');
+    // let json = orders.map(order => order.json);
+
+    return orders.map(order => new Order(
+        order.user,
+        order.foods.map(food => new Food(
+            food.id,
+            food.name,
+            food.price,
+            food.ingredients.map(s => new Ingredient(s.id, s.name, s.price)),
+            food.type,
+            food.supplements.map(s => new Ingredient(s.id, s.name, s.price)),
+            food.removals.map(r => new Ingredient(r.id, r.name, r.price))
+        )),
+        order.data
+    ));
+};
 
 // Pages
 getOrdersPage = () => get('order.html');

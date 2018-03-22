@@ -35,7 +35,7 @@ const Core = (function () {
                 .autoRefresh(
                     pizzasDDL,
                     (id) => id
-                        ? Helpers.getIngredientsOptions(foods.find(f => f.id === +id).ingredients, Object.getOwnPropertyDescriptor(Ingredient.prototype, 'name').get)
+                        ? Helpers.getIngredientsOptions(foods.find(f => f.id === +id).ingredients, Helpers.getPropertyDescriptor(Ingredient.prototype, 'name').get)
                         : []
                 );
 
@@ -56,28 +56,13 @@ const Core = (function () {
 })();
 
 
-initWeekOrders = () => {
-    getWeekOrders().then(data => {
+initWeekOrders = async () => {
+    let orders = await getWeekOrders();
+    orders = orders.map(order => new Order(order.user, order.foods, order.data));
 
-        data = data.reduce((acc, x) => {
-            if (acc.length === 0) {
-                acc.push(x)
-            } else {
-                if (!acc.map(element => element.user).includes(x.user)) {
-                    acc.push(x)
-                } else {
-                    const saved = acc.find((obj) => obj.user === x.user);
-                    if (saved.data < x.data) {
-                        const index = acc.indexOf(saved);
-                        acc.splice(index, 1);
-                        acc.push(x);
-                    }
-                }
-            }
-            return acc
-        }, []);
+    const table = $('#week-orders');
 
+    const t = new Table(table, orders);
+    t.populate();
 
-        populateList($('#week-orders'), data.map(o => new ListModel(o)));
-    });
 };

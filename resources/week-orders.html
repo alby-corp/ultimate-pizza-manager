@@ -1,20 +1,20 @@
-<table id="week-orders">
+<h2>Ordini</h2>
+<table id="week-orders" class="table-bordered">
     <thead>
     <tr>
         <th>Nome</th>
-        <th>Pizza</th>
-        <th>Supplementi</th>
-        <th>Rimozioni</th>
-        <th>Cucina</th>
-        <th>Panino</th>
-        <th>Dolce</th>
-        <th>Totale</th>
+        <th><table><tr><td>Ordine</td><td>Supplementi</td><td>Rimozioni</td></tr></table></th>
     </tr>
     </thead>
     <tbody></tbody>
 </table>
+
+<h2>Resoconto</h2>
+<ul id="summary"></ul>
+
 <script>
     $(document).ready(function () {
         initWeekOrders();
     });
 </script>
+

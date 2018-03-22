@@ -26,6 +26,10 @@ class Helpers {
         alert(message);
     }
 
+    static getPropertyDescriptor (obj, key) {
+        return Object.getOwnPropertyDescriptor(obj, key) || this.getPropertyDescriptor(Object.getPrototypeOf(obj), key)
+    }
+
     static overrideOnSubmit() {
         $('#order-form').submit(() => {
             event.preventDefault();

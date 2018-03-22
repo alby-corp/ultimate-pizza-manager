@@ -1,7 +1,7 @@
-const common = require('../wwwroot/js/common');
+const common = require("../wwwroot/js/common");
 const context = require('./data-layer');
 
-class Order extends common.Order {
+class Order extends common.Order{
 
     constructor(user, foods, data){
         super(user, foods, data);

@@ -36,24 +36,6 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-app.post('/insert', async (req, res) => {
-
-    const data = req.body;
-
-    const order = new model.Order(+data.user.id,  data.foods.map(f => {
-        const food = new common.Food(+f.id);
-        food.supplements = (f.supplements || []).map(s => new common.Ingredient(+s.id));
-        food.removals = (f.removals || []).map(s => new common.Ingredient(+s.id));
-
-        return food;
-    }));
-
-    await order.Save();
-
-    res.send('Ordine Registrato');
- });
-
-
 app.get('/users', async (req, res) => {
     res.send((await context.getUsers()).rows);
 });
@@ -69,28 +51,26 @@ app.get('/supplements', async (req, res) => {
     res.send(supplements.rows);
 });
 
-app.get('/getWeekOrders', (req, res) => {
-    //const orders = await db.context.getOrders();
-    /*
-    const db = require('./db.json');
-    const menu = require('./menu.json');
+app.get('/getWeekOrders', async (req, res) => {
+    const orders = await context.getOrders();
+    res.send(orders.rows.map(row => row.json_build_object));
+});
 
-    const blank = {food: "", price: 0};
+app.post('/insert', async (req, res) => {
 
-    let orders = db.orders.map(order => ({
-        user: order.user,
-        data: order.data,
-        pizza: menu.pizzas.find(p => p.id == order.pizza) === undefined ? blank : menu.pizzas.find(p => p.id == order.pizza),
-        food: menu.foods.find(p => p.id == order.food) === undefined ? blank : menu.foods.find(p => p.id == order.food),
-        sandwiche: menu.sandwiches.find(p => p.id == order.sandwiche) === undefined ? blank : menu.sandwiches.find(p => p.id == order.sandwiche),
-        dessert: menu.desserts.find(p => p.id == order.dessert) === undefined ? blank : menu.desserts.find(p => p.id == order.dessert),
-        dough: menu.doughs.find(d => d.id == order.dough) === undefined ? blank : menu.doughs.find(d => d.id == order.dough),
-        supplements: menu.supplements.filter(m => order.supplements.includes(m.id.toString())) === undefined ? blank : menu.supplements.filter(m => order.supplements.includes(m.id.toString()))
+    const data = req.body;
+
+    const order = new model.Order(+data.user.id,  data.foods.map(f => {
+        const food = new common.Food(+f.id);
+        food.supplements = (f.supplements || []).map(s => new common.Ingredient(+s.id));
+        food.removals = (f.removals || []).map(s => new common.Ingredient(+s.id));
+
+        return food;
     }));
-    */ 
-    // orders.map(order => order.total = order.pizza.price + order.food.price + order.sandwiche.price + order.dessert.price + order.dessert.price + order.dough.price + order.supplements.reduce((acc, x) => acc + x.price, 0));
 
-    // res.send(orders);
+    await order.Save();
+
+    res.send('Ordine Registrato');
 });
 
 // Server config
