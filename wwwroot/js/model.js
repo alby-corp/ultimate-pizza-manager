@@ -197,6 +197,35 @@ const SummaryRow = (function () {
     return SummaryRow;
 })();
 
+const Span = (function () {
+
+    const privateProps = new WeakMap();
+
+    class Span {
+
+        constructor(span, text) {
+            privateProps.set(this, {
+                span: span,
+                text: text
+            });
+        }
+
+        get span() {
+            return privateProps.get(this).span;
+        };
+
+        get text() {
+            return privateProps.get(this).text;
+        };
+
+        populate() {
+            this.span.text(this.text);
+        }
+    }
+
+    return Span;
+})();
+
 const Order = class Order extends AlbyJs.Common.Order {
     constructor(user, foods, data) {
         super(user, foods, data);

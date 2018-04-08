@@ -57,13 +57,6 @@ app.post('/insert', async (req, res) => {
 
     const data = req.body;
 
-    // const removals = $('#removals').val().filter(id => !!id).map(r => new AlbyJs.Common.Ingredient(+r));
-    // const supplements = $('#supplements').val().filter(id => !!id).map(s => new AlbyJs.Common.Ingredient(+s));
-    //
-    // const pizza = new AlbyJs.Common.OrderedFood(new AlbyJs.Common.Food(+pizzaId), supplements, removals);
-
-    // const order = new Order(user, foods);
-
     const user = new common.User(+data.user.id);
     const foods = data.foods.map(f => new common.OrderedFood(new common.Food(+f.id), f.supplements, f.removals));
 

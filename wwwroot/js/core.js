@@ -66,13 +66,16 @@ const Core = (function () {
                 }
             });
 
-            const summaryRows=
+            const summaryRows =
                 _.map(_.groupBy(ordersWithKey, (order) => order.key), (orderWithKey) => {
                     return new SummaryRow(_.first(orderWithKey).order, orderWithKey.length)
 
                 });
 
             new Table(summaryTable, summaryRows).populate();
+
+            const totalSpan = $('#total');
+            new Span(totalSpan, orders.reduce((acc, order) => acc += +order.total(), 0)).populate();
         };
     }
 
