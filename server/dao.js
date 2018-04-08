@@ -1,15 +1,15 @@
 const common = require("../wwwroot/js/common");
 const context = require('./data-layer');
 
-class Order extends common.Order{
+class OrderDao extends common.Order{
 
     constructor(user, foods, data){
         super(user, foods, data);
     }
 
-    Save(){
+    save(){
         return context.insertOrders(this);
     }
 }
 
-module.exports.Order = Order;
+module.exports.OrderDAO = OrderDao;

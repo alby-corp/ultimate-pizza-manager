@@ -1,7 +1,6 @@
-// Documentation:
-// 1) https://stackoverflow.com/questions/22156326/private-properties-in-javascript-es6-classes;
-// 2) https://coryrylan.com/blog/javascript-es6-class-syntax;
 (function () {
+    const toPrice = (value) => (value === undefined || value === null) ? undefined : value.toFixed(2);
+
     const User = (function () {
         const privateProps = new WeakMap();
 
@@ -30,10 +29,11 @@
 
         class Ingredient {
             constructor(id, name, price) {
+
                 privateProps.set(this, {
                     id: id,
                     name: name,
-                    price: price
+                    price: toPrice(price)
                 });
             };
 
@@ -50,7 +50,7 @@
             }
 
             toString() {
-                return privateProps.get(this).price === undefined ? `${privateProps.get(this).name}` : `${privateProps.get(this).name} - ${privateProps.get(this).price}`;
+                return this.price ? `${this.name}` : `${this.name} - ${this.price} &euro;`;
             };
         }
 
@@ -61,21 +61,22 @@
         const privateProps = new WeakMap();
 
         class Food {
-            constructor(id, name, price, ingredients, type, supplements, removals) {
 
-                if (!Number.isInteger(id)) {
-                    throw new Error('Id has to be a number');
+            constructor(id, name, price, ingredients, type) {
+
+                try {
+                    ingredients = (ingredients || []).map(i => new Ingredient(i.id, i.name, i.price));
+                } catch (error) {
+                    throw new Error(`Invalid ingredients array: ${error.message}`)
                 }
 
                 privateProps.set(this, {
                     id: id,
                     name: name,
-                    price: price,
-                    ingredients: ingredients === undefined ? [] : ingredients,
+                    price: toPrice(price),
+                    ingredients: ingredients,
                     type: type
                 });
-                this.removals = supplements || [];
-                this.supplements = removals || [];
             };
 
             get id() {
@@ -84,42 +85,106 @@
 
             get name() {
                 return privateProps.get(this).name;
-            }
+            };
 
             get price() {
                 return privateProps.get(this).price;
-            }
+            };
 
             get ingredients() {
                 return privateProps.get(this).ingredients;
-            }
+            };
 
             get type() {
                 return privateProps.get(this).type;
-            }
+            };
 
             toString() {
-                return `${privateProps.get(this).name} - ${privateProps.get(this).price}`;
+                return `${this.name} - ${this.price} &euro;`;
             };
         }
 
         return Food;
     })();
 
-    const Order = (function () {
+    const OrderedFood = (function () {
+        const privateProps = new WeakMap();
 
-        class Order {
-            constructor(user, foods, data) {
+        class OrderedFood {
 
-                if (foods !== undefined) {
-                    if (!Array.isArray(foods)) {
-                        throw 'Foods property has to be type Array';
-                    }
+            constructor(food, supplements, removals) {
+
+                try {
+                    supplements = (supplements || []).map(i => new Ingredient(i.id, i.name, i.price));
+                } catch (error) {
+                    throw new Error(`Invalid supplements array: ${error.message}`)
                 }
 
-                this.user = user;
-                this.foods = foods === undefined ? [] : foods;
-                this.data = data;
+                try {
+                    removals = (removals || []).map(i => new Ingredient(i.id, i.name, i.price));
+                } catch (error) {
+                    throw new Error(`Invalid removals array: ${error.message}`)
+                }
+
+                privateProps.set(this, {
+                    food: food,
+                    supplements: supplements,
+                    removals: removals
+                });
+            };
+
+            get food() {
+                return privateProps.get(this).food;
+            };
+
+            get supplements() {
+                return privateProps.get(this).supplements;
+            };
+
+            get removals() {
+                return privateProps.get(this).removals;
+            };
+        }
+
+        return OrderedFood
+    })();
+
+    const Order = (function () {
+
+        const privateProps = new WeakMap();
+
+        class Order {
+            constructor(user, foods, date) {
+
+                try {
+                    user = new User(user.id, user.name);
+                } catch (error) {
+                    throw new Error(`Invalid user: ${error.message}`);
+                }
+
+                try {
+                    foods = (foods || []).map(orderedFood => new OrderedFood(new Food(orderedFood.food.id, orderedFood.food.name, orderedFood.food.price, orderedFood.food.ingredients, orderedFood.food.type), orderedFood.supplements, orderedFood.removals));
+                } catch (error) {
+                    throw new Error(`Invalid foods array: ${error.message}`);
+                }
+
+                privateProps.set(this, {
+                    user: user,
+                    foods: foods,
+                    date: date
+                });
+            }
+
+            get user() {
+                return privateProps.get(this).user;
+            }
+
+            get foods() {
+                return privateProps.get(this).foods;
+            }
+
+            get date() {
+                return privateProps.get(this).date;
             }
 
             validate() {
@@ -128,8 +193,13 @@
                 }
 
                 if (!this.user) {
-                    throw new Error('User cannot be undefined or empty!');
+                    throw new Error('User cannot be undefined or empty');
                 }
+            }
+
+            total() {
+                const total = this.foods.reduce((acc, food) => acc += food.total(), 0);
+                return (+total).toFixed(2);
             }
         }
 
@@ -140,6 +210,7 @@
         User: User,
         Food: Food,
         Ingredient: Ingredient,
+        OrderedFood: OrderedFood,
         Order: Order
     };
 

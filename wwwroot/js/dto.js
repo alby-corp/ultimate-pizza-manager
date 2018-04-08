@@ -1,60 +1,46 @@
 class UserDTO {
-    constructor(id, name) {
+    constructor(id) {
+        if (!id instanceof Number) {
+            throw new Error('User id has to be integer');
+        }
+
         this.id = id;
-        this.name = name;
     }
 }
 
 class IngredientDTO {
-    constructor(id, name, price) {
+    constructor(id) {
+
+        if (!id instanceof Number) {
+            throw new Error('Ingredient id has to be number');
+        }
+
         this.id = id;
-        this.name = name;
-        this.price = price;
     }
 }
 
-class FoodDTO {
-    constructor(id, name, ingredients, price, type, supplements, removals) {
+class OrderedFoodDTO {
+    constructor(orderedFood) {
 
-        if (!ingredients instanceof Array && !ingredients.some((ingredient) => ingredient instanceof Food)) {
-            throw 'Ingredients property has to be instance of Array of Ingredient';
+        if (!orderedFood instanceof AlbyJs.Common.OrderedFood) {
+            throw 'Order has to be instance of AlbyJs.Common.OrderedFood';
         }
 
-        if (!supplements instanceof Array && !supplements.some((supplement) => supplement instanceof Food)) {
-            throw 'Supplements property has to be instance of Array of Ingredient';
-        }
-
-        if (!removals instanceof Array && !removals.some((removal) => removal instanceof Food)) {
-            throw 'Removals property has to be instance of Array of Ingredient';
-        }
-
-        this.id = id;
-        this.name = name;
-        this.ingredients = ingredients.map(i => i.toDTO());
-        this.price = price;
-        this.type = type;
-        this.supplements = supplements.map(s => s.toDTO());
-        this.removals = removals.map(r => r.toDTO());
+        this.id = orderedFood.food.id;
+        this.supplements = orderedFood.supplements.map(s => new IngredientDTO(s.id));
+        this.removals = orderedFood.removals.map(r => new IngredientDTO(r.id));
     }
 }
 
 class OrderDTO {
-    constructor(user, foods, data) {
+    constructor(order) {
 
-        if (!user instanceof User) {
-            throw 'User property has to be instance of User';
+        if (!order instanceof AlbyJs.Common.Order) {
+            throw 'Order has to be instance of AlbyJs.Common.Order';
         }
 
-        if (!foods instanceof Array && !foods.some((food) => food instanceof Food)) {
-            throw 'Foods property has to be instance of Array of Foods';
-        }
-
-        if (!data instanceof Date) {
-            throw 'Date property has to be instance of Date';
-        }
-
-        this.user = user.toDTO();
-        this.foods = foods.map(f => f.toDTO());
-        this.data = data;
+        this.user = new UserDTO(order.user.id);
+        this.foods = order.foods.map(orderedFood => new OrderedFoodDTO(orderedFood));
+        this.data = order.data;
     }
 }

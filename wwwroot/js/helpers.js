@@ -26,28 +26,31 @@ class Helpers {
         alert(message);
     }
 
-    static getPropertyDescriptor (obj, key) {
+    static getPropertyDescriptor(obj, key) {
         return Object.getOwnPropertyDescriptor(obj, key) || this.getPropertyDescriptor(Object.getPrototypeOf(obj), key)
     }
 
     static overrideOnSubmit() {
         $('#order-form').submit(() => {
+
             event.preventDefault();
 
-            const order = new Order();
+            const foods = [];
+            let user;
 
-            const userId =  document.getElementById('users').value; // $('#users').val();
-            if (userId){
-                order.user = new User(+userId);
+            const userId = $('#users').val();
+            if (userId) {
+                user = new AlbyJs.Common.User(+userId);
             }
 
-            const pizzaId = document.getElementById('pizzas').value;   //$('#pizzas').val();
+            const pizzaId = $('#pizzas').val();
             if (pizzaId) {
-                const pizza = new Food(+pizzaId);
-                pizza.removals = $('#removals').val().filter(id => !!id).map(r => new Ingredient(+r));
-                pizza.supplements = $('#supplements').val().filter(id => !!id).map(s => new Ingredient(+s));
+                const removals = $('#removals').val().filter(id => !!id).map(r => new AlbyJs.Common.Ingredient(+r));
+                const supplements = $('#supplements').val().filter(id => !!id).map(s => new AlbyJs.Common.Ingredient(+s));
 
-                order.foods.push(pizza);
+                const pizza = new AlbyJs.Common.OrderedFood(new AlbyJs.Common.Food(+pizzaId), supplements, removals);
+                
+                foods.push(pizza);
             }
 
             const others = [
@@ -57,8 +60,10 @@ class Helpers {
             ].filter(id => !!id);
 
             others.forEach(id => {
-                order.foods.push(new Food(+id));
+                foods.push(new AlbyJs.Common.OrderedFood(new AlbyJs.Common.Food(+id)));
             });
+
+            const order = new Order(user, foods);
 
             try {
                 order.validate()

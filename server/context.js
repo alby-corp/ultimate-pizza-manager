@@ -23,7 +23,23 @@ const Context = function () {
             return await client.query(query);
 
         } catch (err) {
-            console.log(err);
+            console.log(`ERROR: ${err}`);
+        }
+
+        client.end();
+    };
+
+    this.scalar = async (query) => {
+
+        const client = this.clientFactory();
+
+        try {
+
+            await client.connect();
+            return (await client.query({text: query, rowMode: 'array'})).rows[0][0];
+
+        } catch (err) {
+            console.log(`ERROR: ${err}`);
         }
 
         client.end();
@@ -38,16 +54,17 @@ const Context = function () {
 
             await client.query('BEGIN');
 
-            for(let query of queries){
+            for (let query of queries) {
                 await client.query(query);
             }
 
-            await client.query('COMMIT');
-
         } catch (err) {
-            console.log(err);
+            console.log(`ERROR: ${err}`);
+            await client.query('ROLLBACK');
         }
 
+        await client.query('COMMIT');
+        
         client.end();
     };
 };

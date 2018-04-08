@@ -5,31 +5,24 @@ const filename = "./db.json";
 // const menu = require('./infrastructure/_menu.json');
 const app = express();
 const bodyParser = require('body-parser');
-const validator = require('express-validator');
+
 const context = require('./server/data-layer');
 
-const model = require('./server/model');
+const dao = require('./server/dao');
 const common = require('./wwwroot/js/common');
 
 // Static files
 app.use('/public', express.static('wwwroot'));
 app.use(express.static('resources'));
 
+// Body parser
 app.use(bodyParser.urlencoded());
 
-// app.use(validator());
-// app.use(function (req, res, next) {
-//     for (let item in req.body) {
-//         req.sanitize(item).escape();
-//     }
-//     next();
-// });
-
-// Body parser
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
+
 
 // API
 app.get('/', (req, res) => {
@@ -37,38 +30,52 @@ app.get('/', (req, res) => {
 });
 
 app.get('/users', async (req, res) => {
-    res.send((await context.getUsers()).rows);
+
+    const users = await context.getUsers();
+    res.send(users);
 });
 
 app.get('/foods', async (req, res) => {
 
-    const foods = (await context.getFoods()).rows.map(row => row.json);
+    const foods = await context.getFoods();
     res.send(foods);
 });
 
 app.get('/supplements', async (req, res) => {
+
     const supplements = await context.getSupplements();
-    res.send(supplements.rows);
+    res.send(supplements);
 });
 
-app.get('/getWeekOrders', async (req, res) => {
+app.get('/orders', async (req, res) => {
+
     const orders = await context.getOrders();
-    res.send(orders.rows.map(row => row.json_build_object));
+    res.send(orders);
 });
 
 app.post('/insert', async (req, res) => {
 
     const data = req.body;
 
-    const order = new model.Order(+data.user.id,  data.foods.map(f => {
-        const food = new common.Food(+f.id);
-        food.supplements = (f.supplements || []).map(s => new common.Ingredient(+s.id));
-        food.removals = (f.removals || []).map(s => new common.Ingredient(+s.id));
+    // const removals = $('#removals').val().filter(id => !!id).map(r => new AlbyJs.Common.Ingredient(+r));
+    // const supplements = $('#supplements').val().filter(id => !!id).map(s => new AlbyJs.Common.Ingredient(+s));
+    //
+    // const pizza = new AlbyJs.Common.OrderedFood(new AlbyJs.Common.Food(+pizzaId), supplements, removals);
 
-        return food;
-    }));
+    // const order = new Order(user, foods);
 
-    await order.Save();
+    const user = new common.User(+data.user.id);
+    const foods = data.foods.map(f => new common.OrderedFood(new common.Food(+f.id), f.supplements, f.removals));
+
+    const order = new dao.OrderDAO(user, foods);
+
+    try {
+        order.validate();
+    } catch (error) {
+        res.send('Ordine non valido si prega di riprovare. Magari utilizzando il client messo a disposizione e non postman o simili!');
+    }
+
+    await order.save();
 
     res.send('Ordine Registrato');
 });

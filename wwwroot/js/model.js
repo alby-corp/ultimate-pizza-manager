@@ -81,53 +81,83 @@ const Table = (function () {
     const privateProps = new WeakMap();
 
     class Table {
-        constructor(table, orders) {
+        constructor(table, rows) {
+
+            if (!(Array.isArray(rows) || rows.filter(row => !(row instanceof BaseRow)).length > 0)){
+                throw 'Rows has to be an Array of BaseRow';
+            }
+
             privateProps.set(this, {
                 table: table,
-                orders: orders
+                rows: rows
             });
         }
 
         populate() {
-            privateProps.get(this).table.children('tbody').append(privateProps.get(this).orders.map(order => new Row(order.user, order.foods).render()));
+            privateProps.get(this).rows.forEach(row => privateProps.get(this).table.children('tbody').append(row.render()));
         }
     }
 
     return Table;
 })();
 
-const Row = (function () {
+class BaseRow {
+    render(){
+        throw new Error("Render is abstract method");
+    }
+}
+
+const OrdersRow = (function () {
+
     const privateProps = new WeakMap();
 
-    class Row {
-        constructor(user, foods) {
-            privateProps.set(this, {
+    class OrdersRow extends BaseRow {
+
+        constructor(user, foods, total) {
+            super();
+
+            privateProps.set(this,  {
                 user: user,
-                foods: foods
+                foods: foods,
+                total: total
             });
         }
 
-        // render() {
-        //     return `<tr><td>${privateProps.get(this).user}</td>
-        //                 <td><table>${privateProps.get(this).foods.map(food => `<tr><td>${food.name}</td></tr>`).join('')}
-        //                 </table></td>
-        //             </tr>`;
-        // }
-
-
-
-            render() {
-                return `<tr><td>${privateProps.get(this).user}</td>
-                            <td><table>${privateProps.get(this).foods.map(food => { return `<tr><td>${food.name}</td>
-                                                                                           <td><table>${food.supplements.map(s => { return `<tr><td>${s.name}</td></tr>`}).join('')}</table></td>
-                                                                                           <td><table>${food.removals.map(r => { return `<tr><td>${r.name}</td></tr>`}).join('')}</table></td>
-                                                                                       </tr>`}).join('')
-                            }</table></td>
-                        </tr>`;
-            }
+        render() {
+            return `<tr><td>${privateProps.get(this).user}</td><td><table>${privateProps.get(this).foods.map(food => {
+                return `  <tr><td>${food.name}</td><td><table>${food.supplements.map(s => {
+                    return `<tr><td>${s.name}</td></tr>`
+                }).join('')}</table></td><td><table>${food.removals.map(r => {
+                    return `<tr><td>${r.name}</td></tr>`
+                }).join('')}</table></td></tr>`
+            }).join('')}</table></td><td>${privateProps.get(this).total}</td></tr>`;
+        }
     }
 
-    return Row;
+    return OrdersRow;
+})();
+
+const SummaryRow = (function () {
+
+    const privateProps = new WeakMap();
+
+    class SummaryRow extends BaseRow {
+
+        constructor(food, total) {
+            super();
+
+            privateProps.set(this,  {
+                food: food,
+                total: total
+            });
+        }
+
+        render() {
+            return `<tr><td>${privateProps.get(this).food}</td><td></td></tr>`;
+        }
+    }
+
+    return SummaryRow;
 })();
 
 const Order = class Order extends AlbyJs.Common.Order {
@@ -136,36 +166,8 @@ const Order = class Order extends AlbyJs.Common.Order {
     }
 
     toDTO() {
-        return new OrderDTO(this.user, this.foods, this.data);
+        return new OrderDTO(this);
     }
+
 };
 
-const Food = class Food extends AlbyJs.Common.Food {
-    constructor(id, name, price, ingredients, type, supplements, removals) {
-        super(id, name, price, ingredients, type, supplements, removals)
-    }
-
-    toDTO() {
-        return new FoodDTO(this.id, this.name, this.ingredients, this.price, this.type, this.supplements, this.removals);
-    }
-};
-
-const Ingredient = class Ingredient extends AlbyJs.Common.Ingredient {
-    constructor(id, name, price) {
-        super(id, name, price);
-    }
-
-    toDTO() {
-        return new IngredientDTO(this.id, this.name, this.price);
-    }
-};
-
-const User = class User extends AlbyJs.Common.User {
-    constructor(id, name) {
-        super(id, name);
-    }
-
-    toDTO() {
-        return new UserDTO(this.id, this.name);
-    }
-};

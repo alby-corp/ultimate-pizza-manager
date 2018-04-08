@@ -6,13 +6,13 @@ const Core = (function () {
             link(null, $('#container'));
         };
 
-        static async initOrders() {
+        static async initMakeOrders() {
 
             const users = await getUsers();
             const foods = await getFoods();
-            const ingredients = await getSupplements();
+            const supplements = await getSupplements();
 
-            Helpers.overrideOnSubmit(users, ingredients, foods);
+            Helpers.overrideOnSubmit();
 
             const usersDDL = $('#users');
             new DropDownList(usersDDL, users.map(user => new Option(user.id, user.name, false))).populate();
@@ -35,20 +35,38 @@ const Core = (function () {
                 .autoRefresh(
                     pizzasDDL,
                     (id) => id
-                        ? Helpers.getIngredientsOptions(foods.find(f => f.id === +id).ingredients, Helpers.getPropertyDescriptor(Ingredient.prototype, 'name').get)
+                        ? Helpers.getIngredientsOptions(foods.find(f => f.id === +id).ingredients, Helpers.getPropertyDescriptor(AlbyJs.Common.Ingredient.prototype, 'name').get)
                         : []
                 );
 
             const supplementsDDL = $('#supplements');
-            new DropDownList(supplementsDDL, Helpers.getIngredientsOptions(ingredients, Ingredient.prototype.toString))
+            new DropDownList(supplementsDDL, Helpers.getIngredientsOptions(supplements, AlbyJs.Common.Ingredient.prototype.toString))
                 .populate()
                 .conditionalEnable(pizzasDDL)
                 .autoRefresh(
                     pizzasDDL,
                     (id) => id
-                        ? Helpers.getIngredientsOptions(Helpers.exception(ingredients, foods.find(f => f.id === +id).ingredients), Ingredient.prototype.toString)
-                        : Helpers.getIngredientsOptions(ingredients, Ingredient.prototype.toString)
+                        ? Helpers.getIngredientsOptions(Helpers.exception(supplements, foods.find(f => f.id === +id).ingredients), AlbyJs.Common.Ingredient.prototype.toString)
+                        : Helpers.getIngredientsOptions(supplements, AlbyJs.Common.Ingredient.prototype.toString)
                 );
+        };
+
+        static async initGetOrders() {
+            let orders = await getOrders();
+            orders = orders.map(order => new Order(order.user, order.foods, order.data));
+
+            const ordersTable = $('#week-orders');
+            new Table(ordersTable, orders.map(order => new OrdersRow(order.user, order.foods, order.total()))).populate();
+
+            const summary = orders.reduce((acc, order) => acc.concat(order.foods), []).groupBy('name');
+
+            const rows = [];
+            for (let property in summary) {
+                rows.push(new SummaryRow(property, summary[property].length, summary[property].reduce((acc, food) => food.total(), 0)));
+            }
+
+            const summaryTable = $('#summary');
+            new Table(summaryTable, rows).populate();
         };
     }
 
@@ -56,13 +74,3 @@ const Core = (function () {
 })();
 
 
-initWeekOrders = async () => {
-    let orders = await getWeekOrders();
-    orders = orders.map(order => new Order(order.user, order.foods, order.data));
-
-    const table = $('#week-orders');
-
-    const t = new Table(table, orders);
-    t.populate();
-
-};

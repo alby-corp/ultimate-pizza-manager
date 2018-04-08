@@ -3,7 +3,7 @@ CREATE EXTENSION "uuid-ossp";
 CREATE TABLE ingredient (
     id 			SERIAL PRIMARY KEY,
     name       	text NOT NULL,
-    price       money
+    price       numeric(3, 2)
 );
 
 CREATE TABLE type(
@@ -19,7 +19,7 @@ CREATE TABLE dough(
 CREATE TABLE food (
 	  id 			SERIAL PRIMARY KEY,
     name       	text 	NOT NULL,
-    price       money 	NOT NULL DEFAULT 0,
+    price       numeric(3,2) 	NOT NULL DEFAULT 0,
     type    integer	NOT NULL REFERENCES type (id)
 );
 
