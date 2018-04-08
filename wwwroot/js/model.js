@@ -113,24 +113,24 @@ const OrdersRow = (function () {
 
     class OrdersRow extends BaseRow {
 
-        constructor(user, foods, total) {
+        constructor(order) {
             super();
 
             privateProps.set(this,  {
-                user: user,
-                foods: foods,
-                total: total
+                user: order.user.name,
+                foods: order.foods,
+                total: order.total
             });
         }
 
         render() {
-            return `<tr><td>${privateProps.get(this).user}</td><td><table>${privateProps.get(this).foods.map(food => {
-                return `  <tr><td>${food.name}</td><td><table>${food.supplements.map(s => {
+            return `<tr><td>${privateProps.get(this).user}</td><td><table>${privateProps.get(this).foods.map(orderedFood => {
+                return `  <tr><td>${orderedFood.food.name}</td><td><table>${orderedFood.supplements.map(s => {
                     return `<tr><td>${s.name}</td></tr>`
-                }).join('')}</table></td><td><table>${food.removals.map(r => {
+                }).join('')}</table></td><td><table>${orderedFood.removals.map(r => {
                     return `<tr><td>${r.name}</td></tr>`
                 }).join('')}</table></td></tr>`
-            }).join('')}</table></td><td>${privateProps.get(this).total}</td></tr>`;
+            }).join('')}</table></td><td>${privateProps.get(this).total()}</td></tr>`;
         }
     }
 

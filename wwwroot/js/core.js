@@ -52,11 +52,10 @@ const Core = (function () {
         };
 
         static async initGetOrders() {
-            let orders = await getOrders();
-            orders = orders.map(order => new Order(order.user, order.foods, order.data));
+            const orders = await getOrders();
 
             const ordersTable = $('#week-orders');
-            new Table(ordersTable, orders.map(order => new OrdersRow(order.user, order.foods, order.total()))).populate();
+            new Table(ordersTable, orders.map(order => new OrdersRow(order))).populate();
 
             const summary = orders.reduce((acc, order) => acc.concat(order.foods), []).groupBy('name');
 

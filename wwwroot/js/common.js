@@ -33,7 +33,7 @@
                 privateProps.set(this, {
                     id: id,
                     name: name,
-                    price: toPrice(price)
+                    price: +price
                 });
             };
 
@@ -73,7 +73,7 @@
                 privateProps.set(this, {
                     id: id,
                     name: name,
-                    price: toPrice(price),
+                    price: +price,
                     ingredients: ingredients,
                     type: type
                 });
@@ -144,6 +144,10 @@
             get removals() {
                 return privateProps.get(this).removals;
             };
+
+            total(){
+                return this.food.price + this.supplements.reduce((acc, supplement) => acc += supplement.price, 0);
+            }
         }
 
         return OrderedFood
@@ -198,7 +202,7 @@
             }
 
             total() {
-                const total = this.foods.reduce((acc, food) => acc += food.total(), 0);
+                const total = this.foods.reduce((acc, orderedFood) => acc += orderedFood.total(), 0);
                 return (+total).toFixed(2);
             }
         }

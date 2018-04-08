@@ -41,29 +41,33 @@ const ordersQuery = `               WITH order_foods_cte AS (
                                         LEFT JOIN 		ingredient r on r.id = foi.ingredient AND foi.isremoval = TRUE
                                         LEFT JOIN 		ingredient s on s.id = foi.ingredient AND foi.isremoval = FALSE
                                         GROUP BY 		fo.id, f.id, f.name, f.type, f.price 
-                                    ),
-                                    order_cte AS (
+                                    )
+                                    ,order_cte AS (
                                         SELECT 			
-                                                        m.username as user, 
+                                                        m.id as user_id, 
+                                                        m.username as user_name, 
                                                         o.date,
-                                                        json_build_object('id', f.id, 'name', f.name, 'type', f.type, 'price', f.price, 'removals', f.removals, 'supplements', f.supplements) as foods 
+                                                        f.order_id,
+                                                        json_build_object('food', json_build_object('id', f.id, 'name', f.name, 'type', f.type, 'price', f.price), 'removals', f.removals, 'supplements', f.supplements) AS foods
                                         FROM 			order_foods_cte f
                                         INNER JOIN 		"order" o ON f.order_id = o.id
                                         INNER JOIN		muppet m ON o.muppet = m.id
                                     )
+                                    ,grouped_order_cte AS (
+                                        SELECT json_build_object('id', o.user_id, 'name', o.user_name) as user, o.date, json_agg(o.foods) as foods FROM "order_cte" o GROUP BY o.user_id, o.user_name, o.date, o.order_id
+                                    )
                                     
-                                    SELECT json_agg(o) FROM "order_cte" o`;
-
+                                    SELECT json_agg(to_json(go)) FROM grouped_order_cte go`;
 
 const insertQueryFactory = (order) => {
                                     const queries = [];
 
                                     const orderId = uuid();
-                                    queries.push(`INSERT INTO "order"(id, muppet, data) VALUES ('${orderId}', ${order.user}, NOW());`);
+                                    queries.push(`INSERT INTO "order"(id, muppet, date) VALUES ('${orderId}', ${order.user.id}, NOW());`);
 
                                     order.foods.forEach(f => {
                                         const foodOrderId = uuid();
-                                        queries.push(`INSERT INTO "food_order"(id, food, "order") VALUES ('${foodOrderId}', ${f.id}, '${orderId}');`);
+                                        queries.push(`INSERT INTO "food_order"(id, food, "order") VALUES ('${foodOrderId}', ${f.food.id}, '${orderId}');`);
                                         f.removals.forEach(s => queries.push(`INSERT INTO food_order_ingredient (food_order,ingredient, isRemoval) VALUES ('${foodOrderId}', ${s.id}, TRUE);`));
                                         f.supplements.forEach(s => queries.push(`INSERT INTO food_order_ingredient (food_order,ingredient, isRemoval) VALUES ('${foodOrderId}', ${s.id}, FALSE);`));
                                     });
@@ -80,7 +84,7 @@ function DataLayer() {
     this.getSupplements = () => context.scalar(supplementsQuery);
 
     this.getOrders = () => context.scalar(ordersQuery);
-    
+
     this.insertOrders = (order) => context.execute(insertQueryFactory(order));
 }
 
