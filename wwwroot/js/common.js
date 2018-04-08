@@ -50,7 +50,7 @@
             }
 
             toString() {
-                return this.price ? `${this.name}` : `${this.name} - ${this.price} &euro;`;
+                return this.price === undefined ? `${this.name}` : `${this.name} - ${this.price} &euro;`;
             };
         }
 

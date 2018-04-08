@@ -57,19 +57,27 @@ const Core = (function () {
             const ordersTable = $('#week-orders');
             new Table(ordersTable, orders.map(order => new OrdersRow(order))).populate();
 
-            const summary = orders.reduce((acc, order) => acc.concat(order.foods), []).groupBy('name');
+            const summaryTable = $('#summary-orders');
 
-            const rows = [];
-            for (let property in summary) {
-                rows.push(new SummaryRow(property, summary[property].length, summary[property].reduce((acc, food) => food.total(), 0)));
-            }
+            const ordersWithKey = _.flatten(orders.map(o => o.foods)).map(orderedFood => {
+                return {
+                    key: orderedFood.food.id.toString() + orderedFood.supplements.map(s => s.id).toString() + orderedFood.removals.map(r => r.id).toString(),
+                    order: orderedFood
+                }
+            });
 
-            const summaryTable = $('#summary');
-            new Table(summaryTable, rows).populate();
+            const summaryRows=
+                _.map(_.groupBy(ordersWithKey, (order) => order.key), (orderWithKey) => {
+                    return new SummaryRow(_.first(orderWithKey).order, orderWithKey.length)
+
+                });
+
+            new Table(summaryTable, summaryRows).populate();
         };
     }
 
     return Core;
 })();
 
+// orderedFoods.map(orderedFood => orderedFood.food.id.toString() + orderedFood.supplements.map(s => s.id).toString() + orderedFood.removals.map(r => r.id).toString())
 

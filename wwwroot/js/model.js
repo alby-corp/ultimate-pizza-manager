@@ -83,7 +83,7 @@ const Table = (function () {
     class Table {
         constructor(table, rows) {
 
-            if (!(Array.isArray(rows) || rows.filter(row => !(row instanceof BaseRow)).length > 0)){
+            if (!(Array.isArray(rows) || rows.filter(row => !(row instanceof BaseRow)).length > 0)) {
                 throw 'Rows has to be an Array of BaseRow';
             }
 
@@ -102,7 +102,7 @@ const Table = (function () {
 })();
 
 class BaseRow {
-    render(){
+    render() {
         throw new Error("Render is abstract method");
     }
 }
@@ -116,21 +116,45 @@ const OrdersRow = (function () {
         constructor(order) {
             super();
 
-            privateProps.set(this,  {
+            privateProps.set(this, {
                 user: order.user.name,
                 foods: order.foods,
-                total: order.total
+                total: order.total()
             });
         }
 
+        get user() {
+            return privateProps.get(this).user;
+        };
+
+        get foods() {
+            return privateProps.get(this).foods;
+        };
+
+        get total() {
+            return privateProps.get(this).total;
+        };
+
         render() {
-            return `<tr><td>${privateProps.get(this).user}</td><td><table>${privateProps.get(this).foods.map(orderedFood => {
-                return `  <tr><td>${orderedFood.food.name}</td><td><table>${orderedFood.supplements.map(s => {
-                    return `<tr><td>${s.name}</td></tr>`
-                }).join('')}</table></td><td><table>${orderedFood.removals.map(r => {
-                    return `<tr><td>${r.name}</td></tr>`
-                }).join('')}</table></td></tr>`
-            }).join('')}</table></td><td>${privateProps.get(this).total()}</td></tr>`;
+
+            const rowspan = this.foods.length;
+
+            const firstFood = _.first(this.foods);
+            const otherFoods = _.without(this.foods, _.findWhere(this.foods, firstFood));
+
+            return `<tr>
+                        <td rowspan="${rowspan}">${this.user}</td>
+                        <td>${firstFood.food.toString()}</td>
+                        <td><ul>${firstFood.supplements.map(s => `<li>${s.toString()}</li>`).join('')}</ul></td>
+                        <td><ul>${firstFood.removals.map(r => `<li>${r.name}</li>`).join('')}</ul></td>
+                        <td rowspan="${rowspan}">${this.total}</td>
+                    </tr>
+
+                    ${otherFoods.map(orderedFood => `<tr>
+                                                        <td>${orderedFood.food.toString()}</td>
+                                                        <td><ul>${orderedFood.supplements.map(s => `<li>${s.toString()}</li>`).join('')}</ul></td>
+                                                        <td><ul>${orderedFood.removals.map(r => `<li>${r.name}</li>`).join('')}</ul></td>
+                                                    </tr>`)}`;
         }
     }
 
@@ -143,17 +167,30 @@ const SummaryRow = (function () {
 
     class SummaryRow extends BaseRow {
 
-        constructor(food, total) {
+        constructor(orderedFood, count) {
             super();
 
-            privateProps.set(this,  {
-                food: food,
-                total: total
+            privateProps.set(this, {
+                orderedFood: orderedFood,
+                count: count
             });
         }
 
+        get orderedFood() {
+            return privateProps.get(this).orderedFood;
+        };
+
+        get count() {
+            return privateProps.get(this).count;
+        };
+
         render() {
-            return `<tr><td>${privateProps.get(this).food}</td><td></td></tr>`;
+            return `<tr>    
+                        <td>${this.orderedFood.food.name}</td>
+                        <td><ol>${this.orderedFood.supplements.map(s => `<li>${s.name}</li>`).join('')}</ol></td>
+                        <td><ol>${this.orderedFood.removals.map(r => `<li>${r.name}</li>`).join('')}</ol></td>
+                        <td>${this.count}</td>
+                    </tr>`;
         }
     }
 

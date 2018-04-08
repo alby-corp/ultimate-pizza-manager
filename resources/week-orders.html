@@ -1,16 +1,29 @@
 <h2>Ordini</h2>
-<table id="week-orders" class="table-bordered">
-    <thead>
+<table id="week-orders" class="table table-bordered">
+    <thead class="thead-dark">
     <tr>
         <th>Nome</th>
-        <th><table><tr><td>Ordine</td><td>Supplementi</td><td>Rimozioni</td></tr></table></th>
+        <th>Ordine</th>
+        <th>Supplementi</th>
+        <th>Rimozioni</th>
+        <th>Totale</th>
     </tr>
     </thead>
     <tbody></tbody>
 </table>
 
 <h2>Resoconto</h2>
-<ul id="summary"></ul>
+<table id="summary-orders" class="table table-bordered">
+    <thead class="thead-dark">
+    <tr>
+        <th>Ordine</th>
+        <th>Supplementi</th>
+        <th>Rimozioni</th>
+        <th>Quanti&agrave;</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
 
 <script>
     $(document).ready(function () {
