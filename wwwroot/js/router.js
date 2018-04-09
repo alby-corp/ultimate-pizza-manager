@@ -1,15 +1,32 @@
 // Navigation
-link = (page, container) => {
+link = async (page, container) => {
+
     container.empty();
 
+    let data;
     switch (page) {
         case "menu":
-            getMenuPage().then(data => Helpers.populateContainer(data, container));
+            data = await getMenuPage();
+            Helpers.populateContainer(data, container);
             break;
         case 'week-orders':
-            getWeekOrdersPage().then(data => Helpers.populateContainer(data, container));
+            data = await getWeekOrdersPage();
+            Helpers.populateContainer(data, container);
+            break;
+        case 'info':
+            data = await getInfoPage();
+            Helpers.populateContainer(data, container);
             break;
         default:
-            getOrdersPage().then(data => Helpers.populateContainer(data, container));
+            data = await getOrdersPage();
+            Helpers.populateContainer(data, container);
     }
 };
+
+
+
+
+
+
+
+

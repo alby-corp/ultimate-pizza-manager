@@ -226,6 +226,67 @@ const Span = (function () {
     return Span;
 })();
 
+const List = (function () {
+
+    const privateProps = new WeakMap();
+
+    class List {
+
+        constructor(list, items) {
+            privateProps.set(this, {
+                list: list,
+                items: items
+            });
+        }
+
+        get list() {
+            return privateProps.get(this).list;
+        };
+
+        get items() {
+            return privateProps.get(this).items;
+        };
+
+        populate() {
+            this.items.forEach(item => this.list.append(item.render()))
+        }
+    }
+
+    return List;
+})();
+
+class BaseListItem {
+    render() {
+        throw new Error("Render is abstract method");
+    }
+}
+
+const AdminListItem = (function () {
+
+    const privateProps = new WeakMap();
+
+    class AdminListItem extends BaseListItem {
+
+        constructor(admin) {
+            super();
+
+            privateProps.set(this, {
+                admin: admin
+            });
+        }
+
+        get admin(){
+            return privateProps.get(this).admin;
+        }
+
+        render() {
+            return `<li class="list-group-item">${this.admin.name} ${this.admin.onHoliday ? ` &egrave; in ferie` : ``} </li>`;
+        }
+    }
+
+    return AdminListItem;
+})();
+
 const Order = class Order extends AlbyJs.Common.Order {
     constructor(user, foods, data) {
         super(user, foods, data);

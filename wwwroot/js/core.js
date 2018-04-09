@@ -77,10 +77,14 @@ const Core = (function () {
             const totalSpan = $('#total');
             new Span(totalSpan, orders.reduce((acc, order) => acc += +order.total(), 0)).populate();
         };
+
+        static async initInfo() {
+            const administrators = await getAdministrators();
+
+            const adminList = $('#admin-list');
+            new List(adminList, administrators.map(admin => new AdminListItem(admin))).populate();
+        }
     }
 
     return Core;
 })();
-
-// orderedFoods.map(orderedFood => orderedFood.food.id.toString() + orderedFood.supplements.map(s => s.id).toString() + orderedFood.removals.map(r => r.id).toString())
-

@@ -31,7 +31,7 @@ class Helpers {
     }
 
     static overrideOnSubmit() {
-        $('#order-form').submit(() => {
+        $('#order-form').submit(async () => {
 
             event.preventDefault();
 
@@ -49,7 +49,7 @@ class Helpers {
                 const supplements = $('#supplements').val().filter(id => !!id).map(s => new AlbyJs.Common.Ingredient(+s));
 
                 const pizza = new AlbyJs.Common.OrderedFood(new AlbyJs.Common.Food(+pizzaId), supplements, removals);
-                
+
                 foods.push(pizza);
             }
 
@@ -72,7 +72,10 @@ class Helpers {
                 return false;
             }
 
-            $.post('insert', order.toDTO());
+            const result = await $.post('insert', order.toDTO());
+
+            alertService(result);
+
             return false;
         });
     };

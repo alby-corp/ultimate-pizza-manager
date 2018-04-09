@@ -24,6 +24,29 @@
         return User;
     })();
 
+    const Administrator = (function () {
+        const privateProps = new WeakMap();
+
+        class Administrator {
+            constructor(name, onHoliday) {
+                privateProps.set(this, {
+                    name: name,
+                    onHoliday: onHoliday
+                });
+            };
+
+            get name() {
+                return privateProps.get(this).name;
+            };
+
+            get onHoliday() {
+                return privateProps.get(this).onHoliday;
+            }
+        }
+
+        return Administrator;
+    })();
+
     const Ingredient = (function () {
         const privateProps = new WeakMap();
 
@@ -145,7 +168,7 @@
                 return privateProps.get(this).removals;
             };
 
-            total(){
+            total() {
                 return this.food.price + this.supplements.reduce((acc, supplement) => acc += supplement.price, 0);
             }
         }
@@ -215,7 +238,8 @@
         Food: Food,
         Ingredient: Ingredient,
         OrderedFood: OrderedFood,
-        Order: Order
+        Order: Order,
+        Administrator: Administrator
     };
 
     if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {

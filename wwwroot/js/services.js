@@ -19,6 +19,11 @@ getOrders = async () => {
     return orders.map(order => new AlbyJs.Common.Order(order.user, order.foods, order.date));
 };
 
+getAdministrators = async () => {
+    const administrators = await get('administrators');
+    return administrators.map(admin => new AlbyJs.Common.Administrator(admin.name, admin.onHoliday));
+};
+
 // Alert service
 alertService = (message) => {
     alert(message);
@@ -32,3 +37,5 @@ getOrdersPage = () => get('order.html');
 getMenuPage = () => get('menu.html');
 
 getWeekOrdersPage = () => get('week-orders.html');
+
+getInfoPage = () => get('info.html');

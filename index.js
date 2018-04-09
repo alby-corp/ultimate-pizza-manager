@@ -23,7 +23,6 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-
 // API
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname + '/index.html'));
@@ -53,6 +52,12 @@ app.get('/orders', async (req, res) => {
     res.send(orders);
 });
 
+app.get('/administrators', async (req, res) => {
+
+    const getAdministrators = await context.getAdministrators();
+    res.send(getAdministrators);
+});
+
 app.post('/insert', async (req, res) => {
 
     const data = req.body;
@@ -70,6 +75,7 @@ app.post('/insert', async (req, res) => {
 
     await order.save();
 
+    res.status(200);
     res.send('Ordine Registrato');
 });
 
