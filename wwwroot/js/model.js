@@ -119,7 +119,7 @@ const OrdersRow = (function () {
             privateProps.set(this, {
                 user: order.user.name,
                 foods: order.foods,
-                total: order.total()
+                total: `${order.total().toFixed(2)} &euro;`
             });
         }
 
@@ -233,6 +233,11 @@ const List = (function () {
     class List {
 
         constructor(list, items) {
+
+            if (!(Array.isArray(items) || items.filter(row => !(row instanceof BaseListItem)).length > 0)) {
+                throw 'Items has to be an Array of BaseListItem';
+            }
+
             privateProps.set(this, {
                 list: list,
                 items: items
@@ -275,7 +280,7 @@ const AdminListItem = (function () {
             });
         }
 
-        get admin(){
+        get admin() {
             return privateProps.get(this).admin;
         }
 

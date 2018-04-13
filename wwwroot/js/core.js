@@ -8,9 +8,9 @@ const Core = (function () {
 
         static async initMakeOrders() {
 
-            const users = await getUsers();
-            const foods = await getFoods();
-            const supplements = await getSupplements();
+            const users = this.responseHandler(await getUsers());
+            const foods = this.responseHandler(await getFoods());
+            const supplements = this.responseHandler(await getSupplements());
 
             Helpers.overrideOnSubmit();
 
@@ -52,7 +52,7 @@ const Core = (function () {
         };
 
         static async initGetOrders() {
-            const orders = await getOrders();
+            const orders = this.responseHandler(await getOrders());
 
             const ordersTable = $('#week-orders');
             new Table(ordersTable, orders.map(order => new OrdersRow(order))).populate();
@@ -75,14 +75,22 @@ const Core = (function () {
             new Table(summaryTable, summaryRows).populate();
 
             const totalSpan = $('#total');
-            new Span(totalSpan, orders.reduce((acc, order) => acc += +order.total(), 0)).populate();
+            new Span(totalSpan, orders.reduce((acc, order) => acc += +order.total(), 0).toFixed(2)).populate();
         };
 
         static async initInfo() {
-            const administrators = await getAdministrators();
+            const administrators = this.responseHandler(await getAdministrators());
 
             const adminList = $('#admin-list');
             new List(adminList, administrators.map(admin => new AdminListItem(admin))).populate();
+        }
+
+        static async responseHandler(func){
+            try{
+                return func();
+            } catch (error) {
+                alertService(error)
+            }
         }
     }
 

@@ -1,72 +1,82 @@
 const pg = require('pg');
 
-const Context = function () {
+const Context = (function () {
+    const privateProps = new WeakMap();
 
-    this.connectionString = {           // const config_PROD = process.env.DATABASE_URL;
-        host: 'albiberto.ddns.net',
-        user: 'teamYOOX',
-        password: '$cSmG6fn',
-        database: 'ultimate_pizza_manager',
-        port: 5432,
-        ssl: false
-    };
+    class Context {
+        constructor(connectionString) {
+            privateProps.set(this, {
+                connectionString: connectionString
+            });
+        };
 
-    this.clientFactory = () => new pg.Client(this.connectionString);
+        get connectionString() {
+            return privateProps.get(this).connectionString;
+        };
 
-    this.query = async (query) => {
-
-        const client = this.clientFactory();
-
-        try {
-
-            await client.connect();
-            return await client.query(query);
-
-        } catch (err) {
-            console.log(`ERROR: ${err}`);
+        clientFactory() {
+            return new pg.Client(this.connectionString)
         }
 
-        client.end();
-    };
+        async query(query) {
 
-    this.scalar = async (query) => {
+            const client = this.clientFactory();
 
-        const client = this.clientFactory();
+            try {
+                await client.connect();
+                return await client.query(query);
+            } catch (error) {
+                console.log(`ERROR: ${error}`);
+                throw error;
+            } finally {
+                client.end();
+            }
+        };
 
-        try {
+        async scalar(query) {
 
-            await client.connect();
-            return (await client.query({text: query, rowMode: 'array'})).rows[0][0];
+            const client = this.clientFactory();
 
-        } catch (err) {
-            console.log(`ERROR: ${err}`);
-        }
+            try {
 
-        client.end();
-    };
+                await client.connect();
+                return (await client.query({text: query, rowMode: 'array'})).rows[0][0];
 
-    this.execute = async (queries) => {
+            } catch (error) {
+                console.log(`ERROR: ${error}`);
+                throw error;
+            } finally {
+                client.end();
+            }
+        };
 
-        const client = this.clientFactory();
+        async execute (queries) {
 
-        try {
-            await client.connect();
+            const client = this.clientFactory();
 
-            await client.query('BEGIN');
+            try {
+                await client.connect();
 
-            for (let query of queries) {
-                await client.query(query);
+                await client.query('BEGIN');
+
+                for (let query of queries) {
+                    await client.query(query);
+                }
+
+            } catch (err) {
+                console.log(`ERROR: ${err}`);
+
+                await client.query('ROLLBACK');
+                client.end();
             }
 
-        } catch (err) {
-            console.log(`ERROR: ${err}`);
-            await client.query('ROLLBACK');
-        }
+            await client.query('COMMIT');
+            client.end();
+        };
 
-        await client.query('COMMIT');
-        
-        client.end();
-    };
-};
+    }
 
-module.exports = new Context();
+    return Context;
+})();
+
+module.exports = Context;

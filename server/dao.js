@@ -1,5 +1,5 @@
 const common = require("../wwwroot/js/common");
-const context = require('./data-layer');
+const ultimatePizzaManagerContext = require('./ultimatePizzaManagerContext');
 
 class OrderDao extends common.Order{
 
@@ -8,7 +8,7 @@ class OrderDao extends common.Order{
     }
 
     save(){
-        return context.insertOrders(this);
+        return new ultimatePizzaManagerContext.insertOrders(this);
     }
 }
 

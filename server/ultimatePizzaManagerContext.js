@@ -1,7 +1,11 @@
-const context = require('./context');
+const Context = require('./context');
 const uuid = require('uuid-v4');
 
-const usersQuery = `                WITH users AS (
+const UltimatePizzaManagerContext = (function () {
+
+    const privateProps = new WeakMap();
+
+    const usersQuery = `                WITH users AS (
                                        SELECT m.id, m.username
                                        FROM muppet m
                                        ORDER BY m.username
@@ -9,7 +13,7 @@ const usersQuery = `                WITH users AS (
 
                                     SELECT json_agg(u) FROM users u`;
 
-const foodsQuery = `                WITH foods AS 	(	
+    const foodsQuery = `                WITH foods AS 	(	
                                         SELECT          f.id, f.name, f.type, f.price, COALESCE(json_agg(i) FILTER (WHERE i.id IS NOT NULL), '[]') as ingredients						
                                         FROM food       f
                                         LEFT JOIN       food_ingredient fi ON f.id = fi.food
@@ -20,7 +24,7 @@ const foodsQuery = `                WITH foods AS 	(
                                     
                                     SELECT json_agg(f) FROM foods f`;
 
-const supplementsQuery = `          WITH supplements AS (
+    const supplementsQuery = `          WITH supplements AS (
                                         SELECT DISTINCT i.id, i.name, i.price
                                         FROM            ingredient i
                                         WHERE           i.price IS NOT NULL
@@ -29,11 +33,11 @@ const supplementsQuery = `          WITH supplements AS (
                                     
                                     SELECT json_agg(s) FROM supplements s`;
 
-const administratorsQuery = `       SELECT json_agg(json_build_object('name', m.real_name, 'onHoliday', a.onHoliday)) 
+    const administratorsQuery = `       SELECT json_agg(json_build_object('name', m.real_name, 'onHoliday', a.onHoliday)) 
                                     FROM Administrator a 
                                     INNER JOIN muppet m ON a.muppet = m.id`;
 
-const ordersQuery = `               WITH last_order_cte AS (
+    const ordersQuery = `               WITH last_order_cte AS (
                                     SELECT o.id, row_number() over (partition by o.muppet order by o."date" DESC ) 
                                     FROM "order" o
                                     WHERE o.date > date_trunc('day', now())
@@ -73,35 +77,69 @@ const ordersQuery = `               WITH last_order_cte AS (
                                     
                                     SELECT json_agg(to_json(go)) FROM grouped_order_cte go`;
 
-const insertQueryFactory = (order) => {
-                                    const queries = [];
+    const insertQueryFactory = (order) => {
+        const queries = [];
 
-                                    const orderId = uuid();
-                                    queries.push(`INSERT INTO "order"(id, muppet, date) VALUES ('${orderId}', ${order.user.id}, NOW());`);
+        const orderId = uuid();
+        queries.push(`INSERT INTO "order"(id, muppet, date) VALUES ('${orderId}', ${order.user.id}, NOW() AT TIME ZONE 'Europe/Rome');`);
 
-                                    order.foods.forEach(f => {
-                                        const foodOrderId = uuid();
-                                        queries.push(`INSERT INTO "food_order"(id, food, "order") VALUES ('${foodOrderId}', ${f.food.id}, '${orderId}');`);
-                                        f.removals.forEach(s => queries.push(`INSERT INTO food_order_ingredient (food_order,ingredient, isRemoval) VALUES ('${foodOrderId}', ${s.id}, TRUE);`));
-                                        f.supplements.forEach(s => queries.push(`INSERT INTO food_order_ingredient (food_order,ingredient, isRemoval) VALUES ('${foodOrderId}', ${s.id}, FALSE);`));
-                                    });
+        order.foods.forEach(f => {
+            const foodOrderId = uuid();
+            queries.push(`INSERT INTO "food_order"(id, food, "order") VALUES ('${foodOrderId}', ${f.food.id}, '${orderId}');`);
+            f.removals.forEach(s => queries.push(`INSERT INTO food_order_ingredient (food_order,ingredient, isRemoval) VALUES ('${foodOrderId}', ${s.id}, TRUE);`));
+            f.supplements.forEach(s => queries.push(`INSERT INTO food_order_ingredient (food_order,ingredient, isRemoval) VALUES ('${foodOrderId}', ${s.id}, FALSE);`));
+        });
 
-                                    return queries;
-};
+        return queries;
+    };
 
-function DataLayer() {
+    const connectionString = {
+        host: 'albiberto.ddns.net',
+        user: 'teamYOOX',
+        password: '$cSmG6fn',
+        database: 'ultimate_pizza_manager',
+        port: 5432,
+        ssl: false
+    };
 
-    this.getUsers = () => context.scalar(usersQuery);
+    class UltimatePizzaManagerContext {
 
-    this.getFoods = () => context.scalar(foodsQuery);
+        constructor() {
+            privateProps.set(this, {
+                context: new Context(connectionString)
+            });
+        };
 
-    this.getSupplements = () => context.scalar(supplementsQuery);
+        get context(){
+            return  privateProps.get(this).context;
+        }
 
-    this.getOrders = () => context.scalar(ordersQuery);
+        getUsers() {
+            return this.context.scalar(usersQuery)
+        };
 
-    this.getAdministrators = () => context.scalar(administratorsQuery);
+        getFoods() {
+            return privateProps.get(this).context.scalar(foodsQuery)
+        };
 
-    this.insertOrders = (order) => context.execute(insertQueryFactory(order));
-}
+        getSupplements() {
+            return privateProps.get(this).context.scalar(supplementsQuery)
+        };
 
-module.exports = new DataLayer();
+        getOrders() {
+            return privateProps.get(this).context.scalar(ordersQuery)
+        };
+
+        getAdministrators() {
+            return privateProps.get(this).context.scalar(administratorsQuery)
+        };
+
+        insertOrders(order) {
+            return privateProps.get(this).context.execute(insertQueryFactory(order))
+        };
+    }
+
+    return UltimatePizzaManagerContext
+})();
+
+module.exports = UltimatePizzaManagerContext;

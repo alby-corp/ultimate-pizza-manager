@@ -73,7 +73,7 @@
             }
 
             toString() {
-                return this.price === undefined ? `${this.name}` : `${this.name} - ${this.price} &euro;`;
+                return this.price === undefined ? `${this.name}` : `${this.name} - ${this.price.toFixed(2)} &euro;`;
             };
         }
 
@@ -123,7 +123,7 @@
             };
 
             toString() {
-                return `${this.name} - ${this.price} &euro;`;
+                return `${this.name} - ${this.price.toFixed(2)} &euro;`;
             };
         }
 
@@ -169,7 +169,7 @@
             };
 
             total() {
-                return this.food.price + this.supplements.reduce((acc, supplement) => acc += supplement.price, 0);
+                return +this.food.price + this.supplements.reduce((acc, supplement) => acc += supplement.price, 0);
             }
         }
 
@@ -225,8 +225,7 @@
             }
 
             total() {
-                const total = this.foods.reduce((acc, orderedFood) => acc += orderedFood.total(), 0);
-                return (+total).toFixed(2);
+                return +this.foods.reduce((acc, orderedFood) => acc += orderedFood.total(), 0);
             }
         }
 
