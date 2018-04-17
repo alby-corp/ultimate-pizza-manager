@@ -142,4 +142,4 @@ const UltimatePizzaManagerContext = (function () {
     return UltimatePizzaManagerContext
 })();
 
-module.exports = UltimatePizzaManagerContext;
+module.exports = new UltimatePizzaManagerContext;
