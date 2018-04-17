@@ -8,9 +8,9 @@ const Core = (function () {
 
         static async initMakeOrders() {
 
-            const users = this.responseHandler(await getUsers());
-            const foods = this.responseHandler(await getFoods());
-            const supplements = this.responseHandler(await getSupplements());
+            const users = await this.responseHandler(await getUsers);
+            const foods = await this.responseHandler(await getFoods);
+            const supplements = await this.responseHandler(await getSupplements);
 
             Helpers.overrideOnSubmit();
 
@@ -52,7 +52,7 @@ const Core = (function () {
         };
 
         static async initGetOrders() {
-            const orders = this.responseHandler(await getOrders());
+            const orders = await this.responseHandler(await getOrders);
 
             const ordersTable = $('#week-orders');
             new Table(ordersTable, orders.map(order => new OrdersRow(order))).populate();
@@ -79,15 +79,15 @@ const Core = (function () {
         };
 
         static async initInfo() {
-            const administrators = this.responseHandler(await getAdministrators());
+            const administrators = await this.responseHandler(await getAdministrators);
 
             const adminList = $('#admin-list');
             new List(adminList, administrators.map(admin => new AdminListItem(admin))).populate();
         }
 
-        static async responseHandler(func){
-            try{
-                return func();
+        static async responseHandler(func) {
+            try {
+                return await func();
             } catch (error) {
                 alertService(error)
             }

@@ -8,7 +8,7 @@ class OrderDao extends common.Order{
     }
 
     save(){
-        return new ultimatePizzaManagerContext.insertOrders(this);
+        return ultimatePizzaManagerContext.insertOrders(this);
     }
 }
 
