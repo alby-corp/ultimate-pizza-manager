@@ -187,8 +187,8 @@ const SummaryRow = (function () {
         render() {
             return `<tr>    
                         <td>${this.orderedFood.food.name}</td>
-                        <td><ol>${this.orderedFood.supplements.map(s => `<li>${s.name}</li>`).join('')}</ol></td>
-                        <td><ol>${this.orderedFood.removals.map(r => `<li>${r.name}</li>`).join('')}</ol></td>
+                        <td><ul>${this.orderedFood.supplements.map(s => `<li>${s.name}</li>`).join('')}</ul></td>
+                        <td><ul>${this.orderedFood.removals.map(r => `<li>${r.name}</li>`).join('')}</ul></td>
                         <td>${this.count}</td>
                     </tr>`;
         }
@@ -219,7 +219,7 @@ const Span = (function () {
         };
 
         populate() {
-            this.span.text(this.text);
+            this.span.html(this.text);
         }
     }
 
@@ -290,6 +290,31 @@ const AdminListItem = (function () {
     }
 
     return AdminListItem;
+})();
+
+const BaseButton = (function () {
+    const privateProps = new WeakMap();
+
+    class Button {
+        constructor(value, attrs) {
+            privateProps.set(this, {
+                value: value,
+                attrs: attrs
+            });
+        }
+
+        render() {
+            let attrs = '';
+            for (let attr of privateProps.get(this).attrs) {
+                attrs += `${attr.key} ="${attr.value}" `;
+            }
+
+            return `<button ${attrs} ></button>`;
+            // return `<button type="button" onclick=${privateProps.get(this).func} class=${privateProps.get(this).style}>${privateProps.get(this).value}</button>`;
+        }
+    }
+
+    return Button
 })();
 
 const Order = class Order extends AlbyJs.Common.Order {

@@ -18,13 +18,9 @@ class Helpers {
         return arr1.filter((e) => arr2.map(a => a.id).indexOf(e.id) === -1)
     };
 
-    static populateContainer(data, container) {
-        container.html(data);
+    static populateContainer(data) {
+        $('#container').empty().html(data);
     };
-
-    static alert(message) {
-        alert(message);
-    }
 
     static getPropertyDescriptor(obj, key) {
         return Object.getOwnPropertyDescriptor(obj, key) || this.getPropertyDescriptor(Object.getPrototypeOf(obj), key)
@@ -66,15 +62,15 @@ class Helpers {
             const order = new Order(user, foods);
 
             try {
-                order.validate()
+                order.validate();
             } catch (error) {
-                alertService(error.message);
+                AlbyJs.AlertService.error(error.message);
                 return false;
             }
 
             const result = await $.post('insert', order.toDTO());
 
-            alertService(result);
+            AlbyJs.AlertService.success(result);
 
             return false;
         });

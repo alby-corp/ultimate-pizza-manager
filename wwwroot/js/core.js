@@ -75,7 +75,7 @@ const Core = (function () {
             new Table(summaryTable, summaryRows).populate();
 
             const totalSpan = $('#total');
-            new Span(totalSpan, orders.reduce((acc, order) => acc += +order.total(), 0).toFixed(2)).populate();
+            new Span(totalSpan, orders.reduce((acc, order) => acc += +order.total(), 0).toFixed(2) + ' &euro;').populate();
         };
 
         static async initInfo() {
@@ -89,7 +89,7 @@ const Core = (function () {
             try {
                 return await func();
             } catch (error) {
-                alertService(error)
+                AlbyJs.AlertService.error(error);
             }
         }
     }

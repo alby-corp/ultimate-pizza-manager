@@ -6,9 +6,9 @@ const UltimatePizzaManagerContext = (function () {
     const privateProps = new WeakMap();
 
     const usersQuery = `                WITH users AS (
-                                       SELECT m.id, m.username
-                                       FROM muppet m
-                                       ORDER BY m.username
+                                        SELECT m.id, m.username
+                                        FROM muppet m
+                                        ORDER BY m.username
                                     )
 
                                     SELECT json_agg(u) FROM users u`;
@@ -33,11 +33,12 @@ const UltimatePizzaManagerContext = (function () {
                                     
                                     SELECT json_agg(s) FROM supplements s`;
 
-    const administratorsQuery = `       SELECT json_agg(json_build_object('name', m.real_name, 'onHoliday', a.onHoliday)) 
+    const administratorsQuery = `   SELECT json_agg(json_build_object('name', m.real_name, 'onHoliday', a.onHoliday)) 
                                     FROM Administrator a 
-                                    INNER JOIN muppet m ON a.muppet = m.id`;
+                                    INNER JOIN muppet m ON a.muppet = m.id
+                                    ORDER BY a.real_name`;
 
-    const ordersQuery = `               WITH last_order_cte AS (
+    const ordersQuery = `           WITH last_order_cte AS (
                                     SELECT o.id, row_number() over (partition by o.muppet order by o."date" DESC ) 
                                     FROM "order" o
                                     WHERE o.date > date_trunc('day', now())

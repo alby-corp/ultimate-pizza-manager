@@ -1,5 +1,17 @@
-const url = window.location.href;
+const Ajax = (function () {
 
-get = uri => $.get(`${url}${uri}`);
+    const url = window.location.href;
 
-getById = (uri, id) => $.get(`${url}${uri}?id=${id}`);
+    class Ajax {
+
+        static get(uri) {
+            return $.get(`${url}${uri}`) || [];
+        }
+
+        static getById(uri, id) {
+            return $.get(`${url}${uri}?id=${id}`) || {};
+        }
+    }
+
+    return Ajax;
+})();
