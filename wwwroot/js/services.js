@@ -67,8 +67,14 @@ const ModalService = (function () {
                     </div>`;
     };
 
-    const open = function (selector) {
-        $(`#${selector}`).modal('show');
+    const create = function (display, title, body, buttons, name, style) {
+        display.html(
+            renderModal(title, body, buttons, name, style)
+        );
+    };
+
+    const open = function (name) {
+        $(`#${name}`).modal('show');
     };
 
     const privateProps = new WeakMap();
@@ -84,23 +90,15 @@ const ModalService = (function () {
         }
 
         success(body) {
-            privateProps.get(this).display.html(
-                renderModal('Success', body, privateProps.get(this).buttons, privateProps.get(this).name, 'alert alert-success')
-            );
+            create(privateProps.get(this).display, 'Success', body, privateProps.get(this).buttons, privateProps.get(this).name, 'alert alert-success');
             open(privateProps.get(this).name);
         }
 
         error(body) {
-
+            create(privateProps.get(this).display, 'Error', body, [], privateProps.get(this).name, 'alert alert-danger');
+            open(privateProps.get(this).name);
         }
     }
 
     return ModalService;
 })();
-
-if (window.AlbyJs === undefined) {
-    window.AlbyJs = {};
-}
-
-const goToWeekOrdersButton = new Button('Vai agli Ordini', new Map([['class', 'btn btn-primary'], ['onclick', "link('week-orders')"]]));
-window.AlbyJs.AlertService = new ModalService($('#alert-serivice'), 'alert-service-modal', [goToWeekOrdersButton]); //[`<button class="btn btn-primary" onclick="link('week-orders')">Vai agli Ordini</button>`]);
