@@ -29,7 +29,6 @@ getMenu = () => Ajax.get('menu');
 
 getOrdersPage = () => Ajax.get('order.html');
 
-
 getMenuPage = () => Ajax.get('menu.html');
 
 getWeekOrdersPage = () => Ajax.get('week-orders.html');
@@ -38,6 +37,11 @@ getInfoPage = () => Ajax.get('info.html');
 
 const ModalService = (function () {
     const renderModal = function (title, body, buttons, name, style) {
+        const renderedButtons = [];
+        buttons.forEach(button => {
+            renderedButtons.push(button.render());
+        });
+
         return `    <div class="modal fade" id="${name}">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -54,8 +58,8 @@ const ModalService = (function () {
         
                                 <!-- Modal footer -->
                                 <div class="modal-footer">
+                                    ${renderedButtons.join('')}
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    ${buttons.join('')}
                                 </div>
         
                             </div>
@@ -71,6 +75,7 @@ const ModalService = (function () {
 
     class ModalService {
         constructor(display, name, buttons) {
+            buttons.forEach(button => button.attrs.set('data-dismiss', 'modal'));
             privateProps.set(this, {
                 display: display,
                 name: name,
@@ -79,7 +84,9 @@ const ModalService = (function () {
         }
 
         success(body) {
-            privateProps.get(this).display.html(renderModal('Success', body, privateProps.get(this).buttons, privateProps.get(this).name, 'alert alert-success'));
+            privateProps.get(this).display.html(
+                renderModal('Success', body, privateProps.get(this).buttons, privateProps.get(this).name, 'alert alert-success')
+            );
             open(privateProps.get(this).name);
         }
 
@@ -95,4 +102,5 @@ if (window.AlbyJs === undefined) {
     window.AlbyJs = {};
 }
 
-window.AlbyJs.AlertService = new ModalService($('#alert-serivice'), 'alert-service-modal', [`<button class="btn btn-primary" onclick="link('week-orders')">Vai agli Ordini</button>`]);
+const goToWeekOrdersButton = new Button('Vai agli Ordini', new Map([['class', 'btn btn-primary'], ['onclick', "link('week-orders')"]]));
+window.AlbyJs.AlertService = new ModalService($('#alert-serivice'), 'alert-service-modal', [goToWeekOrdersButton]); //[`<button class="btn btn-primary" onclick="link('week-orders')">Vai agli Ordini</button>`]);

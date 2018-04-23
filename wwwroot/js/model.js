@@ -292,25 +292,28 @@ const AdminListItem = (function () {
     return AdminListItem;
 })();
 
-const BaseButton = (function () {
+const Button = (function () {
     const privateProps = new WeakMap();
 
     class Button {
         constructor(value, attrs) {
             privateProps.set(this, {
-                value: value,
-                attrs: attrs
+                value: value
             });
+            this.attrs = attrs;
+        }
+
+        get value() {
+            return privateProps.get(this).value;
         }
 
         render() {
             let attrs = '';
-            for (let attr of privateProps.get(this).attrs) {
-                attrs += `${attr.key} ="${attr.value}" `;
+            for (let [key, value] of this.attrs.entries()) {
+                attrs += `${key} ="${value}" `;
             }
 
-            return `<button ${attrs} ></button>`;
-            // return `<button type="button" onclick=${privateProps.get(this).func} class=${privateProps.get(this).style}>${privateProps.get(this).value}</button>`;
+            return `<button ${attrs} >${this.value}</button>`;
         }
     }
 
