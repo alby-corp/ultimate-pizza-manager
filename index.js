@@ -24,23 +24,23 @@ app.use(express.static('resources'));
 app.get('/', (req, res) => res.sendFile(path.join(__dirname + '/index.html')));
 
 app.get('/foods', async (req, res) => {
-    await helpers.makeResponse(res, ultimatePizzaManagerContext.getFoods.bind(ultimatePizzaManagerContext))
+    await helpers.makeResponse(res, ultimatePizzaManagerContext.getFoods)
 });
 
 app.get('/users', async (req, res) => {
-    await helpers.makeResponse(res,  ultimatePizzaManagerContext.getUsers.bind(ultimatePizzaManagerContext))
+    await helpers.makeResponse(res,  ultimatePizzaManagerContext.getUsers)
 });
 
 app.get('/supplements', async (req, res) => {
-    await helpers.makeResponse(res, ultimatePizzaManagerContext.getSupplements.bind(ultimatePizzaManagerContext))
+    await helpers.makeResponse(res, ultimatePizzaManagerContext.getSupplements)
 });
 
 app.get('/orders', async (req, res) => {
-    await helpers.makeResponse(res, ultimatePizzaManagerContext.getOrders.bind(ultimatePizzaManagerContext))
+    await helpers.makeResponse(res, ultimatePizzaManagerContext.getOrders)
 });
 
 app.get('/administrators', async (req, res) => {
-    await helpers.makeResponse(res, ultimatePizzaManagerContext.getAdministrators.bind(ultimatePizzaManagerContext))
+    await helpers.makeResponse(res, ultimatePizzaManagerContext.getAdministrators)
 });
 
 app.post('/insert', async (req, res) => {

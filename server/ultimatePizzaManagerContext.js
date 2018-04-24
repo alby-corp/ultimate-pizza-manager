@@ -33,10 +33,15 @@ const UltimatePizzaManagerContext = (function () {
                                     
                                     SELECT json_agg(s) FROM supplements s`;
 
-    const administratorsQuery = `   SELECT json_agg(json_build_object('name', m.real_name, 'onHoliday', a.onHoliday)) 
-                                    FROM Administrator a 
-                                    INNER JOIN muppet m ON a.muppet = m.id
-                                    ORDER BY a.real_name`;
+    const administratorsQuery = `   WITH admins AS (
+                                        SELECT m.real_name, a.onHoliday
+                                        FROM Administrator a 
+                                        INNER JOIN muppet m ON a.muppet = m.id
+                                        ORDER BY m.real_name
+                                    )
+                                    
+                                    SELECT json_agg(json_build_object('name', a.real_name, 'onHoliday', a.onHoliday)) 
+                                    FROM admins a`;
 
     const ordersQuery = `           WITH last_order_cte AS (
                                     SELECT o.id, row_number() over (partition by o.muppet order by o."date" DESC ) 
@@ -106,37 +111,32 @@ const UltimatePizzaManagerContext = (function () {
     class UltimatePizzaManagerContext {
 
         constructor() {
-            privateProps.set(this, {
-                context: new Context(connectionString)
-            });
-        };
 
-        get context(){
-            return  privateProps.get(this).context;
-        }
+            const context = new Context(connectionString);
 
-        getUsers() {
-            return this.context.scalar(usersQuery)
-        };
+            this.getUsers = () => {
+                return context.scalar(usersQuery)
+            };
 
-        getFoods() {
-            return privateProps.get(this).context.scalar(foodsQuery)
-        };
+            this.getFoods = () => {
+                return context.scalar(foodsQuery)
+            };
 
-        getSupplements() {
-            return privateProps.get(this).context.scalar(supplementsQuery)
-        };
+            this.getSupplements = () => {
+                return context.scalar(supplementsQuery)
+            };
 
-        getOrders() {
-            return privateProps.get(this).context.scalar(ordersQuery)
-        };
+            this.getOrders = () => {
+                return context.scalar(ordersQuery)
+            };
 
-        getAdministrators() {
-            return privateProps.get(this).context.scalar(administratorsQuery)
-        };
+            this.getAdministrators = () => {
+                return context.scalar(administratorsQuery)
+            };
 
-        insertOrders(order) {
-            return privateProps.get(this).context.execute(insertQueryFactory(order))
+            this.insertOrders = (order) => {
+                return context.execute(insertQueryFactory(order))
+            };
         };
     }
 

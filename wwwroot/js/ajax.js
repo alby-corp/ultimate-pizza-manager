@@ -1,17 +1,23 @@
-const Ajax = (function () {
+const HttpClient = (function () {
 
-    const url = window.location.href;
+    const privateProps = new WeakMap();
 
-    class Ajax {
+    class HttpClient {
 
-        static get(uri) {
-            return $.get(`${url}${uri}`) || [];
+        constructor(url) {
+            privateProps.set(this, {
+                url: url
+            });
         }
 
-        static getById(uri, id) {
-            return $.get(`${url}${uri}?id=${id}`) || {};
+        async get(uri) {
+            return await $.get(`${ privateProps.get(this).url}${uri}`) || [];
+        }
+
+        async getById(uri, id) {
+            return await $.get(`${privateProps.get(this).url}${uri}?id=${id}`) || {};
         }
     }
 
-    return Ajax;
+    return HttpClient;
 })();

@@ -18,10 +18,6 @@ class Helpers {
         return arr1.filter((e) => arr2.map(a => a.id).indexOf(e.id) === -1)
     };
 
-    static populateContainer(data) {
-        $('#container').empty().html(data);
-    };
-
     static getPropertyDescriptor(obj, key) {
         return Object.getOwnPropertyDescriptor(obj, key) || this.getPropertyDescriptor(Object.getPrototypeOf(obj), key)
     }

@@ -1,20 +1,39 @@
 // Navigation
-link = async (page) => {
+const Router = (function () {
 
-    switch (page) {
-        case "menu":
-            Helpers.populateContainer(await getMenuPage());
-            break;
-        case 'week-orders':
-            Helpers.populateContainer(await getWeekOrdersPage());
-            break;
-        case 'info':
-            Helpers.populateContainer(await getInfoPage());
-            break;
-        default:
-            Helpers.populateContainer(await getOrdersPage());
+    const privateProps = new WeakMap();
+
+    const populate = function (data) {
+        $('#container').empty().html(data);
+    };
+
+    class Router {
+        constructor(service) {
+            privateProps.set(this, {
+                service: service
+            });
+        }
+
+        async menu() {
+            populate(await privateProps.get(this).service.getMenuPage())
+        }
+
+        async weekOrders() {
+            populate(await privateProps.get(this).service.getWeekOrdersPage())
+        }
+
+        async info() {
+            populate(await privateProps.get(this).service.getInfoPage())
+        }
+
+        async orders() {
+            populate(await privateProps.get(this).service.getOrdersPage())
+        }
     }
-};
+
+    return Router;
+
+})();
 
 
 

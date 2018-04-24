@@ -1,39 +1,55 @@
-getUsers = async () => {
-    const users = await Ajax.get('users');
-    return users.map(u => new AlbyJs.Common.User(u.id, u.username));
-};
+class ResourceService {
 
-getFoods = async () => {
-    const foods = await Ajax.get('foods');
-    return foods.map(f => new AlbyJs.Common.Food(f.id, f.name, f.price, f.ingredients, f.type));
-};
+    constructor(client) {
 
-getSupplements = async () => {
-    const supplements = await Ajax.get('supplements');
-    return supplements.map(s => new AlbyJs.Common.Ingredient(s.id, s.name, s.price));
-};
+        this.getUsers = async () => {
+            const users = await client.get('users');
+            return users.map(u => new AlbyJs.Common.User(u.id, u.username));
+        };
 
-getOrders = async () => {
+        this.getFoods = async () => {
+            const foods = await client.get('foods');
+            return foods.map(f => new AlbyJs.Common.Food(f.id, f.name, f.price, f.ingredients, f.type));
+        };
 
-    const orders = await Ajax.get('orders');
-    return orders.map(order => new AlbyJs.Common.Order(order.user, order.foods, order.date));
-};
+        this.getSupplements = async () => {
+            const supplements = await client.get('supplements');
+            return supplements.map(s => new AlbyJs.Common.Ingredient(s.id, s.name, s.price));
+        };
 
-getAdministrators = async () => {
-    const administrators = await Ajax.get('administrators');
-    return administrators.map(admin => new AlbyJs.Common.Administrator(admin.name, admin.onHoliday));
-};
+        this.getOrders = async () => {
+            const orders = await client.get('orders');
+            return orders.map(order => new AlbyJs.Common.Order(order.user, order.foods, order.date));
+        };
 
-// Pages
-getMenu = () => Ajax.get('menu');
+        this.getAdministrators = async () => {
+            const administrators = await client.get('administrators');
+            return administrators.map(admin => new AlbyJs.Common.Administrator(admin.name, admin.onHoliday));
+        };
+    };
+}
 
-getOrdersPage = () => Ajax.get('order.html');
+class PageService {
 
-getMenuPage = () => Ajax.get('menu.html');
+    constructor(client) {
 
-getWeekOrdersPage = () => Ajax.get('week-orders.html');
+        this.getOrdersPage = () => {
+            return client.get('order.html');
+        };
 
-getInfoPage = () => Ajax.get('info.html');
+        this.getMenuPage = () => {
+            return client.get('menu.html');
+        };
+
+        this.getWeekOrdersPage = () => {
+            return client.get('week-orders.html');
+        };
+
+        this.getInfoPage = () => {
+            return client.get('info.html');
+        }
+    };
+}
 
 const ModalService = (function () {
     const renderModal = function (title, body, buttons, name, style) {
@@ -95,7 +111,7 @@ const ModalService = (function () {
         }
 
         error(body) {
-            create(privateProps.get(this).display, 'Error', body, [], privateProps.get(this).name, 'alert alert-danger');
+            create(privateProps.get(this).display, 'Error', body, privateProps.get(this).buttons, privateProps.get(this).name, 'alert alert-danger');
             open(privateProps.get(this).name);
         }
     }

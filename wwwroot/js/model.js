@@ -1,7 +1,3 @@
-// Documentation:
-// 1) https://stackoverflow.com/questions/22156326/private-properties-in-javascript-es6-classes;
-// 2) https://coryrylan.com/blog/javascript-es6-class-syntax;
-
 const DropDownList = (function () {
     const privateProps = new WeakMap();
 
@@ -328,6 +324,5 @@ const Order = class Order extends AlbyJs.Common.Order {
     toDTO() {
         return new OrderDTO(this);
     }
-
 };
 
