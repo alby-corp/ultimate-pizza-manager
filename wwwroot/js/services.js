@@ -111,7 +111,7 @@ const ModalService = (function () {
         }
 
         error(body) {
-            create(privateProps.get(this).display, 'Error', body, privateProps.get(this).buttons, privateProps.get(this).name, 'alert alert-danger');
+            create(privateProps.get(this).display, 'Error', body, [], privateProps.get(this).name, 'alert alert-danger');
             open(privateProps.get(this).name);
         }
     }

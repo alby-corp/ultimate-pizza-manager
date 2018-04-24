@@ -5,6 +5,7 @@ const Core = (function () {
             return await func();
         } catch (error) {
             AlbyJs.AlertService.error(error);
+            throw error;
         }
     };
 
@@ -16,9 +17,17 @@ const Core = (function () {
 
         static async initMakeOrders() {
 
-            const users = await responseHandler(AlbyJs.ResourceService.getUsers);
-            const foods = await responseHandler(AlbyJs.ResourceService.getFoods);
-            const supplements = await responseHandler(AlbyJs.ResourceService.getSupplements);
+            let users;
+            let foods;
+            let supplements;
+
+            try {
+                users = await responseHandler(AlbyJs.ResourceService.getUsers);
+                foods = await responseHandler(AlbyJs.ResourceService.getFoods);
+                supplements = await responseHandler(AlbyJs.ResourceService.getSupplements);
+            } catch {
+                return;
+            }
 
             Helpers.overrideOnSubmit();
 
@@ -60,7 +69,14 @@ const Core = (function () {
         };
 
         static async initGetOrders() {
-            const orders = await responseHandler(AlbyJs.ResourceService.getOrders);
+
+            let orders;
+
+            try {
+                orders = await responseHandler(AlbyJs.ResourceService.getOrders);
+            } catch {
+                return;
+            }
 
             const ordersTable = $('#week-orders');
             new Table(ordersTable, orders.map(order => new OrdersRow(order))).populate();
@@ -87,7 +103,15 @@ const Core = (function () {
         };
 
         static async initInfo() {
-            const administrators = await responseHandler(AlbyJs.ResourceService.getAdministrators);
+
+            let administrators;
+
+            try {
+                administrators = await responseHandler(AlbyJs.ResourceService.getAdministrators);
+            } catch {
+                return;
+            }
+
 
             const adminList = $('#admin-list');
             new List(adminList, administrators.map(admin => new AdminListItem(admin))).populate();

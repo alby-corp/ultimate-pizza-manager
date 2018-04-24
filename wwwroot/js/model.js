@@ -182,10 +182,10 @@ const SummaryRow = (function () {
 
         render() {
             return `<tr>    
+                        <td>${this.count}</td>
                         <td>${this.orderedFood.food.name}</td>
                         <td><ul>${this.orderedFood.supplements.map(s => `<li>${s.name}</li>`).join('')}</ul></td>
                         <td><ul>${this.orderedFood.removals.map(r => `<li>${r.name}</li>`).join('')}</ul></td>
-                        <td>${this.count}</td>
                     </tr>`;
         }
     }
