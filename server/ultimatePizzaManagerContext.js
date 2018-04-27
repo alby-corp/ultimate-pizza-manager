@@ -1,4 +1,5 @@
 const Context = require('./context');
+const connectionString = require('./settings.json')["ultimate-pizza-manager-connection-string"];
 const uuid = require('uuid-v4');
 
 const UltimatePizzaManagerContext = (function () {
@@ -97,15 +98,6 @@ const UltimatePizzaManagerContext = (function () {
         });
 
         return queries;
-    };
-
-    const connectionString = {
-        host: 'albiberto.ddns.net',
-        user: 'teamYOOX',
-        password: '$cSmG6fn',
-        database: 'ultimate_pizza_manager',
-        port: 5432,
-        ssl: false
     };
 
     class UltimatePizzaManagerContext {

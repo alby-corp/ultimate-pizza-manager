@@ -1,0 +1,10 @@
+{
+  "ultimate-pizza-manager-connection-string": {
+    "host": "developer.ddns.net",
+    "user": "TeamYOOX",
+    "password": "We<3Yoox",
+    "database": "ultimate_pizza_manager",
+    "port": 5432,
+    "ssl": false
+  }
+}
