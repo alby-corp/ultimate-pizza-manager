@@ -83,6 +83,6 @@ app.post('/insert', async (req, res) => {
 });
 
 // Server config
-httpsServer.listen(process.env.PORT || 80808080, () => {
+httpsServer.listen(process.env.PORT || 8080, () => {
     console.log('Example app listening on port: ' + (process.env.PORT || 8080));
 });
