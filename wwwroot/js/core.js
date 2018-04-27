@@ -4,7 +4,7 @@ const Core = (function () {
         try {
             return await func();
         } catch (error) {
-            AlbyJs.AlertService.error(error);
+            AlbyJs.AlertService.error(`${error.status}: ${error.statusText}`);
             throw error;
         }
     };

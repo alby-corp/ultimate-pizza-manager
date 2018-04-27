@@ -6,8 +6,7 @@ class Helpers {
             const data = await func();
             res.send(data);
         } catch (error) {
-            res.status(500);
-            res.send(error);
+            res.status(500).end();
         }
     };
 }
