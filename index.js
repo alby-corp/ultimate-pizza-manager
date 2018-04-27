@@ -9,6 +9,18 @@ const helpers = require('./server/helpers');
 const dao = require('./server/dao');
 const common = require('./wwwroot/js/common');
 
+// Server
+const https = require('https');
+
+// your express configuration here
+const fs = require('fs');
+const privateKey = fs.readFileSync('./server/sslcert/server.key', 'utf8');
+const certificate = fs.readFileSync('./server/sslcert/server.crt', 'utf8');
+
+const credentials = {key: privateKey, cert: certificate};
+
+const httpsServer = https.createServer(credentials, app);
+
 // Body parser
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.urlencoded({
@@ -71,6 +83,6 @@ app.post('/insert', async (req, res) => {
 });
 
 // Server config
-app.listen(process.env.PORT || 8080, () => {
+httpsServer.listen(process.env.PORT || 80808080, () => {
     console.log('Example app listening on port: ' + (process.env.PORT || 8080));
 });
