@@ -157,11 +157,11 @@ const OrdersRow = (function () {
     return OrdersRow;
 })();
 
-const MenuRow = (function () {
+const FoodRow = (function () {
 
     const privateProps = new WeakMap();
 
-    class MenuRow extends BaseRow {
+    class FoodRow extends BaseRow {
 
         constructor(food) {
             super();
@@ -185,7 +185,33 @@ const MenuRow = (function () {
         }
     }
 
-    return MenuRow;
+    return FoodRow;
+})();
+
+const IngredientRow = (function () {
+
+    const privateProps = new WeakMap();
+
+    class IngredientRow extends BaseRow {
+
+        constructor(ingredient) {
+            super();
+
+            privateProps.set(this, {
+                ingredient: ingredient
+            });
+        }
+
+        get ingredient() {
+            return privateProps.get(this).ingredient;
+        };
+
+        render() {
+            return `<tr><td>${this.ingredient.name}</td><td>${this.ingredient.price.toFixed(2)} &euro;</td>`;
+        }
+    }
+
+    return IngredientRow;
 })();
 
 const SummaryRow = (function () {
