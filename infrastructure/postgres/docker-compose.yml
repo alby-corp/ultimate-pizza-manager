@@ -4,8 +4,8 @@ services:
     ultimate-pizza-manager:
         image: postgres:10.2
         environment:
-            - POSTGRES_USER=teamYOOX
-            - POSTGRES_PASSWORD=we<3YOOX
+            - POSTGRES_USER=SamuraiTeam
+            - POSTGRES_PASSWORD=#Aldc1Lm
             - POSTGRES_DB=ultimate_pizza_manager
         ports:
             - 5432:5432
