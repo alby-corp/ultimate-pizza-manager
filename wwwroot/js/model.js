@@ -157,6 +157,37 @@ const OrdersRow = (function () {
     return OrdersRow;
 })();
 
+const MenuRow = (function () {
+
+    const privateProps = new WeakMap();
+
+    class MenuRow extends BaseRow {
+
+        constructor(food) {
+            super();
+
+            privateProps.set(this, {
+                food: food
+            });
+        }
+
+        get food() {
+            return privateProps.get(this).food;
+        };
+
+        render() {
+            let row = `<tr><td>${this.food.name}</td><td>${this.food.price.toFixed(2)} &euro;</td>`;
+            if (this.food.ingredients.length > 0){
+                row = row.concat(`<td>${this.food.ingredients.map(ingredient => ingredient.name).join(', ')}</td>`);
+            }
+
+            return row.concat('</tr>');
+        }
+    }
+
+    return MenuRow;
+})();
+
 const SummaryRow = (function () {
 
     const privateProps = new WeakMap();

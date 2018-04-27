@@ -116,6 +116,29 @@ const Core = (function () {
             const adminList = $('#admin-list');
             new List(adminList, administrators.map(admin => new AdminListItem(admin))).populate();
         }
+
+        static async initMenu(){
+
+            let menu;
+
+            try{
+                menu = await responseHandler(AlbyJs.ResourceService.getFoods);
+            } catch {
+                return;
+            }
+
+            const pizzasMenuTable = $('#pizzas-menu');
+            new Table(pizzasMenuTable, menu.filter(food => food.type === 1).map(food => new MenuRow(food))).populate();
+
+            const cookingMenuTable = $('#cooking-menu');
+            new Table(cookingMenuTable, menu.filter(food => food.type === 2).map(food => new MenuRow(food))).populate();
+
+            const sandwichesMenuTable = $('#sandwiches-menu');
+            new Table(sandwichesMenuTable, menu.filter(food => food.type === 4).map(food => new MenuRow(food))).populate();
+
+            const dessertMenuTable = $('#desserts-menu');
+            new Table(dessertMenuTable, menu.filter(food => food.type === 3).map(food => new MenuRow(food))).populate();
+        }
     }
 
     return Core;
