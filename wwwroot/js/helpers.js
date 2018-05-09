@@ -23,7 +23,7 @@ class Helpers {
     }
 
     static overrideOnSubmit() {
-        $('#order-form').submit(async () => {
+        $('#order-form').submit(async (event) => {
 
             event.preventDefault();
 
