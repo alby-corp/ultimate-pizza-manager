@@ -1,5 +1,3 @@
-const debug = require('debug')('myapp:server');
-
 class Helpers {
 
     static getFoodsOptions(foods, type) {
