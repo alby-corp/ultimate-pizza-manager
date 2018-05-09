@@ -21,6 +21,7 @@
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "express-validator": "^5.0.1",
+    "http-errors": "^1.6.3",
     "pg": "^7.4.1",
     "promise": "^8.0.1",
     "uuid-v4": "^0.1.0"
