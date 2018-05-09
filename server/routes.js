@@ -1,8 +1,8 @@
 const express = require("express");
 const routes = express.Router();
 
-const readCtrl = require("./controllers/read.controller.js");
-const writeCtrl = require("./controllers/write.controller.js");
+const readCtrl = require("./api/read.js");
+const writeCtrl = require("./api/write.js");
 
 routes.route('/users')
     .get((req, res) => readCtrl.getUsers(res));

@@ -45,21 +45,9 @@ const PageService = (function () {
 
         constructor(client) {
 
-            this.getOrdersPage = () => {
-                return client.get(getURI('/order'));
+            this.get = (uri) => {
+                return client.get(getURI(uri));
             };
-
-            this.getMenuPage = () => {
-                return client.get(getURI('menu'));
-            };
-
-            this.getWeekOrdersPage = () => {
-                return client.get(getURI('week-orders'));
-            };
-
-            this.getInfoPage = () => {
-                return client.get(getURI('info'));
-            }
         };
     }
 

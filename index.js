@@ -3,10 +3,11 @@
 /**
  * Module dependencies.
  */
+const fs = require('fs');
+
 const http = require('http');
 
 const https = require('https');
-const fs = require('fs');
 const privateKey = fs.readFileSync('./infrastructure/sslcert/server.key', 'utf8');
 const certificate = fs.readFileSync('./infrastructure/sslcert/server.crt', 'utf8');
 const credentials = {key: privateKey, cert: certificate};
