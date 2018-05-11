@@ -70,7 +70,14 @@
 
 <script>
     $(document).ready(() => {
-        App.init();
+        if (window.AlbyJs === undefined) {
+            window.AlbyJs = {};
+        }
+
+        if (window.AlbyJs.App === undefined){
+            window.AlbyJs.App = new App();
+            AlbyJs.App.init();
+        }
     });
 </script>
 </body>

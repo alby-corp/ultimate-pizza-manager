@@ -11,7 +11,7 @@ const HttpClient = (function () {
         }
 
         async get(uri) {
-            return await $.get(`${ privateProps.get(this).url}${uri}`) || [];
+            return await $.get(`${ privateProps.get(this).url}/${uri}`) || [];
         }
 
         async getById(uri, id) {

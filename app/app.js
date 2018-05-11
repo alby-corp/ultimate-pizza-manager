@@ -1,11 +1,8 @@
 class App {
 
-    static async init() {
-        if (window.AlbyJs === undefined) {
-            window.AlbyJs = {};
-        }
+    async init() {
 
-        const httpClient = new HttpClient(window.location.href);
+        const httpClient = new HttpClient(window.location.origin);
         window.AlbyJs.ResourceService = new ResourceService(httpClient);
 
 
@@ -24,7 +21,7 @@ class App {
         window.AlbyJs.Router = new Router(routes);
 
         const goToWeekOrdersButton = new Button('Vai agli Ordini', new Map([['class', 'btn btn-success'], ['onclick', "AlbyJs.Router.weekOrders()"]]));
-        window.AlbyJs.AlertService = new ModalService($('#alert-serivice'), 'alert-service-modal', [goToWeekOrdersButton]); //[`<button class="btn btn-primary" onclick="link('week-orders')">Vai agli Ordini</button>`]);
+        window.AlbyJs.AlertService = {} //new ModalService($('#alert-serivice'), 'alert-service-modal', [goToWeekOrdersButton]); //[`<button class="btn btn-primary" onclick="link('week-orders')">Vai agli Ordini</button>`]);
     }
 }
 

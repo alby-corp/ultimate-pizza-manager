@@ -14,6 +14,10 @@ const MenuController = (function () {
             });
         }
 
+        get view(){
+            return privateProps.get(this).view;
+        }
+
         async populate() {
             let menu;
 

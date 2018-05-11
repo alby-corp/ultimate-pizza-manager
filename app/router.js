@@ -27,7 +27,7 @@ const Router = (function () {
             });
 
             $(window).on('hashchange', (e) => {
-                privateProps.get(this).handler.manage()
+                privateProps.get(this).handler.manage();
             });
 
             privateProps.get(this).handler.manage();
