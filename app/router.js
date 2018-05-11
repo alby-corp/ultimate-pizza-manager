@@ -22,7 +22,7 @@ const Router = (function () {
             }
 
             const ctrl = privateProps.get(this).routes.get(getUri());
-            ctrl.initView().populate();
+            ctrl.initView().execute();
 
         };
     }

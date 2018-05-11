@@ -3,7 +3,7 @@ const FormController = (function () {
     const privateProps = new WeakMap();
 
     const overrideOnSubmit = (service, alertService) => {
-        $('#order-form').submit(async () => {
+        document.getElementById('order-form').onsubmit = async (event) => {
 
             event.preventDefault();
 
@@ -44,12 +44,12 @@ const FormController = (function () {
                 return false;
             }
 
-            const result = service.post(order.toDTO());
+            const result = await service.postOrder(order.toDTO());
 
             alertService.success(result);
 
             return false;
-        });
+        };
     };
 
     class FormController extends BaseController {
@@ -63,11 +63,11 @@ const FormController = (function () {
                 outlet: outlet,
                 alertService: alertService
             });
-
-            overrideOnSubmit(privateProps.get(this).service, privateProps.get(this).alertService);
         }
 
-        async populate() {
+        async execute() {
+            overrideOnSubmit(privateProps.get(this).service, privateProps.get(this).alertService);
+
             let users;
             let foods;
             let supplements;

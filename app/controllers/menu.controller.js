@@ -15,7 +15,7 @@ const MenuController = (function () {
             });
         }
 
-        get view(){
+        get execute(){
             return privateProps.get(this).view;
         }
 

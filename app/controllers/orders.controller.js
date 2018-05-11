@@ -15,7 +15,7 @@ const OrdersController = (function () {
             });
         }
 
-        async populate() {
+        async execute() {
             let orders;
 
             try {

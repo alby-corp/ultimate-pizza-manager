@@ -32,7 +32,7 @@ const ResourceService = (function () {
             };
 
             this.postOrder = (body) => {
-                return client.post('orders', body);
+                return client.post(getURI('orders'), body);
             };
         };
     }

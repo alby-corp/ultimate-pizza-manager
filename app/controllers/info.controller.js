@@ -15,7 +15,7 @@ const InfoController = (function () {
             });
         }
 
-        async populate() {
+        async execute() {
             let administrators;
 
             try {

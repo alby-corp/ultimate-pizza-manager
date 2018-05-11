@@ -16,7 +16,7 @@ const BaseController = (function () {
             return this;
         }
 
-        populate(){
+        execute(){
             throw new Error('Abstract method!');
         }
 

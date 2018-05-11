@@ -1,4 +1,5 @@
 const dao = require('../model/dao');
+const common = require('../../app/model/common');
 
 module.exports = {
     insertOrder: async (req, res) => {

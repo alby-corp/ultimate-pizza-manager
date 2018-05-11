@@ -1,5 +1,7 @@
 const HttpClient = (function () {
 
+    const headers = {headers: {'Content-Type': 'application/json'}};
+
     const privateProps = new WeakMap();
 
     class HttpClient {
@@ -11,6 +13,7 @@ const HttpClient = (function () {
         }
 
         get(uri) {
+            $.ajaxSetup(headers);
             return $.get(`${ privateProps.get(this).url}/${uri}`) || [];
         }
 
@@ -19,7 +22,8 @@ const HttpClient = (function () {
         }
 
         post(uri, body) {
-            return $.post(`${ privateProps.get(this).url}/${uri}`, body);
+            $.ajaxSetup(headers);
+            return $.post(`${ privateProps.get(this).url}/${uri}`, JSON.stringify(body));
         }
     }
 

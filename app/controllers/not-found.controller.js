@@ -15,12 +15,17 @@ const NotFoundController = (function () {
             });
         }
 
-        async populate() {
-            const url = window.history.state['url'];
+        async execute() {
+            let subject;
+            try {
+                subject = `[${window.history.state['url']}]`;
+            } catch {
+                subject = 'requested page';
+            }
 
             const messageSpan = $('#not-found-message');
 
-            new Span(messageSpan, `The ${url} was not found on this server!`).populate()
+            new Span(messageSpan, `The ${subject} was not found on this server!`).populate()
         }
     }
 

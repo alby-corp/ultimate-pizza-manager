@@ -17,7 +17,8 @@ routes.route('/administrators')
     .get((req, res) => readCtrl.getAdministrators(res));
 
 routes.route('/orders')
-    .get((req, res) => readCtrl.getOrders(res))
-    .post((req, res) => writeCtrl.insertOrder(req, res));
+    .post((req, res) => writeCtrl.insertOrder(req, res))
+    .get((req, res) => readCtrl.getOrders(res));
+
 
 module.exports = routes;
