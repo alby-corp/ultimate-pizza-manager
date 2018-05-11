@@ -35,8 +35,7 @@ const Router = (function () {
 
         link(uri) {
 
-            !uri ? history.pushState() : history.pushState(null, null, uri);
-
+            history.pushState(null, null, uri);
             privateProps.get(this).handler.manage();
         }
     }

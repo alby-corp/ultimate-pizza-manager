@@ -39,7 +39,7 @@ const ResourceService = (function () {
 
 const PageService = (function () {
 
-    const getURI = (uri) => `public/${uri}`;
+    const getURI = (uri) => `app/views/${uri}.html`;
 
     class PageService {
 

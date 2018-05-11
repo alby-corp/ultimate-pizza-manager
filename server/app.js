@@ -10,20 +10,18 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
-// app.get('/', (req, res) => res.sendFile(path.join(__dirname + '/views/index.html')));
 
-app.use('/public', express.static(path.join(__dirname, 'views'), {index: false, extensions: ['html']}));
-app.use('/js', express.static(path.join(__dirname, '../wwwroot/js'), {index: false, extensions: ['js']}));
-app.use('/css', express.static(path.join(__dirname, '../wwwroot/css'), {index: false, extensions: ['css']}));
-
+app.use('/app', express.static(path.join(__dirname, '../app')));
 app.use('/api', routes);
 
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, '../index.html')));
+
 app.use(function (req, res, next) {
-    try {
-        res.sendFile(path.join(__dirname + '/index.html'));
-    } catch (error) {
-        next(createError(404));
+    if (req.uri === '/'){
+        res.sendFile(path.join(__dirname, '../index.html'));
     }
+
+    next(createError(404));
 });
 
 // error handler

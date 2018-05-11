@@ -1,4 +1,4 @@
-class Container {
+class App {
 
     static async init() {
         if (window.AlbyJs === undefined) {
@@ -20,9 +20,7 @@ class Container {
         const ordersCtrl = new OrdersController(AlbyJs.ResourceService, await pageService.get('orders'), outlet);
         const formController = new FormController(AlbyJs.ResourceService, await pageService.get('form'), outlet);
 
-
         const routes = new Map().set("/", formController).set("/menu", menuCtrl).set("/week-orders", ordersCtrl).set("/info", infoCtrl);
-
         window.AlbyJs.Router = new Router(routes);
 
         const goToWeekOrdersButton = new Button('Vai agli Ordini', new Map([['class', 'btn btn-success'], ['onclick', "AlbyJs.Router.weekOrders()"]]));
