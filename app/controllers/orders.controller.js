@@ -4,13 +4,14 @@ const OrdersController = (function () {
 
     class OrdersController extends BaseController{
 
-        constructor(resourceService, view, outlet) {
-            super(view, outlet);
+        constructor(resourceService, view, outlet, alertService) {
+            super(view, outlet, alertService);
 
             privateProps.set(this, {
-                resourceService: resourceService,
+                service: resourceService,
                 view: view,
-                outlet: outlet
+                outlet: outlet,
+                alertService: alertService
             });
         }
 
@@ -18,7 +19,7 @@ const OrdersController = (function () {
             let orders;
 
             try {
-                orders = await this.responseHandler(AlbyJs.ResourceService.getOrders);
+                orders = await this.responseHandler(privateProps.get(this).service.getOrders);
             } catch {
                 return;
             }

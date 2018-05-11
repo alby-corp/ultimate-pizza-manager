@@ -4,13 +4,14 @@ const InfoController = (function () {
 
     class InfoController extends BaseController{
 
-        constructor(resourceService, view, outlet) {
-            super(view, outlet);
+        constructor(service, view, outlet, alertService) {
+            super(view, outlet, alertService);
 
             privateProps.set(this, {
-                resourceService: resourceService,
+                service: service,
                 view: view,
-                outlet: outlet
+                outlet: outlet,
+                alertService: alertService
             });
         }
 
@@ -18,7 +19,7 @@ const InfoController = (function () {
             let administrators;
 
             try {
-                administrators = await this.responseHandler(AlbyJs.ResourceService.getAdministrators);
+                administrators = await this.responseHandler(privateProps.get(this).service.getAdministrators);
             } catch {
                 return;
             }

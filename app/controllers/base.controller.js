@@ -3,10 +3,11 @@ const BaseController = (function () {
     const privateProps = new WeakMap();
 
     class BaseController {
-        constructor(view, outlet) {
+        constructor(view, outlet, alertService) {
             privateProps.set(this, {
                 view: view,
-                outlet: outlet
+                outlet: outlet,
+                alertService: alertService
             });
         }
 
@@ -19,12 +20,12 @@ const BaseController = (function () {
             throw new Error('Abstract method!');
         }
 
-        async responseHandler(func) {
+        responseHandler(func) {
             try {
-                return await func();
+                return func();
             } catch (error) {
-                AlbyJs.AlertService.error(`${error.status}: ${error.statusText}`);
-                throw error;
+                privateProps.get(this).alertService.error(`${error.status}: ${error.statusText}`);
+                throw new Error(error.message);
             }
         };
 

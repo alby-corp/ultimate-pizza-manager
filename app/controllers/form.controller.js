@@ -2,7 +2,7 @@ const FormController = (function () {
 
     const privateProps = new WeakMap();
 
-    const overrideOnSubmit = () => {
+    const overrideOnSubmit = (service, alertService) => {
         $('#order-form').submit(async () => {
 
             event.preventDefault();
@@ -40,13 +40,13 @@ const FormController = (function () {
             try {
                 order.validate();
             } catch (error) {
-                AlbyJs.AlertService.error(error.message);
+                alertService.error(error.message);
                 return false;
             }
 
-            const result = await $.post('insert', order.toDTO());
+            const result = service.post(order.toDTO());
 
-            AlbyJs.AlertService.success(result);
+            alertService.success(result);
 
             return false;
         });
@@ -54,14 +54,17 @@ const FormController = (function () {
 
     class FormController extends BaseController {
 
-        constructor(resourceService, view, outlet) {
-            super(view, outlet);
+        constructor(service, view, outlet, alertService) {
+            super(view, outlet, alertService);
 
             privateProps.set(this, {
-                resourceService: resourceService,
+                service: service,
                 view: view,
-                outlet: outlet
+                outlet: outlet,
+                alertService: alertService
             });
+
+            overrideOnSubmit(privateProps.get(this).service, privateProps.get(this).alertService);
         }
 
         async populate() {
@@ -70,14 +73,12 @@ const FormController = (function () {
             let supplements;
 
             try {
-                users = await this.responseHandler(AlbyJs.ResourceService.getUsers);
-                foods = await this.responseHandler(AlbyJs.ResourceService.getFoods);
-                supplements = await this.responseHandler(AlbyJs.ResourceService.getSupplements);
+                users = await this.responseHandler(privateProps.get(this).service.getUsers);
+                foods = await this.responseHandler(privateProps.get(this).service.getFoods);
+                supplements = await this.responseHandler(privateProps.get(this).service.getSupplements);
             } catch {
                 return;
             }
-
-            overrideOnSubmit();
 
             const usersDDL = $('#users');
             new DropDownList(usersDDL, users.map(user => new Option(user.id, user.name, false))).populate();

@@ -30,6 +30,10 @@ const ResourceService = (function () {
                 const administrators = await client.get(getURI('administrators'));
                 return administrators.map(admin => new AlbyJs.Common.Administrator(admin.name, admin.onHoliday));
             };
+
+            this.postOrder = (body) => {
+                return client.post('orders', body);
+            };
         };
     }
 

@@ -4,13 +4,14 @@ const MenuController = (function () {
 
     class MenuController extends BaseController{
 
-        constructor(resourceService, view, outlet) {
-            super(view, outlet);
+        constructor(service, view, outlet, alertService) {
+            super(view, outlet, alertService);
 
             privateProps.set(this, {
-                resourceService: resourceService,
+                service: service,
                 view: view,
-                outlet: outlet
+                outlet: outlet,
+                alertService: alertService
             });
         }
 
@@ -22,7 +23,7 @@ const MenuController = (function () {
             let menu;
 
             try {
-                menu = await this.responseHandler(AlbyJs.ResourceService.getFoods);
+                menu = await this.responseHandler(privateProps.get(this).service.getFoods);
             } catch (error) {
                 return;
             }

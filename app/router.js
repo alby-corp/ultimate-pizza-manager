@@ -1,6 +1,8 @@
 // Navigation
 const Router = (function () {
 
+    const getUri = () => window.location.pathname;
+
     const privateProps = new WeakMap();
 
     class RoutesHandler {
@@ -13,10 +15,15 @@ const Router = (function () {
 
         manage() {
 
-            const uri = window.location.pathname;
+            let uri = getUri();
 
-            const ctrl = privateProps.get(this).routes.get(uri);
+            if (!privateProps.get(this).routes.has(uri)) {
+                history.pushState({url: window.location.href}, '404 - Not Found', 'not-found');
+            }
+
+            const ctrl = privateProps.get(this).routes.get(getUri());
             ctrl.initView().populate();
+
         };
     }
 
@@ -26,12 +33,14 @@ const Router = (function () {
                 handler: new RoutesHandler(routes)
             });
 
+            window.addEventListener("onpopstate", () => privateProps.get(this).handler.manage());
+
             privateProps.get(this).handler.manage();
         }
 
         link(uri) {
 
-            history.pushState(null, null, uri);
+            history.pushState(null, uri, uri);
             privateProps.get(this).handler.manage();
         }
     }

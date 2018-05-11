@@ -10,12 +10,16 @@ const HttpClient = (function () {
             });
         }
 
-        async get(uri) {
-            return await $.get(`${ privateProps.get(this).url}/${uri}`) || [];
+        get(uri) {
+            return $.get(`${ privateProps.get(this).url}/${uri}`) || [];
         }
 
-        async getById(uri, id) {
-            return await $.get(`${privateProps.get(this).url}${uri}?id=${id}`) || {};
+        getById(uri, id) {
+            return $.get(`${privateProps.get(this).url}${uri}?id=${id}`) || {};
+        }
+
+        post(uri, body) {
+            return $.post(`${ privateProps.get(this).url}/${uri}`, body);
         }
     }
 
