@@ -52,17 +52,18 @@ const FormController = (function () {
         };
     };
 
-    class FormController extends BaseController {
+    class FormController {
 
-        constructor(service, view, outlet, alertService) {
-            super(view, outlet, alertService);
+        constructor(service, alertService) {
 
             privateProps.set(this, {
                 service: service,
-                view: view,
-                outlet: outlet,
                 alertService: alertService
             });
+        }
+
+        static get view() {
+            return 'form.html';
         }
 
         async execute() {
@@ -73,10 +74,23 @@ const FormController = (function () {
             let supplements;
 
             try {
-                users = await this.responseHandler(privateProps.get(this).service.getUsers);
-                foods = await this.responseHandler(privateProps.get(this).service.getFoods);
-                supplements = await this.responseHandler(privateProps.get(this).service.getSupplements);
-            } catch {
+                users = await privateProps.get(this).service.getUsers();
+            } catch (error) {
+                privateProps.get(this).alertService.error(`${error.status}: ${error.statusText}`);
+                return;
+            }
+
+            try {
+                foods = await privateProps.get(this).service.getFoods();
+            } catch (error) {
+                privateProps.get(this).alertService.error(`${error.status}: ${error.statusText}`);
+                return;
+            }
+
+            try {
+                supplements = await privateProps.get(this).service.getSupplements();
+            } catch (error) {
+                privateProps.get(this).alertService.error(`${error.status}: ${error.statusText}`);
                 return;
             }
 

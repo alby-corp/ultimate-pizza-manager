@@ -1,29 +1,58 @@
-class App {
+const App = (function () {
 
-    async init() {
+    const privateProps = new WeakMap();
 
-        const httpClient = new HttpClient(window.location.origin);
-        const resourceService = new ResourceService(httpClient);
+    class Route{
+        constructor(controller, outlet, ...services){
+            privateProps.set(this, {
+                controller: controller,
+                outlet: outlet,
+                services: services
+            });
+        }
 
-        const pageService = new PageService(httpClient);
+        get controller(){
+            return privateProps.get(this).controller;
+        }
 
-        const goToWeekOrdersButton = new Button('Vai agli Ordini', new Map([['class', 'btn btn-success'], ['onclick', "AlbyJs.Router.link('week-orders')"]]));
-        const alertService = new ModalService($('#alert-serivice'), 'alert-service-modal', [goToWeekOrdersButton]); //[`<button class="btn btn-primary" onclick="link('week-orders')">Vai agli Ordini</button>`]);
+        get outlet(){
+            return privateProps.get(this).outlet;
+        }
 
-        const outlet = (data) => {
-            $('#container').empty().html(data);
-        };
-
-        const infoCtrl = new InfoController(resourceService, await pageService.get('info'), outlet, alertService);
-        const menuCtrl = new MenuController(resourceService, await pageService.get('menu'), outlet, alertService);
-        const ordersCtrl = new OrdersController(resourceService, await pageService.get('orders'), outlet, alertService);
-        const formController = new FormController(resourceService, await pageService.get('form'), outlet, alertService);
-        const notFountController = new NotFoundController(resourceService, await pageService.get('not-found'), outlet, alertService);
-
-        const routes = new Map().set("/", formController).set("/menu", menuCtrl).set("/week-orders", ordersCtrl).set("/info", infoCtrl).set('/not-found', notFountController);
-        window.AlbyJs.Router = new Router(routes);
-
+        get services(){
+            return privateProps.get(this).services;
+        }
     }
-}
+
+
+    class App {
+
+        async init() {
+
+            const httpClient = new HttpClient(window.location.origin);
+            const resourceService = new ResourceService(httpClient);
+
+            const goToWeekOrdersButton = new Button('Vai agli Ordini', new Map([['class', 'btn btn-success'], ['onclick', "AlbyJs.Router.link('week-orders')"]]));
+            const alertService = new ModalService($('#alert-serivice'), 'alert-service-modal', [goToWeekOrdersButton]); //[`<button class="btn btn-primary" onclick="link('week-orders')">Vai agli Ordini</button>`]);
+
+            const outlet = (data) => {
+                $('#container').empty().html(data);
+            };
+
+            const routes = new Map()
+                .set("/", new Route(InfoController, outlet, resourceService, alertService))
+                .set("/menu", new Route(MenuController, outlet, resourceService, alertService))
+                .set("/week-orders", new Route(OrdersController, outlet, resourceService, alertService))
+                .set("/info", new Route(InfoController, outlet, resourceService, alertService))
+                .set('/not-found', new Route(NotFoundController, outlet, resourceService, alertService));
+
+            window.AlbyJs.Router = new Router(httpClient, routes);
+        }
+    }
+
+    return App;
+})();
+
+
 
 

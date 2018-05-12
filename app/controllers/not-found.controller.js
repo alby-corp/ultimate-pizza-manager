@@ -2,17 +2,18 @@ const NotFoundController = (function () {
 
     const privateProps = new WeakMap();
 
-    class NotFoundController extends BaseController {
+    class NotFoundController {
 
-        constructor(service, view, outlet, alertService) {
-            super(view, outlet, alertService);
+        constructor(service, alertService) {
 
             privateProps.set(this, {
                 service: service,
-                view: view,
-                outlet: outlet,
                 alertService: alertService
             });
+        }
+
+        static get view() {
+            return 'not-found.html';
         }
 
         async execute() {

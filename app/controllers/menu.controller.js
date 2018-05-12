@@ -2,29 +2,26 @@ const MenuController = (function () {
 
     const privateProps = new WeakMap();
 
-    class MenuController extends BaseController{
-
-        constructor(service, view, outlet, alertService) {
-            super(view, outlet, alertService);
+    class MenuController {
+        constructor(service, alertService) {
 
             privateProps.set(this, {
                 service: service,
-                view: view,
-                outlet: outlet,
                 alertService: alertService
             });
         }
 
-        get execute(){
-            return privateProps.get(this).view;
+        static get view() {
+            return 'menu.html';
         }
 
-        async populate() {
+        async execute() {
             let menu;
 
             try {
-                menu = await this.responseHandler(privateProps.get(this).service.getFoods);
+                menu = await privateProps.get(this).service.getFoods;
             } catch (error) {
+                privateProps.get(this).alertService.error(`${error.status}: ${error.statusText}`);
                 return;
             }
 
@@ -54,6 +51,7 @@ const MenuController = (function () {
             return this;
         }
     }
+
     return MenuController;
 
 })();

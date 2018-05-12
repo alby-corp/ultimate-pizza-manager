@@ -2,25 +2,27 @@ const InfoController = (function () {
 
     const privateProps = new WeakMap();
 
-    class InfoController extends BaseController{
+    class InfoController {
 
         constructor(service, view, outlet, alertService) {
-            super(view, outlet, alertService);
 
             privateProps.set(this, {
                 service: service,
-                view: view,
-                outlet: outlet,
                 alertService: alertService
             });
+        }
+
+        static get view(){
+            return 'info.html';
         }
 
         async execute() {
             let administrators;
 
             try {
-                administrators = await this.responseHandler(privateProps.get(this).service.getAdministrators);
-            } catch {
+                administrators = await privateProps.get(this).service.getAdministrators();
+            } catch (error) {
+                privateProps.get(this).alertService.error(`${error.status}: ${error.statusText}`);
                 return;
             }
 

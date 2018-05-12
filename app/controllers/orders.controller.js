@@ -2,25 +2,27 @@ const OrdersController = (function () {
 
     const privateProps = new WeakMap();
 
-    class OrdersController extends BaseController{
+    class OrdersController {
 
-        constructor(resourceService, view, outlet, alertService) {
-            super(view, outlet, alertService);
+        constructor(service, alertService) {
 
             privateProps.set(this, {
-                service: resourceService,
-                view: view,
-                outlet: outlet,
+                service: service,
                 alertService: alertService
             });
+        }
+
+        static get view() {
+            return 'orders.html';
         }
 
         async execute() {
             let orders;
 
             try {
-                orders = await this.responseHandler(privateProps.get(this).service.getOrders);
-            } catch {
+                orders = await privateProps.get(this).service.getOrders();
+            } catch (error) {
+                privateProps.get(this).alertService.error(`${error.status}: ${error.statusText}`);
                 return;
             }
 
