@@ -3,23 +3,24 @@ const MenuController = (function () {
     const privateProps = new WeakMap();
 
     class MenuController {
-        constructor(service, alertService) {
 
-            privateProps.set(this, {
-                service: service,
-                alertService: alertService
-            });
+        static get template() {
+            return 'menu.html';
         }
 
-        static get view() {
-            return 'menu.html';
+        constructor(services) {
+
+            privateProps.set(this, {
+                service: services[0],
+                alertService: services[1]
+            });
         }
 
         async execute() {
             let menu;
 
             try {
-                menu = await privateProps.get(this).service.getFoods;
+                menu = await privateProps.get(this).service.getFoods();
             } catch (error) {
                 privateProps.get(this).alertService.error(`${error.status}: ${error.statusText}`);
                 return;

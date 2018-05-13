@@ -7,8 +7,10 @@ class Helpers {
     static async makeResponse(res, func) {
         try {
             res.status(200);
-            const data = await func();
-            res.send(data);
+
+            let data = await func();
+            res.send(data ? data : []);
+
         } catch (error) {
             res.status(500).end();
         }
@@ -19,7 +21,7 @@ class Helpers {
      */
 
     static normalizePort(val) {
-        var port = parseInt(val, 10);
+        const port = parseInt(val, 10);
 
         if (isNaN(port)) {
             // named pipe

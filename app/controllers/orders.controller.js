@@ -4,16 +4,16 @@ const OrdersController = (function () {
 
     class OrdersController {
 
-        constructor(service, alertService) {
-
-            privateProps.set(this, {
-                service: service,
-                alertService: alertService
-            });
+        static get template() {
+            return 'orders.html';
         }
 
-        static get view() {
-            return 'orders.html';
+        constructor(services) {
+
+            privateProps.set(this, {
+                service: services[0],
+                alertService: services[1]
+            });
         }
 
         async execute() {

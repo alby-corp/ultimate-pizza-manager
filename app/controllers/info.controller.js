@@ -4,16 +4,16 @@ const InfoController = (function () {
 
     class InfoController {
 
-        constructor(service, view, outlet, alertService) {
-
-            privateProps.set(this, {
-                service: service,
-                alertService: alertService
-            });
+        static get template(){
+            return 'info.html';
         }
 
-        static get view(){
-            return 'info.html';
+        constructor(services) {
+
+            privateProps.set(this, {
+                service: services[0],
+                alertService: services[1]
+            });
         }
 
         async execute() {

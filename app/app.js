@@ -1,56 +1,78 @@
 const App = (function () {
 
-    const privateProps = new WeakMap();
+    const Controller = (function () {
 
-    class Route{
-        constructor(controller, outlet, ...services){
-            privateProps.set(this, {
-                controller: controller,
-                outlet: outlet,
-                services: services
-            });
+        const privateProps = new WeakMap();
+
+        class Controller {
+
+            constructor(controller, func, services) {
+                privateProps.set(this, {
+                    instance: new controller(services),
+                    view: func(controller.template)
+                });
+            }
+
+            get instance() {
+                return privateProps.get(this).instance;
+            }
+
+            get view() {
+                return privateProps.get(this).view;
+            }
         }
 
-        get controller(){
-            return privateProps.get(this).controller;
-        }
+        return Controller;
 
-        get outlet(){
-            return privateProps.get(this).outlet;
-        }
-
-        get services(){
-            return privateProps.get(this).services;
-        }
-    }
+    })();
 
 
-    class App {
+    return (function () {
 
-        async init() {
+        const client = new HttpClient(window.location.origin);
 
-            const httpClient = new HttpClient(window.location.origin);
-            const resourceService = new ResourceService(httpClient);
+        let resourceService;
+        let alertService;
+
+        const initServices = () => {
+            resourceService = new ResourceService(client);
 
             const goToWeekOrdersButton = new Button('Vai agli Ordini', new Map([['class', 'btn btn-success'], ['onclick', "AlbyJs.Router.link('week-orders')"]]));
-            const alertService = new ModalService($('#alert-serivice'), 'alert-service-modal', [goToWeekOrdersButton]); //[`<button class="btn btn-primary" onclick="link('week-orders')">Vai agli Ordini</button>`]);
+            alertService = new ModalService($('#alert-serivice'), 'alert-service-modal', [goToWeekOrdersButton]); //[`<button class="btn btn-primary" onclick="link('week-orders')">Vai agli Ordini</button>`]);
+        };
 
-            const outlet = (data) => {
-                $('#container').empty().html(data);
-            };
+        class App {
 
-            const routes = new Map()
-                .set("/", new Route(InfoController, outlet, resourceService, alertService))
-                .set("/menu", new Route(MenuController, outlet, resourceService, alertService))
-                .set("/week-orders", new Route(OrdersController, outlet, resourceService, alertService))
-                .set("/info", new Route(InfoController, outlet, resourceService, alertService))
-                .set('/not-found', new Route(NotFoundController, outlet, resourceService, alertService));
+            async init() {
 
-            window.AlbyJs.Router = new Router(httpClient, routes);
+                initServices();
+                const services = [resourceService, alertService];
+
+                const getView = (template) => client.get(`app/views/${template}`);
+
+                const formCtrl = new Controller(FormController, getView, services);
+                const menuCtrl = new Controller(MenuController, getView, services);
+                const infoCtrl = new Controller(InfoController, getView, services);
+                const ordersCtrl = new Controller(OrdersController, getView, services);
+                const notFoundCtrl = new Controller(NotFoundController, getView);
+
+                const outlet = $('#container');
+
+                const routes = new Map()
+                    .set("/", new Route(formCtrl, outlet))
+                    .set("/menu", new Route(menuCtrl, outlet))
+                    .set("/info", new Route(infoCtrl, outlet))
+                    .set("/week-orders", new Route(ordersCtrl, outlet))
+                    .set('/not-found', new Route(notFoundCtrl, outlet));
+
+                window.AlbyJs.Router = new Router(routes);
+            }
         }
-    }
 
-    return App;
+        return App;
+
+    })();
+
 })();
 
 

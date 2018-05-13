@@ -4,15 +4,7 @@ const NotFoundController = (function () {
 
     class NotFoundController {
 
-        constructor(service, alertService) {
-
-            privateProps.set(this, {
-                service: service,
-                alertService: alertService
-            });
-        }
-
-        static get view() {
+        static get template() {
             return 'not-found.html';
         }
 

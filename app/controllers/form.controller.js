@@ -54,16 +54,16 @@ const FormController = (function () {
 
     class FormController {
 
-        constructor(service, alertService) {
-
-            privateProps.set(this, {
-                service: service,
-                alertService: alertService
-            });
+        static get template() {
+            return 'form.html';
         }
 
-        static get view() {
-            return 'form.html';
+        constructor(services) {
+
+            privateProps.set(this, {
+                service: services[0],
+                alertService: services[1],
+            });
         }
 
         async execute() {
