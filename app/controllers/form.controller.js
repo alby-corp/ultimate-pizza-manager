@@ -76,7 +76,7 @@ const FormController = (function () {
             try {
                 users = await privateProps.get(this).service.getUsers();
             } catch (error) {
-                privateProps.get(this).alertService.error(`${error.status}: ${error.statusText}`);
+                privateProps.get(this).alertService.error(`Message: ${error.statusCode || ''} ${error.message}`);
                 return;
             }
 

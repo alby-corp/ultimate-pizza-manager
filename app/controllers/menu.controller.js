@@ -22,7 +22,7 @@ const MenuController = (function () {
             try {
                 menu = await privateProps.get(this).service.getFoods();
             } catch (error) {
-                privateProps.get(this).alertService.error(`${error.status}: ${error.statusText}`);
+                privateProps.get(this).alertService.error(`Message: ${error.statusCode || ''} ${error.message}`);
                 return;
             }
 

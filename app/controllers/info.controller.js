@@ -22,7 +22,7 @@ const InfoController = (function () {
             try {
                 administrators = await privateProps.get(this).service.getAdministrators();
             } catch (error) {
-                privateProps.get(this).alertService.error(`${error.status}: ${error.statusText}`);
+                privateProps.get(this).alertService.error(`Message: ${error.statusCode || ''} ${error.message}`);
                 return;
             }
 

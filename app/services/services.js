@@ -41,24 +41,6 @@ const ResourceService = (function () {
 
 })();
 
-const PageService = (function () {
-
-    const getURI = (uri) => `app/views/${uri}.html`;
-
-    class PageService {
-
-        constructor(client) {
-
-            this.get = (uri) => {
-                return client.get(getURI(uri));
-            };
-        };
-    }
-
-    return PageService;
-
-})();
-
 const ModalService = (function () {
     const renderModal = function (title, body, buttons, name, style) {
         const renderedButtons = [];

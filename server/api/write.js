@@ -24,7 +24,7 @@ module.exports = {
         }
 
         res.status(201);
-        res.send('OK!');
+        res.send('Created!');
     }
 };
 
