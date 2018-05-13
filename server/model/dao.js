@@ -1,5 +1,5 @@
-const common = require("../wwwroot/js/common");
-const ultimatePizzaManagerContext = require('./ultimatePizzaManagerContext');
+const common = require("../../app/model/common");
+const ultimatePizzaManagerContext = require('../data-layer/ultimatePizzaManagerContext');
 
 class OrderDao extends common.Order{
 

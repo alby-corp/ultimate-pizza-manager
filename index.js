@@ -1,76 +1,39 @@
-const express = require('express');
-const path = require('path');
+#!/usr/bin/env node
 
-const app = express();
-const bodyParser = require('body-parser');
+/**
+ * Module dependencies.
+ */
+const fs = require('fs');
 
-const ultimatePizzaManagerContext = require('./server/ultimatePizzaManagerContext');
-const helpers = require('./server/helpers');
-const dao = require('./server/dao');
-const common = require('./wwwroot/js/common');
+const http = require('http');
 
-// Body parser
-app.use(bodyParser.urlencoded());
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
-app.use(bodyParser.json());
+const https = require('https');
+const privateKey = fs.readFileSync('./infrastructure/sslcert/server.key', 'utf8');
+const certificate = fs.readFileSync('./infrastructure/sslcert/server.crt', 'utf8');
+const credentials = {key: privateKey, cert: certificate};
 
-// Static files
-app.use('/public', express.static('wwwroot'));
-app.use(express.static('resources'));
+const helpers = require('./server/helpers/helpers');
+const app = require('./server/app');
 
-// API
-app.get('/', (req, res) => res.sendFile(path.join(__dirname + '/index.html')));
+/**
+ * Set  HTTP and HTTPS ports.
+ */
+const httpPort = helpers.normalizePort(process.env.HTTP_PORT || '8080');
+const httpsPort = helpers.normalizePort(process.env.HTTPS_PORT || '443');
 
-app.get('/foods', async (req, res) => {
-    await helpers.makeResponse(res, ultimatePizzaManagerContext.getFoods)
-});
+/**
+ * Create HTTP and HTTPS servers.
+ */
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer(credentials, app);
 
-app.get('/users', async (req, res) => {
-    await helpers.makeResponse(res,  ultimatePizzaManagerContext.getUsers)
-});
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+httpServer.listen(httpPort);
+httpServer.on('error', helpers.onError);
+httpServer.on('listening', helpers.onListening(httpServer, 'HttpServer'));
 
-app.get('/supplements', async (req, res) => {
-    await helpers.makeResponse(res, ultimatePizzaManagerContext.getSupplements)
-});
-
-app.get('/orders', async (req, res) => {
-    await helpers.makeResponse(res, ultimatePizzaManagerContext.getOrders)
-});
-
-app.get('/administrators', async (req, res) => {
-    await helpers.makeResponse(res, ultimatePizzaManagerContext.getAdministrators)
-});
-
-app.post('/insert', async (req, res) => {
-
-    const data = req.body;
-
-    const user = new common.User(+data.user.id);
-    const foods = data.foods.map(f => new common.OrderedFood(new common.Food(+f.id), f.supplements, f.removals));
-
-    const order = new dao.OrderDAO(user, foods);
-
-    try {
-        order.validate();
-    } catch (error) {
-        res.status(400);
-        res.send(`Ordine non valido si prega di riprovare. Magari utilizzando il client messo a disposizione e non postman o simili! : ${error}`);
-    }
-
-    try {
-        await order.save();
-    } catch (error) {
-        res.status(503);
-        res.send(`Impossibile salvare l'ordine: ${error}`);
-    }
-
-    res.status(201);
-    res.send('Ordine Registrato');
-});
-
-// Server config
-app.listen(process.env.PORT || 8080, () => {
-    console.log('Example app listening on port: ' + (process.env.PORT || 8080));
-});
+httpsServer.listen(httpsPort);
+httpsServer.on('error', helpers.onError);
+httpsServer.on('listening', helpers.onListening(httpsServer, 'HttpsServer'));

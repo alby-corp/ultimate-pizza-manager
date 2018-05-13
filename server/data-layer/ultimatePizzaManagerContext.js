@@ -1,5 +1,5 @@
 const Context = require('./context');
-const connectionString = require('./settings.json')["ultimate-pizza-manager-connection-string"];
+const connectionString = require('../settings.json')["ultimate-pizza-manager-connection-string"];
 const uuid = require('uuid-v4');
 
 const UltimatePizzaManagerContext = (function () {
@@ -79,7 +79,6 @@ const UltimatePizzaManagerContext = (function () {
                                         SELECT json_build_object('id', o.user_id, 'name', o.user_name) as user, o.date, json_agg(o.foods) as foods 
                                         FROM "order_cte" o 
                                         GROUP BY o.user_id, o.user_name, o.date, o.order_id
-                                        
                                     )
                                     
                                     SELECT json_agg(to_json(go)) FROM grouped_order_cte go`;
