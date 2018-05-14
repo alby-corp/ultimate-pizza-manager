@@ -2,6 +2,20 @@ const FormController = (function () {
 
     const privateProps = new WeakMap();
 
+    const getFoodsOptions = (foods, type) => {
+        const options = foods.filter(food => food.type === type).map(food => new Option(food.id, food.toString(), false));
+        options.unshift(Option.getBlankOption());
+
+        return options;
+    };
+
+    const getIngredientsOptions = (data, func) => {
+        const options = data.map(s => new Option(s.id, func.call(s), false));
+        options.unshift(Option.getBlankOption());
+
+        return options;
+    };
+
     const overrideOnSubmit = (service, alertService) => {
         document.getElementById('order-form').onsubmit = async (event) => {
 
@@ -98,16 +112,16 @@ const FormController = (function () {
             new DropDownList(usersDDL, users.map(user => new Option(user.id, user.name, false))).populate();
 
             const pizzasDDL = $('#pizzas');
-            new DropDownList(pizzasDDL, Helpers.getFoodsOptions(foods, 1)).populate();
+            new DropDownList(pizzasDDL, getFoodsOptions(foods, 1)).populate();
 
             const kitchenDDL = $('#kitchen');
-            new DropDownList(kitchenDDL, Helpers.getFoodsOptions(foods, 2)).populate();
+            new DropDownList(kitchenDDL, getFoodsOptions(foods, 2)).populate();
 
             const dessertsDDL = $('#desserts');
-            new DropDownList(dessertsDDL, Helpers.getFoodsOptions(foods, 3)).populate();
+            new DropDownList(dessertsDDL, getFoodsOptions(foods, 3)).populate();
 
             const sandwichesDDL = $('#sandwiches');
-            new DropDownList(sandwichesDDL, Helpers.getFoodsOptions(foods, 4)).populate();
+            new DropDownList(sandwichesDDL, getFoodsOptions(foods, 4)).populate();
 
             const removalsDDL = $('#removals');
             new DropDownList(removalsDDL, null)
@@ -115,19 +129,19 @@ const FormController = (function () {
                 .autoRefresh(
                     pizzasDDL,
                     (id) => id
-                        ? Helpers.getIngredientsOptions(foods.find(f => f.id === +id).ingredients, Helpers.getPropertyDescriptor(AlbyJs.Common.Ingredient.prototype, 'name').get)
+                        ? getIngredientsOptions(foods.find(f => f.id === +id).ingredients, Helpers.getPropertyDescriptor(AlbyJs.Common.Ingredient.prototype, 'name').get)
                         : []
                 );
 
             const supplementsDDL = $('#supplements');
-            new DropDownList(supplementsDDL, Helpers.getIngredientsOptions(supplements, AlbyJs.Common.Ingredient.prototype.toString))
+            new DropDownList(supplementsDDL, getIngredientsOptions(supplements, AlbyJs.Common.Ingredient.prototype.toString))
                 .populate()
                 .conditionalEnable(pizzasDDL)
                 .autoRefresh(
                     pizzasDDL,
                     (id) => id
-                        ? Helpers.getIngredientsOptions(Helpers.exception(supplements, foods.find(f => f.id === +id).ingredients), AlbyJs.Common.Ingredient.prototype.toString)
-                        : Helpers.getIngredientsOptions(supplements, AlbyJs.Common.Ingredient.prototype.toString)
+                        ? getIngredientsOptions(foods.find(f => f.id === +id).ingredients.exception(supplements), AlbyJs.Common.Ingredient.prototype.toString)
+                        : getIngredientsOptions(supplements, AlbyJs.Common.Ingredient.prototype.toString)
                 );
 
             return this;
