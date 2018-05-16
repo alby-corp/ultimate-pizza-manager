@@ -63,7 +63,7 @@ const Context = (function () {
                     await client.query(query);
                 }
 
-            } catch (err) {
+            } catch (error) {
                 console.log(`ERROR: ${err}`);
 
                 await client.query('ROLLBACK');
@@ -74,7 +74,7 @@ const Context = (function () {
             client.end();
         };
 
-    }
+    };
 
     return Context;
 })();

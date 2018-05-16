@@ -12,7 +12,7 @@ const NotFoundController = (function () {
             let subject;
             try {
                 subject = `[${window.history.state['url']}]`;
-            } catch {
+            } catch (error) {
                 subject = 'requested page';
             }
 
