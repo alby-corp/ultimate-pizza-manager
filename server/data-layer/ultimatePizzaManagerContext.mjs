@@ -1,8 +1,16 @@
-const Context = require('./context');
-const connectionString = require('../settings.json')["ultimate-pizza-manager-connection-string"];
-const uuid = require('uuid-v4');
+import fs from 'fs';
+import uuid from 'uuid-v4';
 
-const UltimatePizzaManagerContext = (function () {
+import path from 'path';
+import url from 'url';
+
+import {Context} from './context';
+
+export const UltimatePizzaManagerContext = (function () {
+
+    const __dirname = path.dirname(import.meta.url.replace('file:///', ''));
+
+    const connectionString = JSON.parse(fs.readFileSync( path.join(__dirname, '../settings.json')).toString())["ultimate-pizza-manager-connection-string"];
 
     const privateProps = new WeakMap();
 
@@ -133,5 +141,3 @@ const UltimatePizzaManagerContext = (function () {
 
     return UltimatePizzaManagerContext
 })();
-
-module.exports = new UltimatePizzaManagerContext;

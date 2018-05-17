@@ -2,7 +2,7 @@
  * Class Helpers.
  */
 
-class Helpers {
+export class Helpers {
 
     static async makeResponse(res, func) {
         try {
@@ -74,5 +74,3 @@ class Helpers {
         }
     }
 }
-
-module.exports = Helpers;

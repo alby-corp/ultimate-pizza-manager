@@ -33,7 +33,8 @@ const Router = (function () {
         const routes = privateProps.get(this).routes;
 
         if (!routes.has(key)) {
-            history.pushState({url: window.location.href}, '404 - Not Found', 'not-found');
+            key = '/not-found';
+            history.pushState({url: window.location.href}, '404 - Not Found', key);
         }
 
         const route = routes.get(key);

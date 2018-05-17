@@ -1,6 +1,6 @@
-const pg = require('pg');
+import pg from 'pg';
 
-const Context = (function () {
+export const Context = (function () {
     const privateProps = new WeakMap();
 
     class Context {
@@ -78,5 +78,3 @@ const Context = (function () {
 
     return Context;
 })();
-
-module.exports = Context;
