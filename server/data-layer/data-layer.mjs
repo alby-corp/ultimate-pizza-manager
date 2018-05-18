@@ -1,9 +1,9 @@
 import pg from 'pg';
 
-export const Context = (function () {
+export const DataLayer = (function () {
     const privateProps = new WeakMap();
 
-    class Context {
+    return class {
         constructor(connectionString) {
             privateProps.set(this, {
                 connectionString: connectionString
@@ -73,8 +73,6 @@ export const Context = (function () {
             await client.query('COMMIT');
             client.end();
         };
+    };
 
-    }
-
-    return Context;
 })();

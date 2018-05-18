@@ -1,9 +1,21 @@
-import {Helpers} from '../helpers/helpers';
-
 export const ReadController = (function () {
+
     const privateProps = new WeakMap();
 
-    return class ReadController {
+    const responseHandler = (self, func) => async (res) => {
+        try {
+            const data = await func.apply(privateProps.get(self).context);
+
+            res.status(200);
+            res.send(data ? data : []);
+
+        } catch (error) {
+            res.status(500);
+            res.send('Internal-Server Error!');
+        }
+    };
+
+    return class {
         constructor(context) {
 
             privateProps.set(this, {
@@ -11,26 +23,26 @@ export const ReadController = (function () {
             });
         }
 
-        async getFoods(res) {
-            await Helpers.makeResponse(res, privateProps.get(this).getFoods)
+        getFoods() {
+            return responseHandler(this, privateProps.get(this).context.getFoods)
         };
 
-        async getUsers(res) {
-            await Helpers.makeResponse(res, privateProps.get(this).getUsers)
+        getUsers() {
+            return responseHandler(this, privateProps.get(this).context.getUsers);
         };
 
-        async getSupplements(res) {
-            await Helpers.makeResponse(res, privateProps.get(this).getSupplements)
+        getSupplements(res) {
+            return responseHandler(this,  privateProps.get(this).context.getSupplements);
         };
 
-        async getOrders(res) {
-            await Helpers.makeResponse(res, privateProps.get(this).getOrders)
+        getOrders() {
+            return responseHandler(this,  privateProps.get(this).context.getOrders)
         };
 
-        async getAdministrators(res) {
-            await Helpers.makeResponse(res, privateProps.get(this).getAdministrators)
+        getAdministrators(res) {
+            return responseHandler(this,  privateProps.get(this).context.getAdministrators)
         };
-    }
+    };
 
 })();
 

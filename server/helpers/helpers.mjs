@@ -4,18 +4,6 @@
 
 export class Helpers {
 
-    static async makeResponse(res, func) {
-        try {
-            res.status(200);
-
-            let data = await func();
-            res.send(data ? data : []);
-
-        } catch (error) {
-            res.status(500).end();
-        }
-    };
-
     /**
      * Normalize a port into a number, string, or false.
      */

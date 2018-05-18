@@ -1,16 +1,8 @@
-import fs from 'fs';
 import uuid from 'uuid-v4';
 
-import path from 'path';
-import url from 'url';
-
-import {Context} from './context';
+import {DataLayer} from './data-layer';
 
 export const UltimatePizzaManagerContext = (function () {
-
-    const __dirname = path.dirname(import.meta.url.replace('file:///', ''));
-
-    const connectionString = JSON.parse(fs.readFileSync( path.join(__dirname, '../settings.json')).toString())["ultimate-pizza-manager-connection-string"];
 
     const privateProps = new WeakMap();
 
@@ -107,37 +99,33 @@ export const UltimatePizzaManagerContext = (function () {
         return queries;
     };
 
-    class UltimatePizzaManagerContext {
+    return class {
 
-        constructor() {
+        constructor(connectionString) {
 
-            const context = new Context(connectionString);
+            const context = new DataLayer(connectionString);
 
-            this.getUsers = () => {
-                return context.scalar(usersQuery)
-            };
+            privateProps.set(this, {
+                context: context
+            });
 
-            this.getFoods = () => {
-                return context.scalar(foodsQuery)
-            };
 
-            this.getSupplements = () => {
-                return context.scalar(supplementsQuery)
-            };
+            this.getUsers = () => privateProps.get(this).context.scalar(usersQuery);
 
-            this.getOrders = () => {
-                return context.scalar(ordersQuery)
-            };
 
-            this.getAdministrators = () => {
-                return context.scalar(administratorsQuery)
-            };
+            this.getFoods = () => privateProps.get(this).context.scalar(foodsQuery);
 
-            this.insertOrders = (order) => {
-                return context.execute(insertQueryFactory(order))
-            };
+            this.getSupplements = () => privateProps.get(this).context.scalar(supplementsQuery);
+
+
+            this.getOrders = () => privateProps.get(this).context.scalar(ordersQuery);
+
+
+            this.getAdministrators = () => privateProps.get(this).context.scalar(administratorsQuery);
+
+
+            this.insertOrder = (order) => privateProps.get(this).context.execute(insertQueryFactory(order))
         };
     }
-
-    return UltimatePizzaManagerContext
-})();
+})
+();

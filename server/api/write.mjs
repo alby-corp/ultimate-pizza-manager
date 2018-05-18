@@ -4,7 +4,7 @@ export const WriteController = (function () {
 
     const privateProps = new WeakMap();
 
-    return class WriteController {
+    return class {
 
         constructor(context) {
             privateProps.set(this, {
@@ -12,29 +12,31 @@ export const WriteController = (function () {
             });
         };
 
-        async insertOrder(req, res) {
+        insertOrder(body) {
 
-            const user = new Common.User(+req.body.user.id);
-            const foods = req.body.foods.map(f => new Common.OrderedFood(new Common.Food(+f.id), f.supplements, f.removals));
+            const user = new Common.User(+body.user.id);
+            const foods = body.foods.map(f => new Common.OrderedFood(new Common.Food(+f.id), f.supplements, f.removals));
 
             const order = new OrderDao(privateProps.get(this).context, user, foods);
 
             try {
                 order.validate();
             } catch (error) {
-                res.status(400);
-                res.send(`Ordine non valido si prega di riprovare. Magari utilizzando il client messo a disposizione e non postman o simili! : ${error}`);
+                // TODO: delete order;
             }
 
-            try {
-                await order.save();
-            } catch (error) {
-                res.status(503);
-                res.send(`Impossibile salvare l'ordine: ${error.message}`);
-            }
+            return async (res) => {
 
-            res.status(201);
-            res.send('Created!');
+                try {
+                    await order.save(this);
+                } catch (error) {
+                    res.status(503);
+                    res.send(`Impossibile salvare l'ordine: ${error.message}`);
+                }
+
+                res.status(201);
+                res.send('Created!');
+            };
         }
     }
 })();
