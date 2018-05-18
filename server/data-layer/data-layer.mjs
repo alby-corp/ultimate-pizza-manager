@@ -50,7 +50,7 @@ export const DataLayer = (function () {
             }
         };
 
-        async execute (queries) {
+        async execute(queries) {
 
             const client = this.clientFactory();
 
@@ -63,7 +63,7 @@ export const DataLayer = (function () {
                     await client.query(query);
                 }
 
-            } catch (err) {
+            } catch (error) {
                 console.log(`ERROR: ${err}`);
 
                 await client.query('ROLLBACK');
@@ -73,6 +73,5 @@ export const DataLayer = (function () {
             await client.query('COMMIT');
             client.end();
         };
-    };
-
+    }
 })();
