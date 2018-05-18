@@ -1,8 +1,10 @@
-const MenuController = (function () {
+import {Table, FoodRow, IngredientRow} from '../model';
+
+export const MenuController = (function () {
 
     const privateProps = new WeakMap();
 
-    class MenuController {
+    return class {
 
         static get template() {
             return 'menu.html';
@@ -41,7 +43,7 @@ const MenuController = (function () {
             let supplements;
 
             try {
-                supplements = await responseHandler(AlbyJs.ResourceService.getSupplements);
+                supplements = await privateProps.get(this).service.getSupplements;
             } catch (error) {
                 return;
             }
@@ -51,8 +53,6 @@ const MenuController = (function () {
 
             return this;
         }
-    }
-
-    return MenuController;
+    };
 
 })();

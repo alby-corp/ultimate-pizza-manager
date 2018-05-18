@@ -1,5 +1,5 @@
 // Navigation
-const Route = (function () {
+export const Route = (function () {
 
     const privateProps = new WeakMap();
 
@@ -23,7 +23,7 @@ const Route = (function () {
 
 })();
 
-const Router = (function () {
+export const Router = (function () {
 
     const privateProps = new WeakMap();
 

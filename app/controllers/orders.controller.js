@@ -1,8 +1,10 @@
-const OrdersController = (function () {
+import {OrdersRow, Table, SummaryRow, Span} from '../model';
+
+export const OrdersController = (function () {
 
     const privateProps = new WeakMap();
 
-    class OrdersController {
+    return class {
 
         static get template() {
             return 'orders.html';
@@ -52,8 +54,6 @@ const OrdersController = (function () {
             return this;
         }
 
-    }
-
-    return OrdersController;
+    };
 
 })();

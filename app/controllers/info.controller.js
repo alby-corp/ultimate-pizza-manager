@@ -1,10 +1,12 @@
-const InfoController = (function () {
+import {List, AdminListItem} from '../model';
+
+export const InfoController = (function () {
 
     const privateProps = new WeakMap();
 
-    class InfoController {
+    return class {
 
-        static get template(){
+        static get template() {
             return 'info.html';
         }
 
@@ -32,8 +34,6 @@ const InfoController = (function () {
 
             return this;
         }
-    }
-
-    return InfoController;
+    };
 
 })();

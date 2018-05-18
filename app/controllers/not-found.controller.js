@@ -1,8 +1,10 @@
-const NotFoundController = (function () {
+import {Span} from '../model';
+
+export const NotFoundController = (function () {
 
     const privateProps = new WeakMap();
 
-    class NotFoundController {
+    return class {
 
         static get template() {
             return 'not-found.html';
@@ -20,8 +22,6 @@ const NotFoundController = (function () {
 
             new Span(messageSpan, `The ${subject} was not found on this server!`).populate()
         }
-    }
-
-    return NotFoundController
+    };
 
 })();

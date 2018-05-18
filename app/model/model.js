@@ -1,7 +1,10 @@
-const DropDownList = (function () {
+import {Common} from '../../server/model';
+import {OrderDTO} from './dto';
+
+export const DropDownList = (function () {
     const privateProps = new WeakMap();
 
-    class DropDownList {
+    return class {
         constructor(select, options) {
             privateProps.set(this, {
                 select: select,
@@ -35,15 +38,13 @@ const DropDownList = (function () {
 
             return this;
         }
-    }
-
-    return DropDownList;
+    };
 })();
 
-const Option = (function () {
+export const Option = (function () {
     const privateProps = new WeakMap();
 
-    class Option {
+    return class {
         constructor(key, value, selected, disabled) {
             privateProps.set(this, {
                 key: key,
@@ -68,15 +69,14 @@ const Option = (function () {
         static getBlankOption() {
             return new Option(undefined, ' -- -- ', false);
         };
-    }
+    };
 
-    return Option;
 })();
 
-const Table = (function () {
+export const Table = (function () {
     const privateProps = new WeakMap();
 
-    class Table {
+    return class {
         constructor(table, rows) {
 
             if (!(Array.isArray(rows) || rows.filter(row => !(row instanceof BaseRow)).length > 0)) {
@@ -92,9 +92,8 @@ const Table = (function () {
         populate() {
             privateProps.get(this).rows.forEach(row => privateProps.get(this).table.children('tbody').append(row.render()));
         }
-    }
+    };
 
-    return Table;
 })();
 
 class BaseRow {
@@ -103,11 +102,11 @@ class BaseRow {
     }
 }
 
-const OrdersRow = (function () {
+export const OrdersRow = (function () {
 
     const privateProps = new WeakMap();
 
-    class OrdersRow extends BaseRow {
+    return class extends BaseRow {
 
         constructor(order) {
             super();
@@ -152,16 +151,15 @@ const OrdersRow = (function () {
                                                         <td><ul>${orderedFood.removals.map(r => `<li>${r.name}</li>`).join('')}</ul></td>
                                                     </tr>`)}`;
         }
-    }
+    };
 
-    return OrdersRow;
 })();
 
-const FoodRow = (function () {
+export const FoodRow = (function () {
 
     const privateProps = new WeakMap();
 
-    class FoodRow extends BaseRow {
+    return class extends BaseRow {
 
         constructor(food) {
             super();
@@ -183,16 +181,15 @@ const FoodRow = (function () {
 
             return row.concat('</tr>');
         }
-    }
+    };
 
-    return FoodRow;
 })();
 
-const IngredientRow = (function () {
+export const IngredientRow = (function () {
 
     const privateProps = new WeakMap();
 
-    class IngredientRow extends BaseRow {
+    return class extends BaseRow {
 
         constructor(ingredient) {
             super();
@@ -209,16 +206,15 @@ const IngredientRow = (function () {
         render() {
             return `<tr><td>${this.ingredient.name}</td><td>${this.ingredient.price.toFixed(2)} &euro;</td>`;
         }
-    }
+    };
 
-    return IngredientRow;
 })();
 
-const SummaryRow = (function () {
+export const SummaryRow = (function () {
 
     const privateProps = new WeakMap();
 
-    class SummaryRow extends BaseRow {
+    return class extends BaseRow {
 
         constructor(orderedFood, count) {
             super();
@@ -245,16 +241,15 @@ const SummaryRow = (function () {
                         <td><ul>${this.orderedFood.removals.map(r => `<li>${r.name}</li>`).join('')}</ul></td>
                     </tr>`;
         }
-    }
+    };
 
-    return SummaryRow;
 })();
 
-const Span = (function () {
+export const Span = (function () {
 
     const privateProps = new WeakMap();
 
-    class Span {
+    return class {
 
         constructor(span, text) {
             privateProps.set(this, {
@@ -274,16 +269,15 @@ const Span = (function () {
         populate() {
             this.span.html(this.text);
         }
-    }
+    };
 
-    return Span;
 })();
 
-const List = (function () {
+export const List = (function () {
 
     const privateProps = new WeakMap();
 
-    class List {
+    return class {
 
         constructor(list, items) {
 
@@ -308,9 +302,8 @@ const List = (function () {
         populate() {
             this.items.forEach(item => this.list.append(item.render()))
         }
-    }
+    };
 
-    return List;
 })();
 
 class BaseListItem {
@@ -319,11 +312,11 @@ class BaseListItem {
     }
 }
 
-const AdminListItem = (function () {
+export const AdminListItem = (function () {
 
     const privateProps = new WeakMap();
 
-    class AdminListItem extends BaseListItem {
+    return class extends BaseListItem {
 
         constructor(admin) {
             super();
@@ -340,15 +333,14 @@ const AdminListItem = (function () {
         render() {
             return `<li class="list-group-item">${this.admin.name} ${this.admin.onHoliday ? ` &egrave; in ferie` : ``} </li>`;
         }
-    }
+    };
 
-    return AdminListItem;
 })();
 
-const Button = (function () {
+export const Button = (function () {
     const privateProps = new WeakMap();
 
-    class Button {
+    return class {
         constructor(value, attrs) {
             privateProps.set(this, {
                 value: value
@@ -368,12 +360,11 @@ const Button = (function () {
 
             return `<button ${attrs} >${this.value}</button>`;
         }
-    }
+    };
 
-    return Button
 })();
 
-const Order = class Order extends AlbyJs.Common.Order {
+export class Order extends Common.Order {
     constructor(user, foods, data) {
         super(user, foods, data);
     }
@@ -381,5 +372,5 @@ const Order = class Order extends AlbyJs.Common.Order {
     toDTO() {
         return new OrderDTO(this);
     }
-};
+}
 

@@ -1,4 +1,6 @@
-const FormController = (function () {
+import {Option, Common, Order, DropDownList}from'../model';
+
+export const FormController = (function () {
 
     const privateProps = new WeakMap();
 
@@ -26,15 +28,15 @@ const FormController = (function () {
 
             const userId = $('#users').val();
             if (userId) {
-                user = new AlbyJs.Common.User(+userId);
+                user = new Common.User(+userId);
             }
 
             const pizzaId = $('#pizzas').val();
             if (pizzaId) {
-                const removals = $('#removals').val().filter(id => !!id).map(r => new AlbyJs.Common.Ingredient(+r));
-                const supplements = $('#supplements').val().filter(id => !!id).map(s => new AlbyJs.Common.Ingredient(+s));
+                const removals = $('#removals').val().filter(id => !!id).map(r => new Common.Ingredient(+r));
+                const supplements = $('#supplements').val().filter(id => !!id).map(s => new Common.Ingredient(+s));
 
-                const pizza = new AlbyJs.Common.OrderedFood(new AlbyJs.Common.Food(+pizzaId), supplements, removals);
+                const pizza = new Common.OrderedFood(new Common.Food(+pizzaId), supplements, removals);
 
                 foods.push(pizza);
             }
@@ -46,7 +48,7 @@ const FormController = (function () {
             ].filter(id => !!id);
 
             others.forEach(id => {
-                foods.push(new AlbyJs.Common.OrderedFood(new AlbyJs.Common.Food(+id)));
+                foods.push(new Common.OrderedFood(new Common.Food(+id)));
             });
 
             const order = new Order(user, foods);
@@ -66,7 +68,7 @@ const FormController = (function () {
         };
     };
 
-    class FormController {
+    return class {
 
         static get template() {
             return 'form.html';
@@ -129,25 +131,23 @@ const FormController = (function () {
                 .autoRefresh(
                     pizzasDDL,
                     (id) => id
-                        ? getIngredientsOptions(foods.find(f => f.id === +id).ingredients, Helpers.getPropertyDescriptor(AlbyJs.Common.Ingredient.prototype, 'name').get)
+                        ? getIngredientsOptions(foods.find(f => f.id === +id).ingredients, Common.Ingredient.prototype.getPropertyDescriptor('name').get)
                         : []
                 );
 
             const supplementsDDL = $('#supplements');
-            new DropDownList(supplementsDDL, getIngredientsOptions(supplements, AlbyJs.Common.Ingredient.prototype.toString))
+            new DropDownList(supplementsDDL, getIngredientsOptions(supplements, Common.Ingredient.prototype.toString))
                 .populate()
                 .conditionalEnable(pizzasDDL)
                 .autoRefresh(
                     pizzasDDL,
                     (id) => id
-                        ? getIngredientsOptions(foods.find(f => f.id === +id).ingredients.exception(supplements), AlbyJs.Common.Ingredient.prototype.toString)
-                        : getIngredientsOptions(supplements, AlbyJs.Common.Ingredient.prototype.toString)
+                        ? getIngredientsOptions(foods.find(f => f.id === +id).ingredients.exception(supplements), Common.Ingredient.prototype.toString)
+                        : getIngredientsOptions(supplements, Common.Ingredient.prototype.toString)
                 );
 
             return this;
         }
-    }
-
-    return FormController;
+    };
 
 })();

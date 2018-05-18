@@ -1,3 +1,5 @@
+import {Common} from '../../server/model';
+
 class UserDTO {
     constructor(id) {
         if (!id instanceof Number) {
@@ -22,7 +24,7 @@ class IngredientDTO {
 class OrderedFoodDTO {
     constructor(orderedFood) {
 
-        if (!orderedFood instanceof AlbyJs.Common.OrderedFood) {
+        if (!orderedFood instanceof Common.OrderedFood) {
             throw 'Order has to be instance of AlbyJs.Common.OrderedFood';
         }
 
@@ -32,10 +34,10 @@ class OrderedFoodDTO {
     }
 }
 
-class OrderDTO {
+export class OrderDTO {
     constructor(order) {
 
-        if (!order instanceof AlbyJs.Common.Order) {
+        if (!order instanceof Common.Order) {
             throw 'Order has to be instance of AlbyJs.Common.Order';
         }
 

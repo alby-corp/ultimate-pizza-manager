@@ -1,10 +1,10 @@
-const HttpClient = (function () {
+export const HttpClient = (function () {
 
     const headers = {headers: {'Content-Type': 'application/json'}};
 
     const privateProps = new WeakMap();
 
-    class HttpClient {
+    return class {
 
         constructor(url) {
             privateProps.set(this, {
@@ -26,7 +26,6 @@ const HttpClient = (function () {
                 return $.post(`${ privateProps.get(this).url}/${uri}`, JSON.stringify(body));
             }
         }
-    }
+    };
 
-    return HttpClient;
 })();

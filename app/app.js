@@ -1,10 +1,15 @@
-const App = (function () {
+import {Route, Router} from './router';
+import {HttpClient, ResourceService, ModalService} from './services';
+import {OrdersController, NotFoundController, MenuController, InfoController, FormController} from './controllers';
+import {Button} from "./model";
+
+export const App = (function () {
 
     const Controller = (function () {
 
         const privateProps = new WeakMap();
 
-        class Controller {
+        return class {
 
             constructor(controller, func, services) {
                 privateProps.set(this, {
@@ -22,10 +27,7 @@ const App = (function () {
             }
         }
 
-        return Controller;
-
     })();
-
 
     return (function () {
 
@@ -41,7 +43,7 @@ const App = (function () {
             alertService = new ModalService($('#alert-serivice'), 'alert-service-modal', [goToWeekOrdersButton]); //[`<button class="btn btn-primary" onclick="link('week-orders')">Vai agli Ordini</button>`]);
         };
 
-        class App {
+        return class {
 
             async init() {
 
@@ -65,11 +67,9 @@ const App = (function () {
                     .set("/week-orders", new Route(ordersCtrl, outlet))
                     .set('/not-found', new Route(notFoundCtrl, outlet));
 
-                window.AlbyJs.Router = new Router(routes);
+                new Router(routes);
             }
-        }
-
-        return App;
+        };
 
     })();
 

@@ -24,5 +24,8 @@
     "pg": "^7.4.1",
     "promise": "^8.0.1",
     "uuid-v4": "^0.1.0"
+  },
+  "devDependencies": {
+    "webpack": "^4.8.3"
   }
 }
