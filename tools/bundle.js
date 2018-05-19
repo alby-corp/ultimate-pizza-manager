@@ -1,6 +1,6 @@
 import webpack from 'webpack';
-import webpackConfig from './webpack.config.js'; // <-- Contains ES6+
+import {prod} from './webpack.config.js'; // <-- Contains ES6+
 
-const bundler = webpack(webpackConfig);
+const bundler = webpack(prod);
 
 bundler.run();

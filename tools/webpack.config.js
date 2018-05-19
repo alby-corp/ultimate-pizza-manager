@@ -1,18 +1,11 @@
 const path = require('path');
 
+// const __dirname = path.dirname(import.meta.url.replace('file:///', ''));
+
 module.exports = {
-    mode: "development", // "production" | "development" | "none"
-
-    entry: "./app/index", // string | object | array
-
+    entry: './app/main.js',
     output: {
-        path: path.resolve(__dirname, "dist"), // string
-        filename: "bundle.js", // string
-
-        publicPath: "/assets/",
-
-        library: "UltimatePizzaManger", // string, // the name of the exported library
-
-        libraryTarget: "umd", // universal module definition
+        filename: 'bundle.js',
+        path: 'C:\\Users\\aviez\\_projects\\ultimate-pizza-manager\\dist'
     }
 };

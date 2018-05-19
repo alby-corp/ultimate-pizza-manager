@@ -7,8 +7,6 @@ import {ReadController, WriteController} from './api';
 import {UltimatePizzaManagerContext} from './data-layer/ultimate-pizza-manager-context';
 import {Router} from './router';
 
-const __dirname = path.dirname(import.meta.url.replace('file:///', ''));
-
 export const App = (function () {
 
     const privateProps = new WeakMap();
@@ -29,7 +27,7 @@ export const App = (function () {
 
             app.use(express.urlencoded({extended: false}));
 
-            app.use('/app', express.static(path.join(__dirname, '../app')));
+            app.use('/dist', express.static(path.join(__dirname, '../dist')));
 
             app.use(bodyParser.json());
             app.use('/api', router.configuration);
