@@ -1,11 +1,53 @@
 const path = require('path');
+const webpack = require('webpack');
+// const CleanWebpackPlugin = require('clean-webpack-plugin');
+// const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+// const CompressionPlugin = require("compression-webpack-plugin");
 
 // const __dirname = path.dirname(import.meta.url.replace('file:///', ''));
 
 module.exports = {
-    entry: './app/main.js',
+    entry: {
+        main: './app/main.js',
+        // vendors: 'jquery'
+    },
     output: {
-        filename: 'bundle.js',
-        path: 'C:\\Users\\aviez\\_projects\\ultimate-pizza-manager\\dist'
-    }
+        filename: '[name].js',
+        path: path.resolve(__dirname, '../dist')
+    },
+    devtool: 'source-map',
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                loader: "babel-loader",
+                exclude: /(node_modules)/
+            },
+            {
+                test: /\.html$/,
+                exclude: /node_modules/,
+                loader: 'html-loader'
+            },
+        ]
+    },
+    optimization: {
+        // We no not want to minimize our code.
+        minimize: false
+    },
+    plugins: [
+        // new CleanWebpackPlugin(['src/main/webapp/assets']),
+        // new webpack.optimize.CommonsChunkPlugin({
+        //     name: 'common' // Specify the common bundle's name.
+        // }),
+        // new UglifyJsPlugin({
+        //     test: /\.js$/,
+        //     sourceMap: process.env.NODE_ENV === "development"
+        // }),
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery",
+            popper: "popper"
+        })
+    ]
 };

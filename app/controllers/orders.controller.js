@@ -1,16 +1,21 @@
+import template from '../views/orders.html';
+
 import {OrdersRow, Table, SummaryRow, Span} from '../model';
+import {BaseController} from "./base.controller";
 
 export const OrdersController = (function () {
 
     const privateProps = new WeakMap();
 
-    return class {
+    return class OrdersController extends BaseController {
 
         static get template() {
-            return 'orders.html';
+            return template;
         }
 
         constructor(services) {
+
+            super(template);
 
             privateProps.set(this, {
                 service: services[0],

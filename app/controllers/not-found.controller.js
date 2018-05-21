@@ -1,13 +1,16 @@
+import template from '../views/not-found.html';
+
 import {Span} from '../model';
+import {BaseController} from './base.controller'
 
 export const NotFoundController = (function () {
 
     const privateProps = new WeakMap();
 
-    return class {
+    return class NotFoundController extends BaseController {
 
-        static get template() {
-            return 'not-found.html';
+        constructor() {
+            super(template);
         }
 
         async execute() {

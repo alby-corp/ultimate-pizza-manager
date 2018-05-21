@@ -19,13 +19,19 @@
   "homepage": "https://github.com/aviezzi/ultimate-pizza-manager#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "bootstrap": "^4.1.1",
     "express": "^4.16.2",
     "express-validator": "^5.0.1",
+    "html-loader": "^0.5.5",
     "pg": "^7.4.1",
+    "popper.js": "^1.14.3",
     "promise": "^8.0.1",
     "uuid-v4": "^0.1.0"
   },
   "devDependencies": {
+    "babel-loader": "^7.1.4",
+    "jquery": "^3.3.1",
+    "uglifyjs-webpack-plugin": "^1.2.5",
     "webpack": "^4.8.3",
     "webpack-cli": "^2.1.3"
   }

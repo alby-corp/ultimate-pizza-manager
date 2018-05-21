@@ -22,7 +22,13 @@ export const DropDownList = (function () {
         };
 
         conditionalEnable(master) {
-            master.change(() => privateProps.get(this).select.prop("disabled", master.val() === ''));
+            master.change(() => {
+
+                const m = master.val();
+
+                console.log('MASTER: ' + m);
+
+                privateProps.get(this).select.prop("disabled", m === '')});
 
             return this;
         };

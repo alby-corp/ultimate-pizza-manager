@@ -1,4 +1,7 @@
-import {Option, Common, Order, DropDownList}from'../model';
+import template from '../views/form.html';
+
+import {Option, Common, Order, DropDownList} from '../model';
+import {BaseController} from "./base.controller";
 
 export const FormController = (function () {
 
@@ -16,6 +19,11 @@ export const FormController = (function () {
         options.unshift(Option.getBlankOption());
 
         return options;
+    };
+
+    // WORKAROUND: if used by Object.prototype break jQuery from 2009.
+    const getPropertyDescriptor = function (obj, key) {
+        return Object.getOwnPropertyDescriptor(obj, key) || getPropertyDescriptor(obj, Object.getPrototypeOf(obj), key)
     };
 
     const overrideOnSubmit = (service, alertService) => {
@@ -68,13 +76,11 @@ export const FormController = (function () {
         };
     };
 
-    return class {
-
-        static get template() {
-            return 'form.html';
-        }
+    return class FormController extends BaseController {
 
         constructor(services) {
+
+            super(template);
 
             privateProps.set(this, {
                 service: services[0],
@@ -131,7 +137,7 @@ export const FormController = (function () {
                 .autoRefresh(
                     pizzasDDL,
                     (id) => id
-                        ? getIngredientsOptions(foods.find(f => f.id === +id).ingredients, Common.Ingredient.prototype.getPropertyDescriptor('name').get)
+                        ? getIngredientsOptions(foods.find(f => f.id === +id).ingredients, getPropertyDescriptor(Common.Ingredient.prototype, 'name').get)
                         : []
                 );
 

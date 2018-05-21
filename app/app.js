@@ -2,79 +2,74 @@ import {Route, Router} from './router';
 import {HttpClient, ResourceService, ModalService} from './services';
 import {OrdersController, NotFoundController, MenuController, InfoController, FormController} from './controllers';
 import {Button} from "./model";
+import {Extensions} from './extensions';
 
-export const App = (function () {
+const Controller = (function () {
 
-    const Controller = (function () {
+    const privateProps = new WeakMap();
 
-        const privateProps = new WeakMap();
+    return class Controller {
 
-        return class {
+        constructor(controller, services) {
 
-            constructor(controller, func, services) {
-                privateProps.set(this, {
-                    instance: new controller(services),
-                    view: func(controller.template)
-                });
-            }
-
-            get instance() {
-                return privateProps.get(this).instance;
-            }
-
-            get view() {
-                return privateProps.get(this).view;
-            }
+            privateProps.set(this, {
+                instance: new controller(services)
+            });
         }
 
-    })();
-
-    return (function () {
-
-        const client = new HttpClient(window.location.origin);
-
-        let resourceService;
-        let alertService;
-
-        const initServices = () => {
-            resourceService = new ResourceService(client);
-
-            const goToWeekOrdersButton = new Button('Vai agli Ordini', new Map([['class', 'btn btn-success'], ['onclick', "AlbyJs.Router.link('week-orders')"]]));
-            alertService = new ModalService($('#alert-serivice'), 'alert-service-modal', [goToWeekOrdersButton]); //[`<button class="btn btn-primary" onclick="link('week-orders')">Vai agli Ordini</button>`]);
+        get instance() {
+            return privateProps.get(this).instance;
         };
 
-        return class {
-
-            async init() {
-
-                initServices();
-                const services = [resourceService, alertService];
-
-                const getView = (template) => client.get(`app/views/${template}`);
-
-                const formCtrl = new Controller(FormController, getView, services);
-                const menuCtrl = new Controller(MenuController, getView, services);
-                const infoCtrl = new Controller(InfoController, getView, services);
-                const ordersCtrl = new Controller(OrdersController, getView, services);
-                const notFoundCtrl = new Controller(NotFoundController, getView);
-
-                const outlet = $('#container');
-
-                const routes = new Map()
-                    .set("/", new Route(formCtrl, outlet))
-                    .set("/menu", new Route(menuCtrl, outlet))
-                    .set("/info", new Route(infoCtrl, outlet))
-                    .set("/week-orders", new Route(ordersCtrl, outlet))
-                    .set('/not-found', new Route(notFoundCtrl, outlet));
-
-                new Router(routes);
-            }
-        };
-
-    })();
+    }
 
 })();
 
+export const App = (function () {
 
+    new Extensions();
 
+    const client = new HttpClient(window.location.origin);
+
+    let resourceService;
+    let alertService;
+
+    const initServices = () => {
+        resourceService = new ResourceService(client);
+
+        const goToWeekOrdersButton = new Button('Vai agli Ordini', new Map([['class', 'btn btn-success'], ['onclick', "AlbyJs.Router.link('week-orders')"]]));
+        alertService = new ModalService($('#alert-serivice'), 'alert-service-modal', [goToWeekOrdersButton]); //[`<button class="btn btn-primary" onclick="link('week-orders')">Vai agli Ordini</button>`]);
+    };
+
+    return class App {
+
+        static async init() {
+
+            initServices();
+            const services = [resourceService, alertService];
+
+            const formCtrl = new Controller(FormController, services);
+            const menuCtrl = new Controller(MenuController, services);
+            const infoCtrl = new Controller(InfoController, services);
+            const ordersCtrl = new Controller(OrdersController, services);
+            const notFoundCtrl = new Controller(NotFoundController);
+
+            const outlet = $('#container');
+
+            const routes = new Map()
+                .set("/", new Route(formCtrl, outlet))
+                .set("/menu", new Route(menuCtrl, outlet))
+                .set("/info", new Route(infoCtrl, outlet))
+                .set("/week-orders", new Route(ordersCtrl, outlet))
+                .set('/not-found', new Route(notFoundCtrl, outlet));
+
+            if (window.AlbyJs === undefined) {
+                window.AlbyJs = {};
+            }
+
+            AlbyJs.Router = new Router(routes);
+        }
+    };
+
+})();
 

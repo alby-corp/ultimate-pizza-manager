@@ -1,4 +1,6 @@
 // Navigation
+import {Common} from "./model";
+
 export const Route = (function () {
 
     const privateProps = new WeakMap();
@@ -39,7 +41,7 @@ export const Router = (function () {
 
         const route = routes.get(key);
 
-        const view = await route.controller.view;
+        const view = route.controller.instance.template;
 
         route.outlet(view);
         route.controller.instance.execute();

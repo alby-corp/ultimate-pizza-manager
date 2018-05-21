@@ -1,16 +1,17 @@
+import template from '../views/menu.html';
+
 import {Table, FoodRow, IngredientRow} from '../model';
+import {BaseController} from "./base.controller";
+
 
 export const MenuController = (function () {
 
     const privateProps = new WeakMap();
 
-    return class {
-
-        static get template() {
-            return 'menu.html';
-        }
+    return class MenuController extends BaseController {
 
         constructor(services) {
+            super(template);
 
             privateProps.set(this, {
                 service: services[0],

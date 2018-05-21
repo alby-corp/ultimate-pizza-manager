@@ -1,16 +1,17 @@
+import template from '../views/info.html';
+
 import {List, AdminListItem} from '../model';
+import {BaseController} from "./base.controller";
 
 export const InfoController = (function () {
 
     const privateProps = new WeakMap();
 
-    return class {
-
-        static get template() {
-            return 'info.html';
-        }
+    return class InfoController extends BaseController {
 
         constructor(services) {
+
+            super(template);
 
             privateProps.set(this, {
                 service: services[0],
