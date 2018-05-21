@@ -10,11 +10,13 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 module.exports = {
     entry: {
         main: './app/main.js',
-        // vendors: 'jquery'
+        vendor: ['jquery', 'bootstrap', 'underscore'],
     },
     output: {
-        filename: '[name].js',
-        path: path.resolve(__dirname, '../dist')
+        path: path.join(__dirname, '../dist'),
+        filename: '[name].bundle.js',
+        chunkFilename: '[name].bundle.js',
+        publicPath: '/',
     },
     devtool: 'source-map',
     module: {
@@ -33,7 +35,18 @@ module.exports = {
     },
     optimization: {
         // We no not want to minimize our code.
-        minimize: false
+        minimize: false,
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    chunks: 'initial',
+                    name: 'vendor',
+                    test: 'vendor',
+                    enforce: true
+                },
+            }
+        },
+        // runtimeChunk: false
     },
     plugins: [
         new webpack.ProvidePlugin({
