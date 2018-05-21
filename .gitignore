@@ -4,3 +4,4 @@ package-lock.json
 .vs/
 pizzeList.txt
 test.js
+/dist/
