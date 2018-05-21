@@ -36,18 +36,10 @@ module.exports = {
         minimize: false
     },
     plugins: [
-        // new CleanWebpackPlugin(['src/main/webapp/assets']),
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     name: 'common' // Specify the common bundle's name.
-        // }),
-        // new UglifyJsPlugin({
-        //     test: /\.js$/,
-        //     sourceMap: process.env.NODE_ENV === "development"
-        // }),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
-            popper: "popper"
+            _: "underscore"
         })
     ]
 };

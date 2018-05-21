@@ -1,4 +1,3 @@
-import 'popper.js'
 import 'bootstrap';
 
 import {App}  from './app'
