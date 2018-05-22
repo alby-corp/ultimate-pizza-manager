@@ -4,10 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node --experimental-modules index.mjs",
     "build": " node --experimental-modules ./tools/bundle.mjs --config tools\\bundle",
-    "webpack": "babel-node ./node_modules/webpack/bin/webpack"
   },
   "repository": {
     "type": "git",
