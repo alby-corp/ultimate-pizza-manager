@@ -1,6 +1,6 @@
 {
   "ultimate-pizza-manager-connection-string": {
-    "host": "192.168.1.8",
+    "host": "albiberto.ddns.net",
     "user": "SamuraiTeam",
     "password": "#Aldc1Lm",
     "database": "ultimate_pizza_manager",

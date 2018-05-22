@@ -44,8 +44,9 @@ export const MenuController = (function () {
             let supplements;
 
             try {
-                supplements = await privateProps.get(this).service.getSupplements;
+                supplements = await privateProps.get(this).service.getSupplements();
             } catch (error) {
+                privateProps.get(this).alertService.error(`Message: ${error.statusCode || ''} ${error.message}`);
                 return;
             }
 

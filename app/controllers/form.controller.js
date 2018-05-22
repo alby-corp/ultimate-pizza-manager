@@ -21,10 +21,10 @@ export const FormController = (function () {
         return options;
     };
 
+    const exception = (all, filters) => all.filter((e) => filters.map(a => a.id).indexOf(e.id) === -1);
+
     // WORKAROUND: if used by Object.prototype break jQuery from 2009.
-    const getPropertyDescriptor = function (obj, key) {
-        return Object.getOwnPropertyDescriptor(obj, key) || getPropertyDescriptor(obj, Object.getPrototypeOf(obj), key)
-    };
+    const getPropertyDescriptor = (obj, key) => Object.getOwnPropertyDescriptor(obj, key) || getPropertyDescriptor(obj, Object.getPrototypeOf(obj), key);
 
     const overrideOnSubmit = (service, alertService) => {
         document.getElementById('order-form').onsubmit = async (event) => {
@@ -148,7 +148,7 @@ export const FormController = (function () {
                 .autoRefresh(
                     pizzasDDL,
                     (id) => id
-                        ? getIngredientsOptions(foods.find(f => f.id === +id).ingredients.exception(supplements), Common.Ingredient.prototype.toString)
+                        ? getIngredientsOptions(exception(supplements, foods.find(f => f.id === +id).ingredients), Common.Ingredient.prototype.toString)
                         : getIngredientsOptions(supplements, Common.Ingredient.prototype.toString)
                 );
 
