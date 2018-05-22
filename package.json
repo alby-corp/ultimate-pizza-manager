@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node --experimental-modules index.mjs",
-    "build": "yarn webpack --config tools\\webpack.config.js"
+    "build": " node --experimental-modules ./tools/bundle.mjs --config tools\\bundle",
+    "webpack": "babel-node ./node_modules/webpack/bin/webpack"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,7 @@
   },
   "homepage": "https://github.com/aviezzi/ultimate-pizza-manager#readme",
   "dependencies": {
+    "babel-cli": "^6.26.0",
     "body-parser": "^1.18.2",
     "bootstrap": "^4.1.1",
     "express": "^4.16.2",

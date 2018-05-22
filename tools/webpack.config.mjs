@@ -1,13 +1,9 @@
-const path = require('path');
-const webpack = require('webpack');
-// const CleanWebpackPlugin = require('clean-webpack-plugin');
-// const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-// const CompressionPlugin = require("compression-webpack-plugin");
+import path from 'path';
+import webpack from 'webpack';
 
-// const __dirname = path.dirname(import.meta.url.replace('file:///', ''));
+const __dirname = path.dirname(import.meta.url.replace('file:///', ''));
 
-module.exports = {
+export default {
     entry: {
         main: './app/main.js',
         vendor: ['jquery', 'bootstrap', 'underscore'],
@@ -17,6 +13,7 @@ module.exports = {
         filename: '[name].bundle.js',
         chunkFilename: '[name].bundle.js',
         publicPath: '/',
+        library: 'UltimatePizzaManager',
     },
     devtool: 'source-map',
     module: {
