@@ -80,7 +80,7 @@ export const FormController = (function () {
 
         constructor(services) {
 
-            super(template);
+            super(template, services[1]);
 
             privateProps.set(this, {
                 service: services[0],
@@ -91,30 +91,9 @@ export const FormController = (function () {
         async execute() {
             overrideOnSubmit(privateProps.get(this).service, privateProps.get(this).alertService);
 
-            let users;
-            let foods;
-            let supplements;
-
-            try {
-                users = await privateProps.get(this).service.getUsers();
-            } catch (error) {
-                privateProps.get(this).alertService.error(`Message: ${error.statusCode || ''} ${error.message}`);
-                return;
-            }
-
-            try {
-                foods = await privateProps.get(this).service.getFoods();
-            } catch (error) {
-                privateProps.get(this).alertService.error(`${error.status}: ${error.statusText}`);
-                return;
-            }
-
-            try {
-                supplements = await privateProps.get(this).service.getSupplements();
-            } catch (error) {
-                privateProps.get(this).alertService.error(`${error.status}: ${error.statusText}`);
-                return;
-            }
+            const users = await super.invokeWithCatcher(privateProps.get(this).service.getUsers);
+            const foods = await super.invokeWithCatcher(privateProps.get(this).service.getFoods);
+            const supplements = await super.invokeWithCatcher(privateProps.get(this).service.getSupplements);
 
             const usersDDL = $('#users');
             new DropDownList(usersDDL, users.map(user => new Option(user.id, user.name, false))).populate();

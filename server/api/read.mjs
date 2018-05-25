@@ -11,7 +11,7 @@ export const ReadController = (function () {
 
         } catch (error) {
             res.status(500);
-            res.send('Internal-Server Error!');
+            res.end();
         }
     };
 

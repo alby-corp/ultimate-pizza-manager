@@ -29,7 +29,7 @@ export const OrdersController = (function () {
             try {
                 orders = await privateProps.get(this).service.getOrders();
             } catch (error) {
-                privateProps.get(this).alertService.error(`Message: ${error.statusCode || ''} ${error.message}`);
+                privateProps.get(this).alertService.error(`Error: ${error.status} ${error.statusText}`);
                 return;
             }
 

@@ -4,10 +4,11 @@ export const BaseController = (function () {
 
     return class BaseController {
 
-        constructor(template) {
+        constructor(template, alertService) {
 
             privateProps.set(this, {
-                template: template
+                template: template,
+                alertService: alertService
             });
         }
 
@@ -18,6 +19,15 @@ export const BaseController = (function () {
         async execute() {
             throw new Error('Abstract Method!')
         };
+
+        invokeWithCatcher(func){
+            try {
+                return func()
+            } catch (error) {
+                privateProps.get(this).alertService.error(`Error: ${error.status} ${error.statusText}`);
+                return [];
+            }
+        }
     };
 
 })();

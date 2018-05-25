@@ -25,7 +25,7 @@ export const MenuController = (function () {
             try {
                 menu = await privateProps.get(this).service.getFoods();
             } catch (error) {
-                privateProps.get(this).alertService.error(`Message: ${error.statusCode || ''} ${error.message}`);
+                privateProps.get(this).alertService.error(`Error: ${error.status} - ${error.statusText}`);
                 return;
             }
 
@@ -46,7 +46,7 @@ export const MenuController = (function () {
             try {
                 supplements = await privateProps.get(this).service.getSupplements();
             } catch (error) {
-                privateProps.get(this).alertService.error(`Message: ${error.statusCode || ''} ${error.message}`);
+                privateProps.get(this).alertService.error(`Error: ${error.status} - ${error.statusText}`);
                 return;
             }
 
