@@ -23,9 +23,8 @@ export const MenuController = (function () {
             let menu;
 
             try {
-                menu = await privateProps.get(this).service.getFoods();
+                menu = await super.invokeWithCatcher(privateProps.get(this).service.getFoods);
             } catch (error) {
-                privateProps.get(this).alertService.error(`Error: ${error.status} - ${error.statusText}`);
                 return;
             }
 
@@ -44,9 +43,8 @@ export const MenuController = (function () {
             let supplements;
 
             try {
-                supplements = await privateProps.get(this).service.getSupplements();
+                supplements = await super.invokeWithCatcher(privateProps.get(this).service.getSupplements);
             } catch (error) {
-                privateProps.get(this).alertService.error(`Error: ${error.status} - ${error.statusText}`);
                 return;
             }
 

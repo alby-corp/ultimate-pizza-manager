@@ -20,12 +20,12 @@ export const BaseController = (function () {
             throw new Error('Abstract Method!')
         };
 
-        invokeWithCatcher(func){
+        async invokeWithCatcher(func) {
             try {
-                return func()
+                return await func();
             } catch (error) {
                 privateProps.get(this).alertService.error(`Error: ${error.status} ${error.statusText}`);
-                return [];
+                throw new Error();
             }
         }
     };

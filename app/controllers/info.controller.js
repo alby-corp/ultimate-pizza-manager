@@ -23,12 +23,10 @@ export const InfoController = (function () {
             let administrators;
 
             try {
-                administrators = await privateProps.get(this).service.getAdministrators();
+                administrators = await super.invokeWithCatcher(privateProps.get(this).service.getAdministrators);
             } catch (error) {
-                privateProps.get(this).alertService.error(`Error: ${error.status} - ${error.statusText}`);
                 return;
             }
-
 
             const adminList = $('#admin-list');
             new List(adminList, administrators.map(admin => new AdminListItem(admin))).populate();

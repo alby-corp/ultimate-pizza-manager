@@ -91,9 +91,18 @@ export const FormController = (function () {
         async execute() {
             overrideOnSubmit(privateProps.get(this).service, privateProps.get(this).alertService);
 
-            const users = await super.invokeWithCatcher(privateProps.get(this).service.getUsers);
-            const foods = await super.invokeWithCatcher(privateProps.get(this).service.getFoods);
-            const supplements = await super.invokeWithCatcher(privateProps.get(this).service.getSupplements);
+            let users;
+            let foods;
+            let supplements;
+
+            try{
+                users = await super.invokeWithCatcher(privateProps.get(this).service.getUsers);
+                foods = await super.invokeWithCatcher(privateProps.get(this).service.getFoods);
+                supplements = await super.invokeWithCatcher(privateProps.get(this).service.getSupplements);
+
+            } catch (error) {
+                return;
+            }
 
             const usersDDL = $('#users');
             new DropDownList(usersDDL, users.map(user => new Option(user.id, user.name, false))).populate();

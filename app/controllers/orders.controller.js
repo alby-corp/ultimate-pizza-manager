@@ -27,9 +27,8 @@ export const OrdersController = (function () {
             let orders;
 
             try {
-                orders = await privateProps.get(this).service.getOrders();
+                orders = await super.invokeWithCatcher(privateProps.get(this).service.getOrders);
             } catch (error) {
-                privateProps.get(this).alertService.error(`Error: ${error.status} ${error.statusText}`);
                 return;
             }
 
