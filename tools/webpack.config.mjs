@@ -28,6 +28,10 @@ export default {
                 exclude: /node_modules/,
                 loader: 'html-loader'
             },
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
+            }
         ]
     },
     optimization: {

@@ -6,6 +6,10 @@ ul {
     margin-bottom: 0;
 }
 
+select {
+    cursor: pointer;
+}
+
 .pointer {
     cursor: pointer;
 }
