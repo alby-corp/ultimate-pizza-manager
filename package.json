@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node --experimental-modules index.mjs",
-    "build": " node --experimental-modules ./tools/bundle.mjs --config tools\\bundle"
+    "prod": "node --experimental-modules ./tools/bundle.mjs prod",
+    "dev": "node --experimental-modules ./tools/bundle.mjs dev",
+    "start-prod" : "yarn prod && yarn start",
+    "start-dev" : "yarn dev && yarn start"
   },
   "repository": {
     "type": "git",
@@ -35,6 +38,7 @@
     "css-loader": "^0.28.11",
     "style-loader": "^0.21.0",
     "webpack": "^4.8.3",
-    "webpack-cli": "^2.1.3"
+    "webpack-cli": "^2.1.3",
+    "webpack-merge": "^4.1.2"
   }
 }

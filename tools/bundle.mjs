@@ -1,7 +1,11 @@
 import webpack from 'webpack';
-import prod from './webpack.config.mjs'; // <-- Contains ES6+
+import prod from './webpack.prod';
+import dev from './webpack.dev'
 
-const bundler = webpack(prod);
+
+const args = process.argv.slice(2);
+
+const bundler = webpack(args[0] === 'prod'? prod: dev);
 
 bundler.run((err, stats) => {
     console.log(`ERROR: ${err}`);
