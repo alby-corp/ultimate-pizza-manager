@@ -1,6 +1,6 @@
 import template from '../views/form.html';
 
-import {Option, Common, Order, DropDownList} from '../model';
+import {Option, Common, Order, DropDownList, Button} from '../model';
 import {BaseController} from "./base.controller";
 
 export const FormController = (function () {
@@ -70,7 +70,7 @@ export const FormController = (function () {
 
             const result = await service.postOrder(order.toDTO());
 
-            alertService.success(result);
+            alertService.success(result, [new Button('Vai agli Ordini', new Map([['class', 'btn btn-success'], ['onclick', "AlbyJs.Router.link('week-orders')"]]))]);
 
             return false;
         };

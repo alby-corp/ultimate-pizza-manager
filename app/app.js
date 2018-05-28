@@ -32,10 +32,9 @@ export const App = (function () {
     let alertService;
 
     const initServices = () => {
-        resourceService = new ResourceService(client);
 
-        const goToWeekOrdersButton = new Button('Vai agli Ordini', new Map([['class', 'btn btn-success'], ['onclick', "AlbyJs.Router.link('week-orders')"]]));
-        alertService = new ModalService($('#alert-serivice'), 'alert-service-modal', [goToWeekOrdersButton]); //[`<button class="btn btn-primary" onclick="link('week-orders')">Vai agli Ordini</button>`]);
+        resourceService = new ResourceService(client);
+        alertService = new ModalService($('#alert-serivice'), 'alert-service-modal');
     };
 
     return class App {

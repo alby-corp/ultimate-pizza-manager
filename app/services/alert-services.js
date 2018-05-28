@@ -43,22 +43,25 @@ export const ModalService = (function () {
     const privateProps = new WeakMap();
 
     return class {
-        constructor(display, name, buttons) {
-            buttons.forEach(button => button.attrs.set('data-dismiss', 'modal'));
+        constructor(display, name) {
             privateProps.set(this, {
                 display: display,
-                name: name,
-                buttons: buttons
+                name: name
             });
         }
 
-        success(body) {
-            create(privateProps.get(this).display, 'Success', body, privateProps.get(this).buttons, privateProps.get(this).name, 'alert alert-success');
+        success(body, buttons) {
+
+            buttons.forEach(button => button.attrs.set('data-dismiss', 'modal'));
+            create(privateProps.get(this).display, 'Success', body, buttons, privateProps.get(this).name, 'alert alert-success');
+
             open(privateProps.get(this).name);
         }
 
         error(body) {
+
             create(privateProps.get(this).display, 'Error', body, [], privateProps.get(this).name, 'alert alert-danger');
+
             open(privateProps.get(this).name);
         }
     };
