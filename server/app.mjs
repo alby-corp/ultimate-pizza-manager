@@ -27,12 +27,12 @@ export const App = (function () {
 
             app.use(express.urlencoded({extended: false}));
 
-            app.use('/dist', express.static(path.join(__dirname, '../dist')));
+            app.use('', express.static(path.join(__dirname, '../dist')));
 
             app.use(bodyParser.json());
             app.use('/api', router.configuration);
 
-            app.use((req, res) => res.sendFile(path.join(__dirname, '../index.html')));
+            app.use((req, res) => res.sendFile(path.join(__dirname, '../dist/index.html')));
 
             privateProps.set(this, {
                 app: app

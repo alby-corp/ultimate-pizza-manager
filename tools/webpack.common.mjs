@@ -1,6 +1,9 @@
 import path from 'path';
 import webpack from 'webpack';
 
+import HtmlWebpackPlugin  from 'html-webpack-plugin';
+
+
 const __dirname = path.dirname(import.meta.url.replace('file:///', ''));
 
 export default {
@@ -25,7 +28,7 @@ export default {
             },
             {
                 test: /\.html$/,
-                exclude: /node_modules/,
+                exclude: [/node_modules/, 'index.html'],
                 loader: 'html-loader'
             },
             {
@@ -39,6 +42,10 @@ export default {
             $: "jquery",
             jQuery: "jquery",
             _: "underscore"
+        }),
+        new HtmlWebpackPlugin({
+            template: './index.html'
         })
+
     ]
 };
