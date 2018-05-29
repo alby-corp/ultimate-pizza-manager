@@ -5,9 +5,9 @@ import dev from './webpack.dev'
 
 const args = process.argv.slice(2);
 
-const bundler = webpack(args[0] === 'prod'? prod: dev);
+const options = args[0] === 'prod'? prod: dev;
 
-bundler.run((err, stats) => {
+webpack(options, (err, stats) => {
     console.log(`ERROR: ${err}`);
     console.log(`STATS: ${stats}`);
 });

@@ -2,6 +2,7 @@ import {Route, Router} from './router';
 import {HttpClient, ResourceService, ModalService} from './services';
 import {OrdersController, NotFoundController, MenuController, InfoController, FormController} from './controllers';
 import {Button} from "./model";
+import {CreatorController} from "./controllers/creator.controller";
 
 const Controller = (function () {
 
@@ -48,6 +49,7 @@ export const App = (function () {
             const menuCtrl = new Controller(MenuController, services);
             const infoCtrl = new Controller(InfoController, services);
             const ordersCtrl = new Controller(OrdersController, services);
+            const creatorCtrl = new Controller(CreatorController, services);
             const notFoundCtrl = new Controller(NotFoundController);
 
             const outlet = $('#container');
@@ -57,6 +59,7 @@ export const App = (function () {
                 .set("/menu", new Route(menuCtrl, outlet))
                 .set("/info", new Route(infoCtrl, outlet))
                 .set("/week-orders", new Route(ordersCtrl, outlet))
+                .set('/crea-la-tua-pizza', new Route(creatorCtrl, outlet))
                 .set('/not-found', new Route(notFoundCtrl, outlet));
 
             if (window.AlbyJs === undefined) {
@@ -64,6 +67,10 @@ export const App = (function () {
             }
 
             AlbyJs.Router = new Router(routes);
+            AlbyJs.trigger = (target, name,  data) => target.dispatchEvent(new CustomEvent(name, {
+                bubbles:true,
+                detail: data
+            }));
         }
     };
 

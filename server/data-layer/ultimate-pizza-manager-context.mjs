@@ -26,9 +26,8 @@ export const UltimatePizzaManagerContext = (function () {
                                     SELECT json_agg(f) FROM foods f`;
 
     const supplementsQuery = `          WITH supplements AS (
-                                        SELECT DISTINCT i.id, i.name, i.price
+                                        SELECT          i.id, i.name, i.price
                                         FROM            ingredient i
-                                        WHERE           i.price IS NOT NULL
                                         ORDER BY        i.name
                                     )
                                     

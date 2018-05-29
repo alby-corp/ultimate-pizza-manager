@@ -13,3 +13,27 @@ select {
 .pointer {
     cursor: pointer;
 }
+
+#creator{
+    display: flex;
+    padding: 0;
+    margin-top: 50px;
+}
+
+#creator .ingredients, #creator .results{
+    border: 1px solid #eee;
+    padding: 20px;
+    flex: 1;
+}
+
+#creator .btn-close{
+    float: right;
+}
+
+#creator .active-ingredient{
+    margin-top: 20px;
+}
+
+#creator .btn-add{
+    margin-top: 20px;
+}
