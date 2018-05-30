@@ -11,12 +11,14 @@ export const CreatorController = (function () {
 
             const execute = async () => {
 
-                const element = $('#creator');
+                const element = $('#creator-outlet');
                 const api = services[0];
 
-                const ingredients = await api.getSupplements();
                 const foods = (await api.getFoods())
-                    .filter(food => food.type === 1)
+                    .filter(food => food.type === 1);
+
+                const ingredients = _.uniq(_.flatten(foods.map(food => food.ingredients)), ingredient => ingredient.id);
+                const pizzas = foods
                     .map(food => ({
                         name: food.name,
                         price: food.price,
@@ -31,17 +33,63 @@ export const CreatorController = (function () {
                 };
 
                 const bestMatches = () => {
-                    const sum = (food, ingredients) =>
+                    const sumPrices = (food, ingredients) =>
                         food.price + _.without(ingredients, ...food.ingredients).reduce((total, item) => total + (item.price||0), 0);
 
-                    const min = _.min(foods, food => sum(food, model.selected) * 1000 + _.without(model.selected, ...food.ingredients).length + _.without(food.ingredients, ...model.selected).length);
-                    const result = {
-                        name: min.name,
-                        price: sum(min, model.selected),
-                        additions: _.without(model.selected, ...min.ingredients),
-                        removals: _.without(min.ingredients, ...model.selected),
+                    const candidates = pizzas.map(food => {
+                        const additions = _.without(model.selected, ...food.ingredients);
+                        return {
+                            name: food.name,
+                            price: sumPrices(food, model.selected),
+                            unknownIngredients: additions.filter(addition => !addition.price),
+                            additions: additions,
+                            removals: _.without(food.ingredients, ...model.selected),
+                        }
+                    });
+
+                    const compare = (left, right) => {
+                        const intersection = _.intersection(left.unknownIngredients, right.unknownIngredients);
+
+                        const leftIsSubset = left.unknownIngredients.length === intersection.length;
+                        const rightIsSubset = right.unknownIngredients.length === intersection.length;
+
+                        if (left.price === right.price && leftIsSubset && rightIsSubset) {
+                            const leftChanges = left.additions.length + left.removals.length;
+                            const rightChanges = right.additions.length + right.removals.length;
+                            
+                            if (leftChanges === rightChanges)
+                            {
+                                return 0;
+                            }
+
+                            return leftChanges < rightChanges ? -1 : 1;
+                        }
+
+                        if (left.price <= right.price && leftIsSubset){
+                            return -1;
+                        }
+
+                        if (right.price <= left.price && rightIsSubset){
+                            return 1;
+                        }
+
+                        return undefined;
                     };
-                    return [result];
+
+                    let mins = [];
+
+                    for (let candidate of candidates) {
+                        const comparisons = mins.map(min => [min, compare(min, candidate)]);
+                        const exclude = comparisons.some(([_, c]) => c === -1);
+
+                        mins = comparisons.filter(([min, c]) => c !== 1).map(([min]) => min);
+                        if(!exclude){
+                            mins.push(candidate);
+                        }
+                    }
+
+
+                    return mins;
                 };
 
                 const model = {
@@ -55,6 +103,15 @@ export const CreatorController = (function () {
 
                 const render = (model) => {
                     model.available.sort((left, right) => left.name.localeCompare(right.name));
+                    model.results.sort((left, right) => {
+                        const leftChanges = left.additions.length + left.removals.length;
+                        const rightChanges = right.additions.length + right.removals.length;
+                        if (leftChanges !== rightChanges) {
+                            return leftChanges - rightChanges;
+                        }
+
+                        return left.price - right.price;
+                    });
 
                     return `
                     <div class="ingredients">
@@ -65,7 +122,7 @@ export const CreatorController = (function () {
                             </li>`).join('')}
                         </ul>
                         <select class="active-ingredient" onchange="AlbyJs.trigger(this, 'set-active', {id: +this.options[this.selectedIndex].value})">
-                            <option value="" ${!model.active ? 'selected' : ''}>-</option>
+                            <option value="" ${!model.active ? 'selected' : ''}>- seleziona -</option>
                             ${model.available.map(ingredient => `<option ${model.active === ingredient ? 'selected' : ''} value="${ingredient.id}">${ingredient}</option>`).join('')}
                         </select>
                         <button class="btn btn-primary btn-add" onclick="AlbyJs.trigger(this, 'add')">Aggiungi</button>
@@ -82,10 +139,10 @@ export const CreatorController = (function () {
                 const renderResult = (result) => {
                     return `
                         <div>
-                            <div><b>${result.name}</b> -  ${result.price}&euro;<div>
+                            <div><b>${result.name}</b> -  <span>${result.price.toFixed(2)}${result.unknownIngredients.length ? '+' : ''} &euro;</span><div>
                             <div ${!result.additions.length ? 'hidden' : ''}>
                                 Aggiunte
-                                <ul>${result.additions.map(ingredient => `<li>${ingredient.name}</li>`).join('')}</ul>
+                                <ul>${result.additions.map(ingredient => `<li>${ingredient.name} ${!ingredient.price ? '(prezzo sconosciuto)' : ''}</li>`).join('')}</ul>
                             </div>
                             <div ${!result.removals.length ? 'hidden' : ''}>
                                 Rimozioni
@@ -121,7 +178,7 @@ export const CreatorController = (function () {
             };
 
             this.execute = async () => {
-                const element = $('#creator');
+                const element = $('#creator-outlet');
                 element.html('Loading');
 
                 try {
