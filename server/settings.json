@@ -1,9 +1,9 @@
 {
   "ultimate-pizza-manager-connection-string": {
-    "host": "albiberto.ddns.net",
+    "host": "localhost",
     "user": "SamuraiTeam",
     "password": "#Aldc1Lm",
-    "database": "ultimate_pizza_manager",
+    "database": "postgres",
     "port": 5432,
     "ssl": false
   }
