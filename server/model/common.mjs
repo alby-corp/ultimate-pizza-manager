@@ -56,7 +56,7 @@ export const Common = (function () {
                 privateProps.set(this, {
                     id: id,
                     name: name,
-                    price: +price
+                    price: price
                 });
             };
 
@@ -73,7 +73,7 @@ export const Common = (function () {
             }
 
             toString() {
-                return this.price === undefined ? `${this.name}` : `${this.name} - ${this.price.toFixed(2)} &euro;`;
+                return this.price === undefined ? `${this.name}` : `${this.name} - ${this.price !== null ? this.price.toFixed(2) : 'N/A'} &euro;`;
             };
         }
 

@@ -1,6 +1,7 @@
 import template from '../views/creator.html';
 
 import {BaseController} from "./base.controller";
+import {Button, Common, Order} from "../model";
 
 export const CreatorController = (function () {
 
@@ -13,13 +14,16 @@ export const CreatorController = (function () {
 
                 const element = $('#creator-outlet');
                 const api = services[0];
+                const alertService = services[1];
 
+                const users = await api.getUsers();
                 const foods = (await api.getFoods())
                     .filter(food => food.type === 1);
 
                 const ingredients = _.uniq(_.flatten(foods.map(food => food.ingredients)), ingredient => ingredient.id);
                 const pizzas = foods
                     .map(food => ({
+                        id: food.id,
                         name: food.name,
                         price: food.price,
                         ingredients: food.ingredients.map(ingredient => ingredients.find(item => item.id === ingredient.id))
@@ -39,6 +43,7 @@ export const CreatorController = (function () {
                     const candidates = pizzas.map(food => {
                         const additions = _.without(model.selected, ...food.ingredients);
                         return {
+                            id: food.id,
                             name: food.name,
                             price: sumPrices(food, model.selected),
                             unknownIngredients: additions.filter(addition => !addition.price),
@@ -93,6 +98,8 @@ export const CreatorController = (function () {
                 };
 
                 const model = {
+                    user: undefined,
+                    users: users,
                     available: ingredients,
                     selected: ingredients.filter(ingredient => ingredient.name === 'pomodoro' || ingredient.name === 'mozzarella'),
                     active: undefined,
@@ -114,40 +121,51 @@ export const CreatorController = (function () {
                     });
 
                     return `
-                    <div class="ingredients">
-                        <h4>Ingredienti</h4>
-                        <ul class="list-group">
-                            ${model.selected.map(ingredient => `<li class="list-group-item">
-                                ${ingredient}<span class="btn btn-danger btn-close" onclick="AlbyJs.trigger(this, 'remove', {id: ${ingredient.id}})">X</span>
-                            </li>`).join('')}
-                        </ul>
-                        <select class="active-ingredient" onchange="AlbyJs.trigger(this, 'set-active', {id: +this.options[this.selectedIndex].value})">
-                            <option value="" ${!model.active ? 'selected' : ''}>- seleziona -</option>
-                            ${model.available.map(ingredient => `<option ${model.active === ingredient ? 'selected' : ''} value="${ingredient.id}">${ingredient}</option>`).join('')}
-                        </select>
-                        <button class="btn btn-primary btn-add" onclick="AlbyJs.trigger(this, 'add')">Aggiungi</button>
-                    </div>
-                    <div class="results">
-                        <h4>Risultati</h4>
-                        <ul class="list-group">
-                            ${model.results.map(result => `<li class="list-group-item">${renderResult(result)}</li>`).join('')}
-                        </ul>
+                    <b>Utente</b>
+                    <select class="form-control" onchange="AlbyJs.trigger(this, 'set-user', {id: +this.options[this.selectedIndex].value})">
+                        <option value="" ${!model.user ? 'selected' : ''}>- seleziona -</option>
+                        ${model.users.map(user =>`<option ${model.user === user.id ? 'selected' : ''} value="${user.id}">${user.name}</option>`).join('')}
+                    </select>
+                    
+                    <div class="editor">
+                        <div class="ingredients">
+                            <h4>Ingredienti</h4>
+                            <ul class="list-group">
+                                ${model.selected.map(ingredient => `<li class="list-group-item">
+                                    ${ingredient}<span class="btn btn-danger btn-close" onclick="AlbyJs.trigger(this, 'remove', {id: ${ingredient.id}})">X</span>
+                                </li>`).join('')}
+                            </ul>
+                            <select class="form-control active-ingredient" onchange="AlbyJs.trigger(this, 'set-active', {id: +this.options[this.selectedIndex].value})">
+                                <option value="" ${!model.active ? 'selected' : ''}>- seleziona -</option>
+                                ${model.available.map(ingredient => `<option ${model.active === ingredient ? 'selected' : ''} value="${ingredient.id}">${ingredient}</option>`).join('')}
+                            </select>
+                            <button class="btn btn-primary btn-add" onclick="AlbyJs.trigger(this, 'add')">Aggiungi</button>
+                        </div>
+                        <div class="results">
+                            <h4>Risultati</h4>
+                            <ul class="list-group">
+                                ${model.results.map((result, index) => `<li class="list-group-item">${renderResult(result, index)}</li>`).join('')}
+                            </ul>
+                        </div>
                     </div>
                     `;
                 };
 
-                const renderResult = (result) => {
+                const renderResult = (result, index) => {
                     return `
                         <div>
                             <div><b>${result.name}</b> -  <span>${result.price.toFixed(2)}${result.unknownIngredients.length ? '+' : ''} &euro;</span><div>
                             <div ${!result.additions.length ? 'hidden' : ''}>
-                                Aggiunte
+                                <span style="color: green">+ Aggiunte</span>
                                 <ul>${result.additions.map(ingredient => `<li>${ingredient.name} ${!ingredient.price ? '(prezzo sconosciuto)' : ''}</li>`).join('')}</ul>
                             </div>
                             <div ${!result.removals.length ? 'hidden' : ''}>
-                                Rimozioni
-                                <ul>${result.removals.map(ingredient => `<li>${ingredient.name}</li>`).join('')}</ul>
+                                <span style="color: red">- Rimozioni</span>
+                                <ul>${result.removals.map(ingredient => `
+                                    <li>${ingredient.name} <span class="badge badge-primary btn-add-removal" onclick="AlbyJs.trigger(this, 'add-removal', {id: ${ingredient.id}})">+</span></li>`).join('')}
+                                </ul>
                             </div>
+                            <button class="btn btn-primary btn-order" onclick="AlbyJs.trigger(this, 'order', {index: ${index}})">Ordina</button>
                         </div>
                     `;
                 };
@@ -162,6 +180,16 @@ export const CreatorController = (function () {
                     }
                 });
 
+                action('add-removal', e => {
+                    const id = e.detail.id;
+                    const ingredient = model.available.find(ingredient => ingredient.id === id);
+
+                    model.selected.push(ingredient);
+                    model.available = _.without(model.available, ingredient);
+
+                    model.results = bestMatches();
+                });
+
                 action('remove', e => {
                     const item = model.selected.find(ingredient => ingredient.id === e.detail.id);
                     model.selected = _.without(model.selected, item);
@@ -171,6 +199,23 @@ export const CreatorController = (function () {
                 });
 
                 action('set-active', e => model.active = model.available.find(ingredient => ingredient.id === e.detail.id));
+                action('set-user', e => model.user = e.detail.id);
+
+                action('order', async e => {
+                    if (!model.user){
+                        alertService.error('Devi selezionare un utente per cui effettuare l\'ordine.');
+                        return;
+                    }
+                    const user = new Common.User(+model.user);
+                    const food = model.results[e.detail.index];
+                    const pizza = new Common.OrderedFood(new Common.Food(food.id), food.additions, food.removals);
+
+                    const order = new Order(user, [pizza]);
+
+                    const result = await api.postOrder(order.toDTO());
+
+                    alertService.success(result, [new Button('Vai agli Ordini', new Map([['class', 'btn btn-success'], ['onclick', "AlbyJs.Router.link('week-orders')"]]))]);
+                });
 
                 element.html(render(model));
 

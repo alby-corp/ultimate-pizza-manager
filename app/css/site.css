@@ -18,10 +18,14 @@ select {
     padding-top: 50px;
 }
 
-#creator #creator-outlet{
+#creator #creator-outlet {
+    margin-top: 50px;
+}
+
+#creator .editor{
     display: flex;
     padding: 0;
-    margin-top: 50px;
+    margin: 50px 0 150px;
 }
 
 #creator .ingredients, #creator .results{
@@ -35,15 +39,19 @@ select {
 }
 
 #creator .active-ingredient{
-    display: block;
     margin-top: 20px;
-    width: 100%;
-    border: 1px solid rgba(0,0,0,.125);
-    border-radius: .25rem;
-    height: 35px;
 }
 
 #creator .btn-add{
     margin-top: 20px;
     float: right;
+}
+
+#creator .btn-order{
+    float: right;
+}
+
+#creator .btn-add-removal{
+    float: right;
+    cursor: pointer;
 }
