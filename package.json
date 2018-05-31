@@ -3,13 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "10.2.x"
+  },
   "scripts": {
-    "start-server": "node --experimental-modules index.mjs",
+    "start": "node --experimental-modules index.mjs",
     "prod": "node --experimental-modules ./tools/bundle.mjs prod",
     "dev": "node --experimental-modules ./tools/bundle.mjs dev",
-    "start": "yarn start-prod",
-    "start-prod": "yarn prod && yarn start-server",
-    "start-dev": "yarn dev && yarn start-server"
+    "heroku-postbuild": "prod",
+    "start-prod": "yarn prod && yarn start",
+    "start-dev": "yarn dev && yarn start"
   },
   "repository": {
     "type": "git",
