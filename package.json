@@ -10,7 +10,7 @@
     "start": "node --experimental-modules index.mjs",
     "prod": "node --experimental-modules ./tools/bundle.mjs prod",
     "dev": "node --experimental-modules ./tools/bundle.mjs dev",
-    "heroku-postbuild": "yarn prod",
+    "heroku-postinstall": "yarn prod",
     "start-prod": "yarn prod && yarn start",
     "start-dev": "yarn dev && yarn start"
   },
