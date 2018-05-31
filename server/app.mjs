@@ -12,13 +12,12 @@ export const App = (function () {
     const privateProps = new WeakMap();
 
     const __dirname = path.dirname(import.meta.url.replace('file:///', ''));
-    const connectionString = JSON.parse(fs.readFileSync(path.join(__dirname, './settings.json')).toString())["ultimate-pizza-manager-connection-string"];
 
     return class {
 
         constructor(app) {
 
-            const context = new UltimatePizzaManagerContext(connectionString);
+            const context = new UltimatePizzaManagerContext(process.env.DATABASE_URL);
             const readCtrl = new ReadController(context);
             const writeCtrl = new WriteController(context);
 
