@@ -1,0 +1,39 @@
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+    <title>Ultimate Pizza Manager</title>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand pointer">Ultimate Pizza Manager</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse pointer" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <span onclick="AlbyJs.Router.link('/')" class="nav-link">Home</span>
+            </li>
+            <li class="nav-item">
+                <span onclick="AlbyJs.Router.link('menu')" class="nav-link">Menu</span>
+            </li>
+            <li class="nav-item">
+                <span onclick="AlbyJs.Router.link('week-orders')" class="nav-link">Ordini</span>
+            </li>
+            <li class="nav-item">
+                <span onclick="AlbyJs.Router.link('info')" class="nav-link">Info</span>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <div id="alert-serivice"></div>
+    <div id="container"></div>
+</div>
+
+<script type="text/javascript" src="/main.bundle.js"></script><script type="text/javascript" src="/vendor.bundle.js"></script></body>
+</html>
+
