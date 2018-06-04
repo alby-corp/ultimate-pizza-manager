@@ -26,6 +26,15 @@ export const App = (function () {
 
             app.use(express.urlencoded({extended: false}));
 
+            console.log(__dirname);
+            console.log("path.resolve(__dirname, '../dist')", path.resolve(__dirname, '../dist'));
+            console.log("path.join(__dirname, '../dist')", path.join(__dirname, '../dist'));
+            console.log("path.resolve(__dirname, '../dist/index.html')", path.resolve(__dirname, '../dist/index.html'));
+            console.log("path.join(__dirname, '../dist/index.html')", path.join(__dirname, '../dist/index.html'));
+
+            console.log("path.resolve(__dirname, '../../dist')", path.resolve(__dirname, '../../dist'));
+            console.log("path.join(__dirname, '../../dist')", path.join(__dirname, '../../dist'));
+
             app.use('', express.static(path.resolve(__dirname, '../dist')));
 
             app.use(bodyParser.json());
