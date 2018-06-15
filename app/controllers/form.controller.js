@@ -2,6 +2,7 @@ import template from '../views/form.html';
 
 import {Option, Common, Order, DropDownList, Button} from '../model';
 import {BaseController} from "./base.controller";
+import {ChatController} from "./chat.controller";
 
 export const FormController = (function () {
 
@@ -89,6 +90,8 @@ export const FormController = (function () {
         }
 
         async execute() {
+            await new ChatController().execute();
+
             overrideOnSubmit(privateProps.get(this).service, privateProps.get(this).alertService);
 
             let users;
