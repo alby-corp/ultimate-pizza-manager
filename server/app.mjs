@@ -11,7 +11,7 @@ export const App = (function () {
 
     const privateProps = new WeakMap();
 
-    const __dirname = path.dirname(import.meta.url.replace('file:///', ''));
+    const __dirname = path.dirname(import.meta.url.replace(process.platform === "win32" ? 'file:///' : 'file://', ''));
 
     return class {
 
