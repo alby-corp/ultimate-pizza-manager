@@ -4,7 +4,7 @@ import webpack from 'webpack';
 import HtmlWebpackPlugin  from 'html-webpack-plugin';
 
 
-const __dirname = path.dirname(import.meta.url.replace('file:///', ''));
+const __dirname = path.dirname(import.meta.url.replace(process.platform === "win32" ? 'file:///' : 'file://', ''));
 
 export default {
     entry: {
