@@ -17,20 +17,23 @@ export class ChatController extends BaseController {
                 });
             };
 
-            const model = {
-                open: false,
-                messages: []
+            const delay = ms => {
+                const deferred = $.Deferred();
+                setTimeout(deferred.resolve, ms);
+
+                return deferred.promise();
             };
 
-            const renderMessages = (messages) =>{
-                return messages.map(message => `
-                    <div class="${message.from === 'alby' ? 'message-alby' : 'message-user'}">
+
+            const renderMessage = (message) =>{
+                return `
+                    <div class="message ${message.from === 'alby' ? 'message-alby' : 'message-user'}">
                         ${message.text}
                     </div>
-                `).join('');
+                `;
             };
 
-            const render = (model) => {
+            const render = () => {
 
                 const renderButton = () => {
                     return `
@@ -39,86 +42,94 @@ export class ChatController extends BaseController {
                 };
 
                 const renderChat = () => {
-                    return `
-                    <div class="chat-container">
-                        <div class="chat-reveal">
+                    return `                   
+                        <div class="chat-ui">
                             <div class="chat-header">
                                 Alby<a class="btn-chat-close" onclick="AlbyJs.trigger(this, 'close')">&times;</a>
                             </div>
                             <div class="chat-messages">    
-                                ${renderMessages(model.messages)}                        
                             </div>
                             <div class="chat-typing">Sto scrivendo...</div>
                             <div class="chat-input">
-                                <input class="form-control" type="text" placeholder="Come posso aiutarti?" onkeypress="if (event.keyCode === 13)AlbyJs.trigger(this, 'send')">    
+                                <input class="form-control" type="text" placeholder="Come posso aiutarti?" onkeypress="if (event.keyCode === 13){ event.preventDefault(); AlbyJs.trigger(this, 'send')}">    
                                 <a class="btn-chat-send" onclick="AlbyJs.trigger(this, 'send')">&#x27a4;</a>  
                             </div>
-                        </div>
                     </div>`;
                 };
 
                 return `
-                    <div id="chat" class="${model.open ? 'chat-open' : 'chat-closed'}">
-                        ${model.open ? renderChat() : renderButton()}
+                    <div id="chat" class="chat-closed">
+                            ${renderChat()}
+                            ${renderButton()}
                     </div>`;
             };
 
-            const postMessage = message => {
-                model.messages.push(message);
+            element.html(render());
 
-                const messages = element.find('.chat-messages');
-
-                messages.html(renderMessages(model.messages));
-                messages[0].scrollTop = messages[0].scrollHeight;
+            const dom = {
+                chat: element.find('#chat'),
+                input: element.find('.chat-input input'),
+                typing: element.find('.chat-typing'),
+                messages: element.find('.chat-messages')
             };
 
+            const postMessage = message => {
+                dom.messages.append(renderMessage(message));
+                setTimeout(() => dom.messages[0].scrollTop = dom.messages[0].scrollHeight, 0);
+            };
+
+            const createResponse = (text) =>{
+                const response = 'cosa? ';
+                return [response, response.length * 200]
+            };
+
+            let messageQueue = $.when(1);
             const respond = text => {
-                const response = 'cosa?';
+                const [response, wait] = createResponse(text);
 
-                const typing = element.find('.chat-typing');
+                messageQueue = messageQueue.then(async () => {
+                    await delay(Math.floor(Math.random() * 300) + 300);
 
-                setTimeout(() => {
-                    typing.addClass('chat-typing-visible');
+                    dom.typing.addClass('chat-typing-visible');
 
-                    setTimeout(() => {
-                        typing.removeClass('chat-typing-visible');
+                    await delay(wait);
 
-                        postMessage({
-                            from: 'alby',
-                            text: response
-                        });
-                    }, response.length * 200);
-                }, Math.floor(Math.random() * 300) + 300);
+                    dom.typing.removeClass('chat-typing-visible');
+
+                    postMessage({
+                        from: 'alby',
+                        text: response
+                    });
+                });
             };
 
             action('open', () => {
-                model.open = true;
-                element.html(render(model));
+                dom.chat.addClass('animate');
 
-                const messages = element.find('.chat-messages');
-                messages[0].scrollTop = messages[0].scrollHeight;
+                dom.chat.removeClass('chat-closed');
+                dom.chat.addClass('chat-open');
             });
 
             action('close', () => {
-                model.open = false;
-                element.html(render(model));
+                dom.chat.addClass('chat-closed');
+                dom.chat.removeClass('chat-open');
             });
 
             action('send', () => {
-                const input = element.find('.chat-input input');
-                const text = input.val();
+                const text = dom.input.val();
+                if (text === ''){
+                    return;
+                }
 
                 postMessage({
                     from: 'user',
-                    text: input.val()
+                    text: dom.input.val()
                 });
 
+                dom.input.val('');
+
                 respond(text);
-
-                input.val('');
             });
-
-            element.html(render(model));
 
             return this;
         };

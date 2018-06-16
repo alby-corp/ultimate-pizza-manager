@@ -56,55 +56,155 @@ select {
     cursor: pointer;
 }
 
+/* CHAT */
+
 #chat{
     position: fixed;
-    bottom: 0;
-    right: 0;
-}
-
-#chat .btn-chat-open{
-    position: relative;
-    bottom: 20px;
     right: 20px;
 
-    transition: all .1s;
+    transition: transform .1s;
 
+    background: #d6e8fb;
+    overflow: hidden;
+    box-shadow: #00000094 3px 6px 12px 2px;
+
+    /*animation initial state*/
+    bottom: 20px;
+
+    border-radius: 100px;
     width: 100px;
     height: 100px;
-    background: #efefef;
-    border-radius: 100px;
-    cursor: pointer;
-    box-shadow: #00000059 4px 2px 16px 2px;
     border: 5px solid #007bff;
-    overflow: hidden;
-
-    background: url("../assets/alby.png") center no-repeat;
-    background-size: cover;
 }
 
-#chat .btn-chat-open:hover{
-    transform: scale(1.1);
-    box-shadow: #00000059 2px 2px 16px 0;
-}
-
-#chat .btn-chat-open:active{
-    transform: scale(.9);
-}
-
-#chat .chat-container{
-    position: relative;
-    right: 20px;
-    background: #d6e8fb;
-    box-shadow: #00000059 4px 2px 16px 2px;
+#chat.chat-open.animate {
     animation: chat-open-animation ease-in-out .3s forwards;
 }
 
-#chat .chat-reveal{
-    display: flex;
-    flex-direction: column;
+#chat.chat-closed.animate {
+    animation: chat-close-animation ease-in-out .3s forwards;
+}
+
+#chat.chat-open.animate .btn-chat-open {
+    pointer-events: none;
+    animation: chat-fadeout-animation ease-in-out .3s forwards;
+}
+
+#chat.chat-closed.animate .btn-chat-open {
+    animation: chat-fadein-animation ease-in-out .3s forwards;
+}
+
+#chat.chat-open.animate .chat-ui {
+    animation: chat-fadein-animation ease-in-out .3s forwards;
+}
+
+#chat.chat-closed.animate .chat-ui {
+    animation: chat-fadeout-animation ease-in-out .3s forwards;
+}
+
+
+@keyframes chat-fadein-animation {
+    from{
+        opacity: 0;
+    }
+    40%{
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+}
+
+@keyframes chat-fadeout-animation {
+    from{
+        opacity: 1;
+    }
+    60%{
+        opacity: 0;
+    }
+    to{
+        opacity: 0;
+    }
+}
+
+@keyframes chat-open-animation {
+    from{
+        bottom: 20px;
+
+        border-radius: 100px;
+        width: 100px;
+        height: 100px;
+        border-width: 5px;
+    }
+    50%{
+        bottom: 0;
+        height: 400px;
+        border-radius: 0;
+    }
+    to{
+        bottom: 0;
+
+        border-radius: 0;
+        height: 400px;
+        width: 300px;
+        border-width: 2px 2px 0 2px;
+    }
+}
+
+@keyframes chat-close-animation {
+    from{
+        bottom: 0;
+
+        border-radius: 0;
+        height: 400px;
+        width: 300px;
+        border-width: 2px 2px 0 2px;
+    }
+    50%{
+        bottom: 0;
+        height: 400px;
+        border-radius: 0;
+    }
+    to{
+        bottom: 20px;
+
+        border-radius: 100px;
+        width: 100px;
+        height: 100px;
+        border-width: 5px;
+    }
+}
+
+
+#chat .chat-ui{
+    position: absolute;
+    width: 100%;
     height: 100%;
     opacity: 0;
-    animation: chat-reveal-animation ease-in-out .3s forwards;
+
+    display: flex;
+    flex-direction: column;
+}
+
+#chat .btn-chat-open{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    cursor: pointer;
+
+    background: url("../assets/alby.png") center no-repeat;
+    background-size: cover;
+
+    transition: transform .2s ease-in-out, filter .1s ease-in-out;
+}
+
+#chat .btn-chat-open:hover, #chat .btn-chat-open:active {
+    filter: saturate(130%);
+}
+
+#chat.chat-closed:active{
+    transform: scale(.93);
 }
 
 #chat .chat-header{
@@ -116,17 +216,22 @@ select {
 }
 
 #chat .chat-messages{
-    display: flex;
     flex-direction: column;
     flex-grow: 1;
     background: #d6e8fb;
     box-shadow: inset #676767 -6px 4px 6px -3px;
     overflow-y: scroll;
-    padding-bottom: 30px;
+}
+
+#chat .chat-messages::after {
+    display: block;
+    content: '';
+    height: 30px;
+    width: 100%;
 }
 
 #chat .chat-typing {
-    transition: all .2s ease-in-out;
+    transition: transform .2s ease-in-out;
     position: absolute;
     flex-grow: 0;
     bottom: 0;
@@ -136,31 +241,60 @@ select {
     padding: 0 5px;
     z-index: 1;
     transform: translateY(-20px);
+    border-bottom: 1px solid #ced4da;
+
+    background: repeating-linear-gradient(90deg, white, #e8e7e7 50%, white 100%);
 }
 
 #chat .chat-typing.chat-typing-visible{
-    transform: translateY(-43px);
+    transform: translateY(-44px);
+    animation: chat-typing-animation .6s cubic-bezier(0.59, 0.85, 0.54, 0.65) infinite;
 }
 
+@keyframes chat-typing-animation {
+    from{
+        background-position-x: 0;
+    }
+    to{
+        background-position-x: 296px;
+    }
+}
+
+#chat .message{
+    margin: 5px;
+    border-radius: 5px;
+    font-size: 14px;
+    padding: 6px;
+    font-weight: 100;
+
+    animation: chat-message-animation .2s ease-in-out forwards;
+}
 
 #chat .message-alby{
     background: white;
-    margin: 5px 64px 5px 5px;
-    padding: 6px;
-    border-radius: 10px;
     color: #007bff;
-    font-size: 14px;
-    font-weight: 100;
+    margin-right: 64px;
+
+    transform-origin: 0 100%;
 }
 
 #chat .message-user{
-    background: #007bff;
-    margin: 5px 5px 5px 64px;
-    padding: 6px;
-    border-radius: 10px;
+    background: #3c3fcc;
     color: white;
-    font-size: 14px;
-    font-weight: 100;
+    margin-left: 64px;
+
+    transform-origin: 100% 100%;
+}
+
+@keyframes chat-message-animation {
+    from{
+        opacity: 0;
+        transform: scale(0);
+    }
+    to{
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 #chat .chat-input {
@@ -202,39 +336,4 @@ select {
 
 #chat .btn-chat-send:active {
     transform: scale(.9);
-}
-
-@keyframes chat-reveal-animation {
-    from{
-        opacity: 0;
-    }
-    40%{
-        opacity: 0;
-    }
-    to{
-        opacity: 1;
-    }
-}
-
-@keyframes chat-open-animation {
-    from{
-        bottom: 20px;
-        border-radius: 100px;
-        width: 100px;
-        height: 100px;
-        border: 5px solid #007bff;
-    }
-    50%{
-        bottom: 0;
-        height: 400px;
-        border-radius: 0;
-    }
-    to{
-        bottom: 0;
-        border-radius: 0;
-        height: 400px;
-        width: 300px;
-        border: solid #007bff;
-        border-width: 2px 2px 0 2px;
-    }
 }
