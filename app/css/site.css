@@ -28,6 +28,12 @@ select {
     margin: 50px 0 150px;
 }
 
+@media (max-width: 768px){
+	#creator .editor{
+		flex-direction: column;
+	}
+}
+
 #creator .ingredients, #creator .results{
     border: 1px solid #eee;
     padding: 20px;
@@ -219,7 +225,7 @@ select {
     flex-direction: column;
     flex-grow: 1;
     background: #d6e8fb;
-    box-shadow: inset #676767 -6px 4px 6px -3px;
+    box-shadow: inset #676767 0 4px 6px -3px;
     overflow-y: scroll;
 }
 
