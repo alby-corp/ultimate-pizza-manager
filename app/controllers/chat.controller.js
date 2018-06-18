@@ -1,6 +1,7 @@
 import template from '../views/creator.html';
 
 import {BaseController} from "./base.controller";
+import {albiReply, ALBITHOUGHTS} from "../services"
 
 export class ChatController extends BaseController {
 
@@ -79,8 +80,8 @@ export class ChatController extends BaseController {
             };
 
             const createResponse = (text) =>{
-                const response = 'cosa? ';
-                return [response, response.length * 200]
+                const response = albiReply(text, ALBITHOUGHTS);
+                return [response, response.length * 80]
             };
 
             let messageQueue = $.when(1);
