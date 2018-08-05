@@ -33,7 +33,7 @@ export const OrdersController = (function () {
             }
 
             const ordersTable = $('#week-orders');
-            new Table(ordersTable, orders.map(order => new OrdersRow(order))).populate();
+            new Table(ordersTable, orders.map((order, index) => new OrdersRow(index, order))).populate();
 
             const summaryTable = $('#summary-orders');
 

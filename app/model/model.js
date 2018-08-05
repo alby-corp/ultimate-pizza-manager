@@ -114,15 +114,20 @@ export const OrdersRow = (function () {
 
     return class extends BaseRow {
 
-        constructor(order) {
+        constructor(number, order) {
             super();
 
             privateProps.set(this, {
+                number: number + 1,
                 user: order.user.name,
                 foods: order.foods,
                 total: `${order.total().toFixed(2)} &euro;`
             });
         }
+
+        get number() {
+            return privateProps.get(this).number;
+        };
 
         get user() {
             return privateProps.get(this).user;
@@ -144,6 +149,7 @@ export const OrdersRow = (function () {
             const otherFoods = _.without(this.foods, _.findWhere(this.foods, firstFood));
 
             return `<tr>
+                        <td rowspan="${rowspan}">${this.number}</td>
                         <td rowspan="${rowspan}">${this.user}</td>
                         <td>${firstFood.food.toString()}</td>
                         <td><ul>${firstFood.supplements.map(s => `<li>${s.toString()}</li>`).join('')}</ul></td>
