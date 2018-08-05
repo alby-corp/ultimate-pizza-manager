@@ -1,7 +1,6 @@
 import {Route, Router} from './router';
 import {HttpClient, ResourceService, ModalService} from './services';
 import {OrdersController, NotFoundController, MenuController, InfoController, FormController} from './controllers';
-import {Button} from "./model";
 import {CreatorController} from "./controllers/creator.controller";
 
 const Controller = (function () {

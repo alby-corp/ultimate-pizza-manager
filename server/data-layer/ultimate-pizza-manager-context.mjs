@@ -28,6 +28,7 @@ export const UltimatePizzaManagerContext = (function () {
     const supplementsQuery = `      WITH supplements AS (
                                         SELECT          i.id, i.name, i.price
                                         FROM            ingredient i
+                                        WHERE           i.price IS NOT NULL
                                         ORDER BY        i.name
                                     )
                                     
