@@ -6,7 +6,7 @@ export const UltimatePizzaManagerContext = (function () {
 
     const privateProps = new WeakMap();
 
-    const usersQuery = `                WITH users AS (
+    const usersQuery = `            WITH users AS (
                                         SELECT m.id, m.username
                                         FROM muppet m
                                         ORDER BY m.username
@@ -14,7 +14,7 @@ export const UltimatePizzaManagerContext = (function () {
 
                                     SELECT json_agg(u) FROM users u`;
 
-    const foodsQuery = `                WITH foods AS 	(	
+    const foodsQuery = `            WITH foods AS 	(	
                                         SELECT          f.id, f.name, f.type, f.price, COALESCE(json_agg(i) FILTER (WHERE i.id IS NOT NULL), '[]') as ingredients						
                                         FROM food       f
                                         LEFT JOIN       food_ingredient fi ON f.id = fi.food
@@ -25,7 +25,7 @@ export const UltimatePizzaManagerContext = (function () {
                                     
                                     SELECT json_agg(f) FROM foods f`;
 
-    const supplementsQuery = `          WITH supplements AS (
+    const supplementsQuery = `      WITH supplements AS (
                                         SELECT          i.id, i.name, i.price
                                         FROM            ingredient i
                                         ORDER BY        i.name
@@ -44,9 +44,9 @@ export const UltimatePizzaManagerContext = (function () {
                                     FROM admins a`;
 
     const ordersQuery = `           WITH last_order_cte AS (
-                                    SELECT o.id, row_number() over (partition by o.muppet order by o."date" DESC ) 
-                                    FROM "order" o
-                                    WHERE o.date > date_trunc('day', now())
+                                        SELECT o.id, row_number() over (partition by o.muppet order by o."date" DESC ) 
+                                        FROM "order" o
+                                        WHERE o.date > date_trunc('day', now())
                                     )
                                     ,order_foods_cte AS (
                                         SELECT 
@@ -78,6 +78,7 @@ export const UltimatePizzaManagerContext = (function () {
                                         SELECT json_build_object('id', o.user_id, 'name', o.user_name) as user, o.date, json_agg(o.foods) as foods 
                                         FROM "order_cte" o 
                                         GROUP BY o.user_id, o.user_name, o.date, o.order_id
+                                        ORDER BY o.user_name
                                     )
                                     
                                     SELECT json_agg(to_json(go)) FROM grouped_order_cte go`;

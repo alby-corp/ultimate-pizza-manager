@@ -1,11 +1,12 @@
 import path from 'path';
-import fs from 'fs';
 import express from 'express';
 import bodyParser from 'body-parser';
 
 import {ReadController, WriteController} from './api';
 import {UltimatePizzaManagerContext} from './data-layer/ultimate-pizza-manager-context';
 import {Router} from './router';
+
+import config from './settings';
 
 export const App = (function () {
 
@@ -17,7 +18,7 @@ export const App = (function () {
 
         constructor(app) {
 
-            const context = new UltimatePizzaManagerContext(process.env.DATABASE_URL);
+            const context = new UltimatePizzaManagerContext(config["ultimate-pizza-manager-prod-connection-string"]);
             const readCtrl = new ReadController(context);
             const writeCtrl = new WriteController(context);
 
