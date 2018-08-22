@@ -138,13 +138,13 @@ export const Common = (function () {
             constructor(food, supplements, removals) {
 
                 try {
-                    supplements = (supplements || []).map(i => new Ingredient(i.id, i.name, i.price));
+                    supplements = (supplements ? supplements : []).map(i => new Ingredient(i.id, i.name, i.price));
                 } catch (error) {
                     throw new Error(`Invalid supplements array: ${error.message}`)
                 }
 
                 try {
-                    removals = (removals || []).map(i => new Ingredient(i.id, i.name, i.price));
+                    removals = (removals ? removals : []).map(i => new Ingredient(i.id, i.name, i.price));
                 } catch (error) {
                     throw new Error(`Invalid removals array: ${error.message}`)
                 }
