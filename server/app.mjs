@@ -18,7 +18,7 @@ export const App = (function () {
 
         constructor(app) {
 
-            const context = new UltimatePizzaManagerContext(config["ultimate-pizza-manager-prod-connection-string"]);
+            const context = new UltimatePizzaManagerContext(config["ultimate-pizza-manager-debug-connection-string"]);
             const readCtrl = new ReadController(context);
             const writeCtrl = new WriteController(context);
 

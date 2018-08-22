@@ -50,10 +50,19 @@ export const FormController = (function () {
                 foods.push(pizza);
             }
 
+            const sandwichId = $('#sandwiches').val();
+            if (sandwichId) {
+                // const removals = [];
+                const supplements = $('#sandwiches-supplements').val().filter(id => !!id).map(s => new Common.Ingredient(+s));
+
+                const sandwich = new Common.OrderedFood(new Common.Food(+sandwichId), supplements, undefined);
+
+                foods.push(sandwich);
+            }
+
             const others = [
                 $('#kitchen').val(),
                 $('#desserts').val(),
-                $('#sandwiches').val()
             ].filter(id => !!id);
 
             others.forEach(id => {
@@ -142,6 +151,11 @@ export const FormController = (function () {
                         ? getIngredientsOptions(exception(supplements, foods.find(f => f.id === +id).ingredients), Common.Ingredient.prototype.toString)
                         : getIngredientsOptions(supplements, Common.Ingredient.prototype.toString)
                 );
+
+            const sandwichesSupplementsDDL = $('#sandwiches-supplements');
+            new DropDownList(sandwichesSupplementsDDL, getIngredientsOptions(supplements, Common.Ingredient.prototype.toString))
+                .populate()
+                .conditionalEnable(sandwichesDDL);
 
             return this;
         }

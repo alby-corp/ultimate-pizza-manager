@@ -26,8 +26,6 @@ export const DropDownList = (function () {
 
                 const m = master.val();
 
-                console.log('MASTER: ' + m);
-
                 privateProps.get(this).select.prop("disabled", m === '')});
 
             return this;
