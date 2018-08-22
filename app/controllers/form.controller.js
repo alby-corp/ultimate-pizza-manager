@@ -6,7 +6,48 @@ import {ChatController} from "./chat.controller";
 
 export const FormController = (function () {
 
+    let usersDDL;
+    let pizzasDDL;
+    let kitchenDDL;
+    let dessertsDDL;
+    let sandwichesDDL;
+    let supplementsDDL;
+    let sandwichesSupplementsDDL;
+    let removalsDDL;
+
+    const initDDLs = () => {
+        usersDDL = $('#users');
+        pizzasDDL = $('#pizzas');
+        kitchenDDL = $('#kitchen');
+        dessertsDDL = $('#desserts');
+        sandwichesDDL = $('#sandwiches');
+        supplementsDDL = $('#supplements');
+        sandwichesSupplementsDDL = $('#sandwiches-supplements');
+        removalsDDL = $('#removals');
+    };
+
     const privateProps = new WeakMap();
+
+    const buildSupplementsFactory = (foods, supplements) => (DDL, masterDDL) =>
+        new DropDownList(DDL, getIngredientsOptions(supplements, Common.Ingredient.prototype.toString))
+            .populate()
+            .conditionalEnable(masterDDL)
+            .autoRefresh(
+                masterDDL,
+                (id) => id
+                    ? getIngredientsOptions(exception(supplements, foods.find(f => f.id === +id).ingredients), Common.Ingredient.prototype.toString)
+                    : getIngredientsOptions(supplements, Common.Ingredient.prototype.toString)
+            );
+
+    const buildRemovalFactory = (foods) => (DDL, masterDDL) =>
+        new DropDownList(DDL, null)
+            .conditionalEnable(masterDDL)
+            .autoRefresh(
+                masterDDL,
+                (id) => id
+                    ? getIngredientsOptions(foods.find(f => f.id === +id).ingredients, getPropertyDescriptor(Common.Ingredient.prototype, 'name').get)
+                    : []
+            );
 
     const getFoodsOptions = (foods, type) => {
         const options = foods.filter(food => food.type === type).map(food => new Option(food.id, food.toString(), false));
@@ -35,34 +76,33 @@ export const FormController = (function () {
             const foods = [];
             let user;
 
-            const userId = $('#users').val();
+            const userId = usersDDL.val();
             if (userId) {
                 user = new Common.User(+userId);
             }
 
-            const pizzaId = $('#pizzas').val();
+            const pizzaId = pizzasDDL.val();
             if (pizzaId) {
-                const removals = $('#removals').val().filter(id => !!id).map(r => new Common.Ingredient(+r));
-                const supplements = $('#supplements').val().filter(id => !!id).map(s => new Common.Ingredient(+s));
+                const removals = removalsDDL.val().filter(id => !!id).map(r => new Common.Ingredient(+r));
+                const supplements = supplementsDDL.val().filter(id => !!id).map(s => new Common.Ingredient(+s));
 
                 const pizza = new Common.OrderedFood(new Common.Food(+pizzaId), supplements, removals);
 
                 foods.push(pizza);
             }
 
-            const sandwichId = $('#sandwiches').val();
+            const sandwichId = sandwichesDDL.val();
             if (sandwichId) {
-                // const removals = [];
-                const supplements = $('#sandwiches-supplements').val().filter(id => !!id).map(s => new Common.Ingredient(+s));
+                const supplements = sandwichesSupplementsDDL.val().filter(id => !!id).map(s => new Common.Ingredient(+s));
 
-                const sandwich = new Common.OrderedFood(new Common.Food(+sandwichId), supplements, undefined);
+                const sandwich = new Common.OrderedFood(new Common.Food(+sandwichId), supplements);
 
                 foods.push(sandwich);
             }
 
             const others = [
-                $('#kitchen').val(),
-                $('#desserts').val(),
+                kitchenDDL.val(),
+                dessertsDDL.val(),
             ].filter(id => !!id);
 
             others.forEach(id => {
@@ -99,7 +139,10 @@ export const FormController = (function () {
         }
 
         async execute() {
+
             await new ChatController().execute();
+
+            initDDLs();
 
             overrideOnSubmit(privateProps.get(this).service, privateProps.get(this).alertService);
 
@@ -116,46 +159,24 @@ export const FormController = (function () {
                 return;
             }
 
-            const usersDDL = $('#users');
             new DropDownList(usersDDL, users.map(user => new Option(user.id, user.name, false))).populate();
 
-            const pizzasDDL = $('#pizzas');
             new DropDownList(pizzasDDL, getFoodsOptions(foods, 1)).populate();
 
-            const kitchenDDL = $('#kitchen');
             new DropDownList(kitchenDDL, getFoodsOptions(foods, 2)).populate();
 
-            const dessertsDDL = $('#desserts');
             new DropDownList(dessertsDDL, getFoodsOptions(foods, 3)).populate();
 
-            const sandwichesDDL = $('#sandwiches');
             new DropDownList(sandwichesDDL, getFoodsOptions(foods, 4)).populate();
 
-            const removalsDDL = $('#removals');
-            new DropDownList(removalsDDL, null)
-                .conditionalEnable(pizzasDDL)
-                .autoRefresh(
-                    pizzasDDL,
-                    (id) => id
-                        ? getIngredientsOptions(foods.find(f => f.id === +id).ingredients, getPropertyDescriptor(Common.Ingredient.prototype, 'name').get)
-                        : []
-                );
+            const removalsFactory = buildRemovalFactory(foods);
 
-            const supplementsDDL = $('#supplements');
-            new DropDownList(supplementsDDL, getIngredientsOptions(supplements, Common.Ingredient.prototype.toString))
-                .populate()
-                .conditionalEnable(pizzasDDL)
-                .autoRefresh(
-                    pizzasDDL,
-                    (id) => id
-                        ? getIngredientsOptions(exception(supplements, foods.find(f => f.id === +id).ingredients), Common.Ingredient.prototype.toString)
-                        : getIngredientsOptions(supplements, Common.Ingredient.prototype.toString)
-                );
+            removalsFactory(removalsDDL, pizzasDDL);
 
-            const sandwichesSupplementsDDL = $('#sandwiches-supplements');
-            new DropDownList(sandwichesSupplementsDDL, getIngredientsOptions(supplements, Common.Ingredient.prototype.toString))
-                .populate()
-                .conditionalEnable(sandwichesDDL);
+            const supplementsFactory = buildSupplementsFactory(foods, supplements);
+
+            supplementsFactory(supplementsDDL, pizzasDDL);
+            supplementsFactory(sandwichesSupplementsDDL, sandwichesDDL);
 
             return this;
         }
