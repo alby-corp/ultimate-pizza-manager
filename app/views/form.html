@@ -18,30 +18,31 @@
         </div>
         <select id="pizzas" class="form-control" name="pizza" size=1></select>
     </div>
-
+   
     <p>
         <a class="btn  btn-outline-secondary" data-toggle="collapse" href="#SupplementiRimozioniPizze" role="button" aria-expanded="false" aria-controls="collapseExample">
-            Supplementi/Rimozioni Pizze
+            Rimozioni/Supplementi Pizze
         </a>
     </p>
 
-    <div class="collapse card card-body" id="SupplementiRimozioniPizze">
-
-        <div class="form-group input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon3" for="removals">Rimozioni:</span>
+    <div class="container" style="margin-left:20px">
+        <div class="form-group collapse card card-body" id="SupplementiRimozioniPizze">
+            <div class="form-group input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon3" for="removals">Rimozioni:</span>
+                </div>
+                <select multiple id="removals" class="form-control" name="removals" size=4 disabled></select>
             </div>
-            <select multiple id="removals" class="form-control" name="removals" size=4 disabled></select>
-        </div>
-       
-        <div class="form-group input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon3" for="supplements">Supplementi:</span>
+                   
+            <div class="form-group input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon3" for="supplements">Supplementi:</span>
+                </div>
+                <select multiple id="supplements" class="form-control" name="supplements" size=8 disabled></select>
             </div>
-            <select multiple id="supplements" class="form-control" name="supplements" size=8 disabled></select>
         </div>
     </div>
-
+    
     <div class="form-group input-group mb-3">
         <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon3" for="kitchen">Piatti:</span>
@@ -58,25 +59,28 @@
 
     <p>
         <a class="btn btn-outline-secondary" data-toggle="collapse" href="#SupplementiPanini" role="button" aria-expanded="false" aria-controls="collapseExample">
-            Supplementi Panini
+                Rimozioni/Supplementi Panini
         </a>
     </p>
 
-    <div class="form-group collapse card card-body" id="SupplementiPanini">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon3" for="removals">Rimozioni:</span>
+    <div class="container" style="margin-left:20px">
+        <div class="form-group collapse card card-body" id="SupplementiPanini">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon3" for="removals">Rimozioni:</span>
+                </div>
+                <select multiple id="sandwiches-removals" class="form-control" name="removals" size=4 disabled></select>
             </div>
-            <select multiple id="sandwiches-removals" class="form-control" name="removals" size=4 disabled></select>
-        </div>
-
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon3" for="sandwiches-supplements">Supplementi:</span>
+            
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon3" for="sandwiches-supplements">Supplementi:</span>
+                </div>
+                <select multiple id="sandwiches-supplements" class="form-control" name="sandwiches-supplements" size=8 disabled></select>
             </div>
-            <select multiple id="sandwiches-supplements" class="form-control" name="sandwiches-supplements" size=8 disabled></select>
         </div>
     </div>
+    
 
     <div class="form-group input-group mb-3">
         <div class="input-group-prepend">
