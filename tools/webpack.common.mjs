@@ -8,8 +8,7 @@ const __dirname = path.dirname(import.meta.url.replace(process.platform === "win
 
 export default {
     entry: {
-        main: './app/main.js',
-        vendor: './app/vendors.js',
+        main: './app/main.js'
     },
     output: {
         path: path.resolve(__dirname, '../dist'),
