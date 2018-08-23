@@ -102,9 +102,10 @@ export const FormController = (function () {
 
             const sandwichId = sandwichesDDL.val();
             if (sandwichId) {
+                const removals = sandwichesRemovalsDDL.val().filter(id => !!id).map(r => new Common.Ingredient(+r));
                 const supplements = sandwichesSupplementsDDL.val().filter(id => !!id).map(s => new Common.Ingredient(+s));
 
-                const sandwich = new Common.OrderedFood(new Common.Food(+sandwichId), supplements);
+                const sandwich = new Common.OrderedFood(new Common.Food(+sandwichId), supplements, removals);
 
                 foods.push(sandwich);
             }

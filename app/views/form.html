@@ -5,53 +5,88 @@
 
 <form id="order-form" method="post" action="/">
 
-    <div class="form-group">
-        <label for="users">Utenti:</label>
-        <select id="users" class="form-control" name="user" size=1></select>
+    <div class="form-group input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon3" for="users">Utenti:</span>
+      </div>
+      <select id="users" class="form-control" name="user" size=1></select>
     </div>
 
-    <div class="form-group">
-        <label for="pizzas">Pizza:</label>
+    <div class="form-group input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon3" for="pizzas">Pizza:</span>
+        </div>
         <select id="pizzas" class="form-control" name="pizza" size=1></select>
     </div>
 
-    <div class="form-group">
-        <label for="removals">Rimozioni:</label>
-        <select multiple id="removals" class="form-control" name="removals" size=4 disabled></select>
+    <p>
+        <a class="btn  btn-outline-secondary" data-toggle="collapse" href="#SupplementiRimozioniPizze" role="button" aria-expanded="false" aria-controls="collapseExample">
+            Supplementi/Rimozioni Pizze
+        </a>
+    </p>
+
+    <div class="collapse card card-body" id="SupplementiRimozioniPizze">
+
+        <div class="form-group input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3" for="removals">Rimozioni:</span>
+            </div>
+            <select multiple id="removals" class="form-control" name="removals" size=4 disabled></select>
+        </div>
+       
+        <div class="form-group input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3" for="supplements">Supplementi:</span>
+            </div>
+            <select multiple id="supplements" class="form-control" name="supplements" size=8 disabled></select>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label for="supplements">Supplementi Pizze:</label>
-        <select multiple id="supplements" class="form-control" name="supplements" size=8 disabled></select>
-    </div>
-
-    <div class="form-group">
-        <label for="kitchen">Piatti:</label>
+    <div class="form-group input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon3" for="kitchen">Piatti:</span>
+        </div>
         <select id="kitchen" class="form-control" name="kitchen" size=1></select>
     </div>
 
-    <div class="form-group">
-        <label for="sandwiches">Panino:</label>
+    <div class="form-group input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon3" for="sandwiches">Panino:</span>
+        </div>
         <select id="sandwiches" class="form-control" name="sandwiches" size=1></select>
     </div>
 
-    <div class="form-group">
-        <label for="removals">Rimozioni Panini:</label>
-        <select multiple id="sandwiches-removals" class="form-control" name="removals" size=4 disabled></select>
+    <p>
+        <a class="btn btn-outline-secondary" data-toggle="collapse" href="#SupplementiPanini" role="button" aria-expanded="false" aria-controls="collapseExample">
+            Supplementi Panini
+        </a>
+    </p>
+
+    <div class="form-group collapse card card-body" id="SupplementiPanini">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3" for="removals">Rimozioni:</span>
+            </div>
+            <select multiple id="sandwiches-removals" class="form-control" name="removals" size=4 disabled></select>
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3" for="sandwiches-supplements">Supplementi:</span>
+            </div>
+            <select multiple id="sandwiches-supplements" class="form-control" name="sandwiches-supplements" size=8 disabled></select>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label for="sandwiches-supplements">Supplementi Panini:</label>
-        <select multiple id="sandwiches-supplements" class="form-control" name="sandwiches-supplements" size=8 disabled></select>
-    </div>
-
-    <div class="form-group">
-        <label for="desserts">Dolce:</label>
+    <div class="form-group input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon3" for="desserts">Dolce:</span>
+        </div>
         <select id="desserts" class="form-control" name="dessert" size=1></select>
     </div>
 
-    <input class="btn btn-success" type="submit" value="Ordina"/>
-    <a class="btn btn-primary" style="color: white; float: right;" onclick="AlbyJs.Router.link('crea-la-tua-pizza')">Crea la tua pizza!</a>
+    <input class="btn btn-outline-success" type="submit" value="Ordina"/>
+    <input class="btn btn-outline-primary" type="button" onclick="AlbyJs.Router.link('crea-la-tua-pizza')" value="Crea la tua pizza!"/>
 </form>
 
 <div id="chat-outlet"></div>
