@@ -19,8 +19,9 @@ export const FormController = (function () {
     let _sandwichesSupplementsDDL;
     let _sandwichesRemovalsDDL;
 
-    const hideShowButtonFunctionFactory = (DDL, target) => () => {
+    const hideShowButtonFunctionFactory = (DDL, target, collapsableObject) => () => {
         if (DDL.val() == "") {
+            collapsableObject.collapse('hide');
             target.hide();
         } else {
             target.show();
@@ -179,9 +180,9 @@ export const FormController = (function () {
                 return;
             }
                         
-            let pizzasHideShowButtonFunction = hideShowButtonFunctionFactory(_pizzasDDL,$("#btnRimozioniPizza")); 
+            let pizzasHideShowButtonFunction = hideShowButtonFunctionFactory(_pizzasDDL,$("#btnRimozioniPizza"),$("#SupplementiRimozioniPizze")); 
 
-            let paniniHideShowButtonFunction = hideShowButtonFunctionFactory(_sandwichesDDL,$("#btnRimozioniPanini")); 
+            let paniniHideShowButtonFunction = hideShowButtonFunctionFactory(_sandwichesDDL,$("#btnRimozioniPanini"),$("#SupplementiPanini")); 
            
             _pizzasDDL.change(pizzasHideShowButtonFunction);
 
