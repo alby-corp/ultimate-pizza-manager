@@ -16,16 +16,16 @@
         <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon3" for="pizzas">Pizza:</span>
         </div>
-        <select id="pizzas" class="form-control" name="pizza" size=1></select>
+        <select id="pizzas" class="form-control" name="pizza" size=1 onchange="myFunction(pizzas,btnRimozioniPizza)"></select>
     </div>
    
-    <p>
+    <p id="btnRimozioniPizza" style="display:none">
         <a class="btn  btn-outline-secondary" data-toggle="collapse" href="#SupplementiRimozioniPizze" role="button" aria-expanded="false" aria-controls="collapseExample">
             Rimozioni/Supplementi Pizze
         </a>
     </p>
 
-    <div class="container" style="margin-left:20px">
+    <div class="container" style="margin-left:15px">
         <div class="form-group collapse card card-body" id="SupplementiRimozioniPizze">
             <div class="form-group input-group mb-3">
                 <div class="input-group-prepend">
@@ -54,16 +54,16 @@
         <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon3" for="sandwiches">Panino:</span>
         </div>
-        <select id="sandwiches" class="form-control" name="sandwiches" size=1></select>
+        <select id="sandwiches" class="form-control" name="sandwiches" size=1 onchange="myFunction1()"></select>
     </div>
 
-    <p>
+    <p  id="btnRimozioniPanini" style="display:none">
         <a class="btn btn-outline-secondary" data-toggle="collapse" href="#SupplementiPanini" role="button" aria-expanded="false" aria-controls="collapseExample">
                 Rimozioni/Supplementi Panini
         </a>
     </p>
 
-    <div class="container" style="margin-left:20px">
+    <div class="container" style="margin-left:15px">
         <div class="form-group collapse card card-body" id="SupplementiPanini">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
