@@ -15,14 +15,22 @@
         <select id="pizzas" class="form-control" name="pizza" size=1></select>
     </div>
 
-    <div class="form-group">
-        <label for="removals">Rimozioni:</label>
-        <select multiple id="removals" class="form-control" name="removals" size=4 disabled></select>
-    </div>
+    <p>
+        <a class="btn  btn-outline-secondary" data-toggle="collapse" href="#SupplementiRimozioniPizze" role="button" aria-expanded="false" aria-controls="collapseExample">
+            Supplementi/Rimozioni Pizze
+        </a>
+    </p>
 
-    <div class="form-group">
-        <label for="supplements">Supplementi Pizze:</label>
-        <select multiple id="supplements" class="form-control" name="supplements" size=8 disabled></select>
+    <div class="collapse card card-body" id="SupplementiRimozioniPizze">
+        <div class="form-group" class="card card-body">
+            <label for="removals">Rimozioni:</label>
+            <select multiple id="removals" class="form-control" name="removals" size=4 disabled></select>
+        </div>
+            
+        <div class="form-group">
+            <label for="supplements">Supplementi:</label>
+            <select multiple id="supplements" class="form-control" name="supplements" size=8 disabled></select>
+        </div>
     </div>
 
     <div class="form-group">
@@ -35,9 +43,17 @@
         <select id="sandwiches" class="form-control" name="sandwiches" size=1></select>
     </div>
 
-    <div class="form-group">
-        <label for="sandwiches-supplements">Supplementi Panini:</label>
-        <select multiple id="sandwiches-supplements" class="form-control" name="sandwiches-supplements" size=8 disabled></select>
+    <p>
+        <a class="btn btn-outline-secondary" data-toggle="collapse" href="#SupplementiPanini" role="button" aria-expanded="false" aria-controls="collapseExample">
+            Supplementi Panini
+        </a>
+    </p>
+
+    <div class="collapse" id="SupplementiPanini">
+        <div class="form-group">
+                <label for="sandwiches-supplements">Supplementi:</label>
+                <select multiple id="sandwiches-supplements" class="form-control" name="sandwiches-supplements" size=8 disabled></select>
+        </div>
     </div>
 
     <div class="form-group">
@@ -45,8 +61,8 @@
         <select id="desserts" class="form-control" name="dessert" size=1></select>
     </div>
 
-    <input class="btn btn-success" type="submit" value="Ordina"/>
-    <a class="btn btn-primary" style="color: white; float: right;" onclick="AlbyJs.Router.link('crea-la-tua-pizza')">Crea la tua pizza!</a>
+    <input class="btn btn-outline-success" type="submit" value="Ordina"/>
+    <input class="btn btn-outline-primary" type="button" onclick="AlbyJs.Router.link('crea-la-tua-pizza')" value="Crea la tua pizza!"/>
 </form>
 
 <div id="chat-outlet"></div>
