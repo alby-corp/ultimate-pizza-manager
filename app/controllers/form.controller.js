@@ -6,33 +6,43 @@ import {ChatController} from "./chat.controller";
 
 export const FormController = (function () {
 
-    let usersDDL;
+    let _usersDDL;
 
-    let kitchenDDL;
-    let dessertsDDL;
+    let _kitchenDDL;
+    let _dessertsDDL;
 
-    let pizzasDDL;
-    let supplementsDDL;
-    let removalsDDL;
+    let _pizzasDDL;
+    let _supplementsDDL;
+    let _removalsDDL;
 
-    let sandwichesDDL;
-    let sandwichesSupplementsDDL;
-    let sandwichesRemovalsDDL;
+    let _sandwichesDDL;
+    let _sandwichesSupplementsDDL;
+    let _sandwichesRemovalsDDL;
 
+    const hideShowButtonFunctionFactory = (DDL, target) => () => {
+        if (DDL.val() == "") {
+            target.hide();
+        } else {
+            target.show();
+        }    
+    }
 
+    function myFunction1() {
+         document.getElementById("btnRimozioniPanini").style.display = "block";
+    }
     const initDDLs = () => {
-        usersDDL = $('#users');
+        _usersDDL = $('#users');
 
-        kitchenDDL = $('#kitchen');
-        dessertsDDL = $('#desserts');
+        _kitchenDDL = $('#kitchen');
+        _dessertsDDL = $('#desserts');
 
-        pizzasDDL = $('#pizzas');
-        supplementsDDL = $('#supplements');
-        removalsDDL = $('#removals');
+        _pizzasDDL = $('#pizzas');
+        _supplementsDDL = $('#supplements');
+        _removalsDDL = $('#removals');
 
-        sandwichesDDL = $('#sandwiches');
-        sandwichesSupplementsDDL = $('#sandwiches-supplements');
-        sandwichesRemovalsDDL = $('#sandwiches-removals');
+        _sandwichesDDL = $('#sandwiches');
+        _sandwichesSupplementsDDL = $('#sandwiches-supplements');
+        _sandwichesRemovalsDDL = $('#sandwiches-removals');
     };
 
     const privateProps = new WeakMap();
@@ -85,25 +95,25 @@ export const FormController = (function () {
             const foods = [];
             let user;
 
-            const userId = usersDDL.val();
+            const userId = _usersDDL.val();
             if (userId) {
                 user = new Common.User(+userId);
             }
 
-            const pizzaId = pizzasDDL.val();
+            const pizzaId = _pizzasDDL.val();
             if (pizzaId) {
-                const removals = removalsDDL.val().filter(id => !!id).map(r => new Common.Ingredient(+r));
-                const supplements = supplementsDDL.val().filter(id => !!id).map(s => new Common.Ingredient(+s));
+                const removals = _removalsDDL.val().filter(id => !!id).map(r => new Common.Ingredient(+r));
+                const supplements = _supplementsDDL.val().filter(id => !!id).map(s => new Common.Ingredient(+s));
 
                 const pizza = new Common.OrderedFood(new Common.Food(+pizzaId), supplements, removals);
 
                 foods.push(pizza);
             }
 
-            const sandwichId = sandwichesDDL.val();
+            const sandwichId = _sandwichesDDL.val();
             if (sandwichId) {
-                const removals = sandwichesRemovalsDDL.val().filter(id => !!id).map(r => new Common.Ingredient(+r));
-                const supplements = sandwichesSupplementsDDL.val().filter(id => !!id).map(s => new Common.Ingredient(+s));
+                const removals = _sandwichesRemovalsDDL.val().filter(id => !!id).map(r => new Common.Ingredient(+r));
+                const supplements = _sandwichesSupplementsDDL.val().filter(id => !!id).map(s => new Common.Ingredient(+s));
 
                 const sandwich = new Common.OrderedFood(new Common.Food(+sandwichId), supplements, removals);
 
@@ -111,8 +121,8 @@ export const FormController = (function () {
             }
 
             const others = [
-                kitchenDDL.val(),
-                dessertsDDL.val(),
+                _kitchenDDL.val(),
+                _dessertsDDL.val(),
             ].filter(id => !!id);
 
             others.forEach(id => {
@@ -168,26 +178,35 @@ export const FormController = (function () {
             } catch (error) {
                 return;
             }
+                        
+            let pizzasHideShowButtonFunction = hideShowButtonFunctionFactory(_pizzasDDL,$("#btnRimozioniPizza")); 
 
-            new DropDownList(usersDDL, users.map(user => new Option(user.id, user.name, false))).populate();
+            let paniniHideShowButtonFunction = hideShowButtonFunctionFactory(_sandwichesDDL,$("#btnRimozioniPanini")); 
+           
+            _pizzasDDL.change(pizzasHideShowButtonFunction);
 
-            new DropDownList(pizzasDDL, getFoodsOptions(foods, 1)).populate();
+            _sandwichesDDL.change(paniniHideShowButtonFunction);           
 
-            new DropDownList(kitchenDDL, getFoodsOptions(foods, 2)).populate();
+            new DropDownList(_usersDDL, users.map(user => new Option(user.id, user.name, false))).populate();
 
-            new DropDownList(dessertsDDL, getFoodsOptions(foods, 3)).populate();
+            new DropDownList(_pizzasDDL, getFoodsOptions(foods, 1)).populate();
 
-            new DropDownList(sandwichesDDL, getFoodsOptions(foods, 4)).populate();
+            new DropDownList(_kitchenDDL, getFoodsOptions(foods, 2)).populate();
+
+            new DropDownList(_dessertsDDL, getFoodsOptions(foods, 3)).populate();
+
+            new DropDownList(_sandwichesDDL, getFoodsOptions(foods, 4)).populate();
 
             const removalsFactory = buildRemovalFactory(foods);
 
-            removalsFactory(removalsDDL, pizzasDDL);
-            removalsFactory(sandwichesRemovalsDDL, sandwichesDDL);
+            removalsFactory(_removalsDDL, _pizzasDDL);
+            removalsFactory(_sandwichesRemovalsDDL, _sandwichesDDL);
 
             const supplementsFactory = buildSupplementsFactory(foods, supplements);
 
-            supplementsFactory(supplementsDDL, pizzasDDL);
-            supplementsFactory(sandwichesSupplementsDDL, sandwichesDDL);
+            supplementsFactory(_supplementsDDL, _pizzasDDL);
+            supplementsFactory(_sandwichesSupplementsDDL, _sandwichesDDL);
+            
 
             return this;
         }
