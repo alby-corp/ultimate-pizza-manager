@@ -7,23 +7,32 @@ import {ChatController} from "./chat.controller";
 export const FormController = (function () {
 
     let usersDDL;
-    let pizzasDDL;
+
     let kitchenDDL;
     let dessertsDDL;
-    let sandwichesDDL;
+
+    let pizzasDDL;
     let supplementsDDL;
-    let sandwichesSupplementsDDL;
     let removalsDDL;
+
+    let sandwichesDDL;
+    let sandwichesSupplementsDDL;
+    let sandwichesRemovalsDDL;
+
 
     const initDDLs = () => {
         usersDDL = $('#users');
-        pizzasDDL = $('#pizzas');
+
         kitchenDDL = $('#kitchen');
         dessertsDDL = $('#desserts');
-        sandwichesDDL = $('#sandwiches');
+
+        pizzasDDL = $('#pizzas');
         supplementsDDL = $('#supplements');
-        sandwichesSupplementsDDL = $('#sandwiches-supplements');
         removalsDDL = $('#removals');
+
+        sandwichesDDL = $('#sandwiches');
+        sandwichesSupplementsDDL = $('#sandwiches-supplements');
+        sandwichesRemovalsDDL = $('#sandwiches-removals');
     };
 
     const privateProps = new WeakMap();
@@ -172,6 +181,7 @@ export const FormController = (function () {
             const removalsFactory = buildRemovalFactory(foods);
 
             removalsFactory(removalsDDL, pizzasDDL);
+            removalsFactory(sandwichesRemovalsDDL, sandwichesDDL);
 
             const supplementsFactory = buildSupplementsFactory(foods, supplements);
 
