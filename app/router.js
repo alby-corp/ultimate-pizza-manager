@@ -1,6 +1,3 @@
-// Navigation
-import {Common} from "./model";
-
 export const Route = (function () {
 
     const privateProps = new WeakMap();
@@ -48,7 +45,7 @@ export const Router = (function () {
     };
 
     const init = (self) => {
-        window.addEventListener("onpopstate", manage);
+        window.addEventListener("popstate", manage.bind(self));
         manage.call(self);
     };
 
@@ -63,6 +60,14 @@ export const Router = (function () {
         }
 
         link(uri) {
+
+            let key = window.location.pathname;
+
+            if(`/${uri}` === key)
+            {
+                return;
+            }
+
             history.pushState(null, null, uri);
             manage.call(this);
         }
