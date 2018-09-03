@@ -28,9 +28,6 @@ export const FormController = (function () {
         }    
     }
 
-    function myFunction1() {
-         document.getElementById("btnRimozioniPanini").style.display = "block";
-    }
     const initDDLs = () => {
         _usersDDL = $('#users');
 
