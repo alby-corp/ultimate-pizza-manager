@@ -149,6 +149,7 @@ export const OrdersRow = (function () {
             return `<tr>
                         <td rowspan="${rowspan}">${this.number}</td>
                         <td rowspan="${rowspan}">${this.user}</td>
+                        <td>${firstFood.food.description}</td>
                         <td>${firstFood.food.toString()}</td>
                         <td><ul>${firstFood.supplements.map(s => `<li>${s.toString()}</li>`).join('')}</ul></td>
                         <td><ul>${firstFood.removals.map(r => `<li>${r.name}</li>`).join('')}</ul></td>
@@ -156,6 +157,7 @@ export const OrdersRow = (function () {
                     </tr>
 
                     ${otherFoods.map(orderedFood => `<tr>
+                                                        <td>${orderedFood.food.description}</td>
                                                         <td>${orderedFood.food.toString()}</td>
                                                         <td><ul>${orderedFood.supplements.map(s => `<li>${s.toString()}</li>`).join('')}</ul></td>
                                                         <td><ul>${orderedFood.removals.map(r => `<li>${r.name}</li>`).join('')}</ul></td>

@@ -85,7 +85,7 @@ export const Common = (function () {
 
         class Food {
 
-            constructor(id, name, price, ingredients, type) {
+            constructor(id, name, price, ingredients, type, description) {
 
                 try {
                     ingredients = (ingredients || []).map(i => new Ingredient(i.id, i.name, i.price));
@@ -98,7 +98,8 @@ export const Common = (function () {
                     name: name,
                     price: +price,
                     ingredients: ingredients,
-                    type: type
+                    type: type,
+                    description: description
                 });
             };
 
@@ -120,6 +121,10 @@ export const Common = (function () {
 
             get type() {
                 return privateProps.get(this).type;
+            };
+
+            get description() {
+                return privateProps.get(this).description;
             };
 
             toString() {
@@ -190,7 +195,7 @@ export const Common = (function () {
                 }
 
                 try {
-                    foods = (foods || []).map(orderedFood => new OrderedFood(new Food(orderedFood.food.id, orderedFood.food.name, orderedFood.food.price, orderedFood.food.ingredients, orderedFood.food.type), orderedFood.supplements, orderedFood.removals));
+                    foods = (foods || []).map(orderedFood => new OrderedFood(new Food(orderedFood.food.id, orderedFood.food.name, orderedFood.food.price, orderedFood.food.ingredients, orderedFood.food.type, orderedFood.food.description), orderedFood.supplements, orderedFood.removals));
                 } catch (error) {
                     throw new Error(`Invalid foods array: ${error.message}`);
                 }
