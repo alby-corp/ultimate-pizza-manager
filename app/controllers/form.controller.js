@@ -118,12 +118,15 @@ export const FormController = (function () {
                 foods.push(sandwich);
             }
 
-            const others = [
-                _kitchenDDL.val(),
-                _dessertsDDL.val(),
-            ].filter(id => !!id);
+            const kitchenIds = _kitchenDDL.val();
 
-            others.forEach(id => {
+            kitchenIds.forEach(id => {
+                foods.push(new Common.OrderedFood(new Common.Food(+id)));
+            });
+
+            const dessertsIds = _dessertsDDL.val();
+
+            dessertsIds.forEach(id => {
                 foods.push(new Common.OrderedFood(new Common.Food(+id)));
             });
 
