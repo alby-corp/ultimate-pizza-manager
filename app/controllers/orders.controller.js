@@ -45,10 +45,9 @@ export const OrdersController = (function () {
             });
 
             const summaryRows =
-                _.map(_.groupBy(ordersWithKey, (order) => order.key), (orderWithKey) => {
+                _.sortBy(_.map(_.groupBy(ordersWithKey, (order) => order.key), (orderWithKey) => {
                     return new SummaryRow(_.first(orderWithKey).order, orderWithKey.length)
-
-                });
+                }), (order) => order.orderedFood.food.type  + order.orderedFood.food.name);
 
             new Table(summaryTable, summaryRows).populate();
 
