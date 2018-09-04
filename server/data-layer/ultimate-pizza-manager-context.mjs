@@ -45,10 +45,10 @@ export const UltimatePizzaManagerContext = (function () {
                                     FROM admins a`;
 
     const ordersQuery = `           WITH last_order_cte AS (
-                                        SELECT o.id, row_number() over (partition by o.muppet order by o."date" DESC ) 
+                                        SELECT o.id, row_number() over (partition by o.muppet order by o."date" DESC )
                                         FROM "order" o
                                         WHERE o.date > date_trunc('day', now())
-                                    )
+                                        )
                                     ,order_foods_cte AS (
                                         SELECT
                                                fo.order as order_id,
@@ -63,9 +63,8 @@ export const UltimatePizzaManagerContext = (function () {
                                                     LEFT JOIN 		ingredient s on s.id = foi.ingredient AND foi.isremoval = FALSE
                                                     INNER JOIN       type t on t.id = f.type
                                         GROUP BY 		fo.id, f.id, f.name, f.type, f.price, t.description
-                                        ORDER BY        f.type DESC, f.name
                                         )
-                                        ,order_cte AS (
+                                    ,order_cte AS (
                                         SELECT
                                                m.id as user_id,
                                                m.username as user_name,
@@ -76,13 +75,14 @@ export const UltimatePizzaManagerContext = (function () {
                                         FROM 			order_foods_cte f
                                                     INNER JOIN 		"order" o ON f.order_id = o.id
                                                     INNER JOIN		muppet m ON o.muppet = m.id
-                                    )
+                                        ORDER BY m.username, f.type ASC, f.name
+                                        )
                                     ,grouped_order_cte AS (
-                                        SELECT json_build_object('id', o.user_id, 'name', o.user_name) as user, o.date, json_agg(o.foods) as foods 
-                                        FROM "order_cte" o 
+                                        SELECT json_build_object('id', o.user_id, 'name', o.user_name) as user, o.date, json_agg(o.foods) as foods
+                                        FROM "order_cte" o
                                         GROUP BY o.user_id, o.user_name, o.date, o.order_id
                                         ORDER BY o.user_name
-                                    )
+                                        )
                                     
                                     SELECT json_agg(to_json(go)) FROM grouped_order_cte go`;
 
