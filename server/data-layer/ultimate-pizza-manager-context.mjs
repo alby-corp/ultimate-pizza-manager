@@ -45,42 +45,44 @@ export const UltimatePizzaManagerContext = (function () {
                                     FROM admins a`;
 
     const ordersQuery = `           WITH last_order_cte AS (
-                                        SELECT o.id, row_number() over (partition by o.muppet order by o."date" DESC ) 
+                                        SELECT o.id, row_number() over (partition by o.muppet order by o."date" DESC )
                                         FROM "order" o
                                         WHERE o.date > date_trunc('day', now())
-                                    )
+                                        )
                                     ,order_foods_cte AS (
-                                        SELECT 
-                                                        fo.order as order_id, 
-                                                        f.id, f.name, f.type, f.price, 
-                                                        COALESCE(json_agg(r) FILTER (WHERE r.id IS NOT NULL), '[]') AS removals ,
-                                                        COALESCE(json_agg(s) FILTER (WHERE s.id IS NOT NULL), '[]') AS supplements 
-                                        FROM 			food f 
-                                        INNER JOIN 		food_order fo on f.id = fo.food
-                                        INNER JOIN 		last_order_cte lo on fo.order = lo.id AND lo.row_number = 1
-                                        LEFT JOIN 		food_order_ingredient foi on foi.food_order = fo.id
-                                        LEFT JOIN 		ingredient r on r.id = foi.ingredient AND foi.isremoval = TRUE
-                                        LEFT JOIN 		ingredient s on s.id = foi.ingredient AND foi.isremoval = FALSE
-                                        GROUP BY 		fo.id, f.id, f.name, f.type, f.price 
-                                    )
+                                        SELECT
+                                               fo.order as order_id,
+                                               f.id, f.name, f.type, t.description, f.price,
+                                               COALESCE(json_agg(r) FILTER (WHERE r.id IS NOT NULL), '[]') AS removals ,
+                                               COALESCE(json_agg(s) FILTER (WHERE s.id IS NOT NULL), '[]') AS supplements
+                                        FROM 			food f
+                                                    INNER JOIN 		food_order fo on f.id = fo.food
+                                                    INNER JOIN 		last_order_cte lo on fo.order = lo.id AND lo.row_number = 1
+                                                    LEFT JOIN 		food_order_ingredient foi on foi.food_order = fo.id
+                                                    LEFT JOIN 		ingredient r on r.id = foi.ingredient AND foi.isremoval = TRUE
+                                                    LEFT JOIN 		ingredient s on s.id = foi.ingredient AND foi.isremoval = FALSE
+                                                    INNER JOIN       type t on t.id = f.type
+                                        GROUP BY 		fo.id, f.id, f.name, f.type, f.price, t.description
+                                        )
                                     ,order_cte AS (
-                                        SELECT 			
-                                                        m.id as user_id, 
-                                                        m.username as user_name, 
-                                                        o.date,
-                                                        f.order_id,
-                                                        json_build_object('food', json_build_object('id', f.id, 'name', f.name, 'type', f.type, 'price', f.price)
-                                                                        , 'removals', f.removals, 'supplements', f.supplements) AS foods
+                                        SELECT
+                                               m.id as user_id,
+                                               m.username as user_name,
+                                               o.date,
+                                               f.order_id,
+                                               json_build_object('food', json_build_object('id', f.id, 'name', f.name, 'description', f.description, 'type', f.type, 'price', f.price)
+                                                 , 'removals', f.removals, 'supplements', f.supplements) AS foods
                                         FROM 			order_foods_cte f
-                                        INNER JOIN 		"order" o ON f.order_id = o.id
-                                        INNER JOIN		muppet m ON o.muppet = m.id
-                                    )
+                                                    INNER JOIN 		"order" o ON f.order_id = o.id
+                                                    INNER JOIN		muppet m ON o.muppet = m.id
+                                        ORDER BY m.username, f.type ASC, f.name
+                                        )
                                     ,grouped_order_cte AS (
-                                        SELECT json_build_object('id', o.user_id, 'name', o.user_name) as user, o.date, json_agg(o.foods) as foods 
-                                        FROM "order_cte" o 
+                                        SELECT json_build_object('id', o.user_id, 'name', o.user_name) as user, o.date, json_agg(o.foods) as foods
+                                        FROM "order_cte" o
                                         GROUP BY o.user_id, o.user_name, o.date, o.order_id
                                         ORDER BY o.user_name
-                                    )
+                                        )
                                     
                                     SELECT json_agg(to_json(go)) FROM grouped_order_cte go`;
 
