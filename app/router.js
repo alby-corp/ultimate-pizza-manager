@@ -63,12 +63,11 @@ export const Router = (function () {
 
             let key = window.location.pathname;
 
-            if(`/${uri}` === key)
+            if(`/${uri}` !== key)
             {
-                return;
+                history.pushState(null, null, uri);
             }
 
-            history.pushState(null, null, uri);
             manage.call(this);
         }
     };
