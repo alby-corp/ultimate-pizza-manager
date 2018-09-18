@@ -101,7 +101,7 @@ export const CreatorController = (function () {
                     user: undefined,
                     users: users,
                     available: ingredients,
-                    selected: ingredients.filter(ingredient => ingredient.name === 'pomodoro' || ingredient.name === 'mozzarella'),
+                    selected: ingredients.filter(ingredient => ingredient.name === 'Pomodoro' || ingredient.name === 'Mozzarella'),
                     active: undefined,
                     results: []
                 };
