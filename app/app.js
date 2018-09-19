@@ -1,6 +1,14 @@
 import {Route, Router} from './router';
 import {HttpClient, ResourceService, ModalService, AuthenticationService} from './services';
-import {OrdersController, NotFoundController, MenuController, InfoController, FormController, CreatorController, SignedInController} from './controllers';
+import {
+    OrdersController,
+    NotFoundController,
+    MenuController,
+    InfoController,
+    FormController,
+    CreatorController,
+    SignedInController
+} from './controllers';
 
 const Controller = (function () {
 
@@ -29,28 +37,27 @@ export const App = (function () {
 
     let _resourceService;
     let _alertService;
-    let _authenticationService;
 
     const initServices = () => {
 
         _resourceService = new ResourceService(client);
         _alertService = new ModalService($('#alert-serivice'), 'alert-service-modal');
 
-        _authenticationService = new AuthenticationService();
     };
 
-    const initNamespace = (routerInstance) => {
+    const initNamespaces = (routes) => {
         if (window.AlbyJs === undefined) {
             window.AlbyJs = {};
         }
 
-        AlbyJs.Router = routerInstance;
-        AlbyJs.Authentication = _authenticationService;
+        AlbyJs.Authentication = new AuthenticationService();;
 
         AlbyJs.trigger = (target, name,  data) => target.dispatchEvent(new CustomEvent(name, {
             bubbles:true,
             detail: data
         }));
+
+        AlbyJs.Router = new Router(routes);
     };
 
     const initAuthentication = async () => {
@@ -58,7 +65,7 @@ export const App = (function () {
         const display = $("#login");
 
         if (await AlbyJs.Authentication.tryLoadUser()) {
-            display.text(AlbyJs.Authentication.user);
+            display.text(AlbyJs.Authentication.user.profile.name);
         } else {
             display.html(` <span onclick="AlbyJs.Authentication.signin()" class="nav-link">Login</span>`);
         }
@@ -82,6 +89,7 @@ export const App = (function () {
             const ordersCtrl = new Controller(OrdersController, services);
             const creatorCtrl = new Controller(CreatorController, services);
             const notFoundCtrl = new Controller(NotFoundController);
+            const signedInCtrl = new Controller(SignedInController, _alertService);
 
             // Routes
 
@@ -94,12 +102,16 @@ export const App = (function () {
                 .set("/week-orders", new Route(ordersCtrl, outlet))
                 .set('/crea-la-tua-pizza', new Route(creatorCtrl, outlet))
                 .set('/not-found', new Route(notFoundCtrl, outlet))
+                .set('/signed-in', new Route(signedInCtrl));
 
             // Namespace
-            initNamespace(new Router(routes));
+            initNamespaces(routes);
 
             // Authentication
             await initAuthentication();
+
+            // Load HomePage
+            AlbyJs.Router.init();
         }
     };
 

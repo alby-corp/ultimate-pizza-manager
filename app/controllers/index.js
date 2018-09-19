@@ -5,3 +5,4 @@ export * from './not-found.controller';
 export * from './orders.controller';
 export * from './base.controller';
 export * from './creator.controller';
+export * from './authentication/signedin.controller';

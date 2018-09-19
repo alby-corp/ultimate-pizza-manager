@@ -16,6 +16,10 @@ export const BaseController = (function () {
             return privateProps.get(this).template;
         }
 
+        get alertService(){
+            return privateProps.get(this).alertService;
+        }
+
         async execute() {
             throw new Error('Abstract Method!')
         };

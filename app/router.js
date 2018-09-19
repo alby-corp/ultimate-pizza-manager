@@ -7,7 +7,12 @@ export const Route = (function () {
 
             privateProps.set(this, {
                 controller: controller,
-                outlet: (data) => outlet.empty().html(data)
+                outlet: (data) => {
+                    if (outlet != undefined && data != undefined)
+                    {
+                        outlet.empty().html(data);
+                    }
+                }
             });
         }
 
@@ -44,9 +49,8 @@ export const Router = (function () {
         route.controller.instance.execute();
     };
 
-    const init = (self) => {
+    const initEvents = (self) => {
         window.addEventListener("popstate", manage.bind(self));
-        manage.call(self);
     };
 
     return class {
@@ -56,7 +60,7 @@ export const Router = (function () {
                 routes: routes
             });
 
-            init(this);
+            initEvents(this);
         }
 
         link(uri) {
@@ -68,6 +72,10 @@ export const Router = (function () {
                 history.pushState(null, null, uri);
             }
 
+            manage.call(this);
+        }
+
+        init(){
             manage.call(this);
         }
     };
