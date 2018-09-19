@@ -1,7 +1,6 @@
 import {Route, Router} from './router';
-import {HttpClient, ResourceService, ModalService} from './services';
-import {OrdersController, NotFoundController, MenuController, InfoController, FormController} from './controllers';
-import {CreatorController} from "./controllers/creator.controller";
+import {HttpClient, ResourceService, ModalService, AuthenticationService} from './services';
+import {OrdersController, NotFoundController, MenuController, InfoController, FormController, CreatorController, SignedInController} from './controllers';
 
 const Controller = (function () {
 
@@ -28,21 +27,54 @@ export const App = (function () {
 
     const client = new HttpClient(window.location.origin);
 
-    let resourceService;
-    let alertService;
+    let _resourceService;
+    let _alertService;
+    let _authenticationService;
 
     const initServices = () => {
 
-        resourceService = new ResourceService(client);
-        alertService = new ModalService($('#alert-serivice'), 'alert-service-modal');
+        _resourceService = new ResourceService(client);
+        _alertService = new ModalService($('#alert-serivice'), 'alert-service-modal');
+
+        _authenticationService = new AuthenticationService();
+    };
+
+    const initNamespace = (routerInstance) => {
+        if (window.AlbyJs === undefined) {
+            window.AlbyJs = {};
+        }
+
+        AlbyJs.Router = routerInstance;
+        AlbyJs.Authentication = _authenticationService;
+
+        AlbyJs.trigger = (target, name,  data) => target.dispatchEvent(new CustomEvent(name, {
+            bubbles:true,
+            detail: data
+        }));
+    };
+
+    const initAuthentication = async () => {
+
+        const display = $("#login");
+
+        if (await AlbyJs.Authentication.tryLoadUser()) {
+            display.text(AlbyJs.Authentication.user);
+        } else {
+            display.html(` <span onclick="AlbyJs.Authentication.signin()" class="nav-link">Login</span>`);
+        }
     };
 
     return class App {
 
         static async init() {
 
+            // Services
+
             initServices();
-            const services = [resourceService, alertService];
+
+            const services = [_resourceService, _alertService];
+
+            // Components
 
             const formCtrl = new Controller(FormController, services);
             const menuCtrl = new Controller(MenuController, services);
@@ -50,6 +82,8 @@ export const App = (function () {
             const ordersCtrl = new Controller(OrdersController, services);
             const creatorCtrl = new Controller(CreatorController, services);
             const notFoundCtrl = new Controller(NotFoundController);
+
+            // Routes
 
             const outlet = $('#container');
 
@@ -59,17 +93,13 @@ export const App = (function () {
                 .set("/info", new Route(infoCtrl, outlet))
                 .set("/week-orders", new Route(ordersCtrl, outlet))
                 .set('/crea-la-tua-pizza', new Route(creatorCtrl, outlet))
-                .set('/not-found', new Route(notFoundCtrl, outlet));
+                .set('/not-found', new Route(notFoundCtrl, outlet))
 
-            if (window.AlbyJs === undefined) {
-                window.AlbyJs = {};
-            }
+            // Namespace
+            initNamespace(new Router(routes));
 
-            AlbyJs.Router = new Router(routes);
-            AlbyJs.trigger = (target, name,  data) => target.dispatchEvent(new CustomEvent(name, {
-                bubbles:true,
-                detail: data
-            }));
+            // Authentication
+            await initAuthentication();
         }
     };
 

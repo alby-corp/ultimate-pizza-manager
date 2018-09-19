@@ -7,7 +7,7 @@ export const InfoController = (function () {
 
     const privateProps = new WeakMap();
 
-    return class InfoController extends BaseController {
+    return class extends BaseController {
 
         constructor(services) {
 
