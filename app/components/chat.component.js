@@ -1,9 +1,9 @@
 import template from '../views/creator.html';
 
-import {BaseController} from "./base.controller";
+import {BaseComponent} from "./base.component";
 import {albiReply, ALBITHOUGHTS} from "../services"
 
-export class ChatController extends BaseController {
+export class ChatComponent extends BaseComponent {
 
     constructor() {
         super(template);

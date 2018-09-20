@@ -1,14 +1,14 @@
 import template from '../views/menu.html';
 
 import {Table, FoodRow, IngredientRow} from '../model';
-import {BaseController} from "./base.controller";
+import {BaseComponent} from "./base.component";
 
 
-export const MenuController = (function () {
+export const MenuComponent = (function () {
 
     const privateProps = new WeakMap();
 
-    return class MenuController extends BaseController {
+    return class extends BaseComponent {
 
         constructor(services) {
             super(template);

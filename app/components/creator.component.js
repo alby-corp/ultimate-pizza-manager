@@ -1,11 +1,11 @@
 import template from '../views/creator.html';
 
-import {BaseController} from "./base.controller";
+import {BaseComponent} from "./base.component";
 import {Button, Common, Order} from "../model";
 
-export const CreatorController = (function () {
+export const CreatorComponent = (function () {
 
-    return class InfoController extends BaseController {
+    return class extends BaseComponent {
 
         constructor(services) {
             super(template);
@@ -27,7 +27,7 @@ export const CreatorController = (function () {
                         name: food.name,
                         price: food.price,
                         ingredients: food.ingredients.map(ingredient => ingredients.find(item => item.id === ingredient.id))
-                }));
+                    }));
 
                 const action = (name, handler) => {
                     element.on(name, e => {
@@ -38,7 +38,7 @@ export const CreatorController = (function () {
 
                 const bestMatches = () => {
                     const sumPrices = (food, ingredients) =>
-                        food.price + _.without(ingredients, ...food.ingredients).reduce((total, item) => total + (item.price||0), 0);
+                        food.price + _.without(ingredients, ...food.ingredients).reduce((total, item) => total + (item.price || 0), 0);
 
                     const candidates = pizzas.map(food => {
                         const additions = _.without(model.selected, ...food.ingredients);
@@ -61,20 +61,19 @@ export const CreatorController = (function () {
                         if (left.price === right.price && leftIsSubset && rightIsSubset) {
                             const leftChanges = left.additions.length + left.removals.length;
                             const rightChanges = right.additions.length + right.removals.length;
-                            
-                            if (leftChanges === rightChanges)
-                            {
+
+                            if (leftChanges === rightChanges) {
                                 return 0;
                             }
 
                             return leftChanges < rightChanges ? -1 : 1;
                         }
 
-                        if (left.price <= right.price && leftIsSubset){
+                        if (left.price <= right.price && leftIsSubset) {
                             return -1;
                         }
 
-                        if (right.price <= left.price && rightIsSubset){
+                        if (right.price <= left.price && rightIsSubset) {
                             return 1;
                         }
 
@@ -88,7 +87,7 @@ export const CreatorController = (function () {
                         const exclude = comparisons.some(([_, c]) => c === -1);
 
                         mins = comparisons.filter(([min, c]) => c !== 1).map(([min]) => min);
-                        if(!exclude){
+                        if (!exclude) {
                             mins.push(candidate);
                         }
                     }
@@ -124,7 +123,7 @@ export const CreatorController = (function () {
                     <b>Utente</b>
                     <select class="form-control" onchange="AlbyJs.trigger(this, 'set-user', {id: +this.options[this.selectedIndex].value})">
                         <option value="" ${!model.user ? 'selected' : ''}>- seleziona -</option>
-                        ${model.users.map(user =>`<option ${model.user === user.id ? 'selected' : ''} value="${user.id}">${user.name}</option>`).join('')}
+                        ${model.users.map(user => `<option ${model.user === user.id ? 'selected' : ''} value="${user.id}">${user.name}</option>`).join('')}
                     </select>
                     
                     <div class="editor">
@@ -202,7 +201,7 @@ export const CreatorController = (function () {
                 action('set-user', e => model.user = e.detail.id);
 
                 action('order', async e => {
-                    if (!model.user){
+                    if (!model.user) {
                         alertService.error('Devi selezionare un utente per cui effettuare l\'ordine.');
                         return;
                     }
@@ -228,7 +227,7 @@ export const CreatorController = (function () {
 
                 try {
                     return await execute();
-                }catch (error) {
+                } catch (error) {
                     element.html(`Error: ${error.message || error.statusText}`);
                 }
             }

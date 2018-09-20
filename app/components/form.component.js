@@ -1,10 +1,10 @@
 import template from '../views/form.html';
 
 import {Option, Common, Order, DropDownList, Button} from '../model';
-import {BaseController} from "./base.controller";
-import {ChatController} from "./chat.controller";
+import {BaseComponent} from "./base.component";
+import {ChatComponent} from "./chat.component";
 
-export const FormController = (function () {
+export const FormComponent = (function () {
 
     let _usersDDL;
 
@@ -19,14 +19,14 @@ export const FormController = (function () {
     let _sandwichesSupplementsDDL;
     let _sandwichesRemovalsDDL;
 
-    const hideShowButtonFunctionFactory = (DDL, target, collapsableObject) => () => {
+    const hideShowButton = (DDL, target, collapsableObject) => () => {
         if (DDL.val() == "") {
             collapsableObject.collapse('hide');
             target.hide();
         } else {
             target.show();
-        }    
-    }
+        }
+    };
 
     const initDDLs = () => {
         _usersDDL = $('#users');
@@ -85,7 +85,7 @@ export const FormController = (function () {
     // WORKAROUND: if used by Object.prototype break jQuery from 2009.
     const getPropertyDescriptor = (obj, key) => Object.getOwnPropertyDescriptor(obj, key) || getPropertyDescriptor(obj, Object.getPrototypeOf(obj), key);
 
-    const overrideOnSubmit = (service, alertService) => {
+    const buildOverrideOnSubmitHandler = (service, alertService) => {
         document.getElementById('order-form').onsubmit = async (event) => {
 
             event.preventDefault();
@@ -147,7 +147,7 @@ export const FormController = (function () {
         };
     };
 
-    return class FormController extends BaseController {
+    return class extends BaseComponent {
 
         constructor(services) {
 
@@ -161,17 +161,17 @@ export const FormController = (function () {
 
         async execute() {
 
-            await new ChatController().execute();
+            await new ChatComponent().execute();
 
             initDDLs();
 
-            overrideOnSubmit(privateProps.get(this).service, privateProps.get(this).alertService);
+            buildOverrideOnSubmitHandler(privateProps.get(this).service, privateProps.get(this).alertService);
 
             let users;
             let foods;
             let supplements;
 
-            try{
+            try {
                 users = await super.invokeWithCatcher(privateProps.get(this).service.getUsers);
                 foods = await super.invokeWithCatcher(privateProps.get(this).service.getFoods);
                 supplements = await super.invokeWithCatcher(privateProps.get(this).service.getSupplements);
@@ -179,14 +179,14 @@ export const FormController = (function () {
             } catch (error) {
                 return;
             }
-                        
-            let pizzasHideShowButtonFunction = hideShowButtonFunctionFactory(_pizzasDDL,$("#btnRimozioniPizza"),$("#SupplementiRimozioniPizze")); 
 
-            let paniniHideShowButtonFunction = hideShowButtonFunctionFactory(_sandwichesDDL,$("#btnRimozioniPanini"),$("#SupplementiPanini")); 
-           
-            _pizzasDDL.change(pizzasHideShowButtonFunction);
+            let pizzasHideShowButton = hideShowButton(_pizzasDDL, $("#btnRimozioniPizza"), $("#SupplementiRimozioniPizze"));
 
-            _sandwichesDDL.change(paniniHideShowButtonFunction);           
+            let paniniHideShowButton = hideShowButton(_sandwichesDDL, $("#btnRimozioniPanini"), $("#SupplementiPanini"));
+
+            _pizzasDDL.change(pizzasHideShowButton);
+
+            _sandwichesDDL.change(paniniHideShowButton);
 
             new DropDownList(_usersDDL, users.map(user => new Option(user.id, user.name, false))).populate();
 
@@ -207,7 +207,6 @@ export const FormController = (function () {
 
             supplementsFactory(_supplementsDDL, _pizzasDDL);
             supplementsFactory(_sandwichesSupplementsDDL, _sandwichesDDL);
-            
 
             return this;
         }

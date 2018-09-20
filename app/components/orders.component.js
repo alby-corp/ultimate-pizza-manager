@@ -1,13 +1,13 @@
 import template from '../views/orders.html';
 
 import {OrdersRow, Table, SummaryRow, Span} from '../model';
-import {BaseController} from "./base.controller";
+import {BaseComponent} from "./base.component";
 
-export const OrdersController = (function () {
+export const OrdersComponent = (function () {
 
     const privateProps = new WeakMap();
 
-    return class OrdersController extends BaseController {
+    return class extends BaseComponent {
 
         static get template() {
             return template;
@@ -47,7 +47,7 @@ export const OrdersController = (function () {
             const summaryRows =
                 _.sortBy(_.map(_.groupBy(ordersWithKey, (order) => order.key), (orderWithKey) => {
                     return new SummaryRow(_.first(orderWithKey).order, orderWithKey.length)
-                }), (order) => order.orderedFood.food.type  + order.orderedFood.food.name);
+                }), (order) => order.orderedFood.food.type + order.orderedFood.food.name);
 
             new Table(summaryTable, summaryRows).populate();
 

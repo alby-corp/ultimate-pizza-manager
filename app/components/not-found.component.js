@@ -1,13 +1,11 @@
 import template from '../views/not-found.html';
 
 import {Span} from '../model';
-import {BaseController} from './base.controller'
+import {BaseComponent} from './base.component'
 
-export const NotFoundController = (function () {
+export const NotFoundComponent = (function () {
 
-    const privateProps = new WeakMap();
-
-    return class NotFoundController extends BaseController {
+    return class extends BaseComponent {
 
         constructor() {
             super(template);

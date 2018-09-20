@@ -1,119 +1,117 @@
-import {Route, Router} from './router';
-import {HttpClient, ResourceService, ModalService, AuthenticationService} from './services';
+import {Route, Router, Component} from './core';
+import {ResourceService, ModalService, AuthService} from './services';
+import {HttpClient, AuthClient} from './clients';
 import {
-    OrdersController,
-    NotFoundController,
-    MenuController,
-    InfoController,
-    FormController,
-    CreatorController,
-    SignedInController
-} from './controllers';
-
-const Controller = (function () {
-
-    const privateProps = new WeakMap();
-
-    return class Controller {
-
-        constructor(controller, services) {
-
-            privateProps.set(this, {
-                instance: new controller(services)
-            });
-        }
-
-        get instance() {
-            return privateProps.get(this).instance;
-        };
-
-    }
-
-})();
+    OrdersComponent,
+    NotFoundComponent,
+    MenuComponent,
+    InfoComponent,
+    FormComponent,
+    CreatorComponent,
+    SignedinComponent
+} from './components';
 
 export const App = (function () {
 
-    const client = new HttpClient(window.location.origin);
+    const registerServices = (self) => {
 
-    let _resourceService;
-    let _alertService;
-
-    const initServices = () => {
-
-        _resourceService = new ResourceService(client);
-        _alertService = new ModalService($('#alert-serivice'), 'alert-service-modal');
-
-    };
-
-    const initNamespaces = (routes) => {
-        if (window.AlbyJs === undefined) {
-            window.AlbyJs = {};
+        if (self.Services === undefined) {
+            self.Services = {};
         }
 
-        AlbyJs.Authentication = new AuthenticationService();;
+        const httpClient = new HttpClient(window.location.origin);
+        // +
+        const authService = new AuthService();
+        // =
+        const authClient = new AuthClient(httpClient, authService);
 
-        AlbyJs.trigger = (target, name,  data) => target.dispatchEvent(new CustomEvent(name, {
-            bubbles:true,
+        self.Services.ResourceService = new ResourceService(authClient);
+        self.Services.AlertService = new ModalService($('#alert-serivice'), 'alert-service-modal');
+        self.Services.AuthService = authService;
+    };
+
+    const registerControllers = (self) => {
+
+        if (self.Components === undefined) {
+            self.Components = {};
+        }
+
+        const services = [self.Services.ResourceService, self.Services.AlertService];
+
+        self.Components.formCtrl = new Component(FormComponent, services);
+        self.Components.menuCtrl = new Component(MenuComponent, services);
+        self.Components.infoCtrl = new Component(InfoComponent, services);
+        self.Components.ordersCtrl = new Component(OrdersComponent, services);
+        self.Components.creatorCtrl = new Component(CreatorComponent, services);
+        self.Components.notFoundCtrl = new Component(NotFoundComponent);
+        self.Components.signedInCtrl = new Component(SignedinComponent, [self.Services.AuthService, self.Services.alertService]);
+    };
+
+    const registerRoutes = (self) => {
+
+        if (self.Routes === undefined) {
+            self.Routes = {};
+        }
+
+        const outlet = $('#container');
+
+        self.Routes = new Map()
+            .set("/", new Route(self.Components.formCtrl, outlet))
+            .set("/menu", new Route(self.Components.menuCtrl, outlet))
+            .set("/info", new Route(self.Components.infoCtrl, outlet))
+            .set("/week-orders", new Route(self.Components.ordersCtrl, outlet))
+            .set('/crea-la-tua-pizza', new Route(self.Components.creatorCtrl, outlet))
+            .set('/not-found', new Route(self.Components.notFoundCtrl, outlet))
+            .set('/signed-in', new Route(self.Components.signedInCtrl));
+    };
+
+    const registerRouter = (self) => {
+        if (self.Router === undefined) {
+            self.Router = {};
+        }
+
+        self.Router = new Router(self.Routes)
+    };
+
+    const registerNamespaces = (self) => {
+
+        if (window.AlbyJs === undefined) {
+            window.AlbyJs = {
+                AuthService: {},
+                Router: {}
+            };
+        }
+
+        AlbyJs.AuthService.signin = self.Services.AuthService.signin;
+        AlbyJs.AuthService.signout = self.Services.AuthService.signout;
+
+        AlbyJs.AuthService.user = self.Services.AuthService.user();
+
+        AlbyJs.Router.link = self.Router.link.bind(self.Router);
+
+        AlbyJs.trigger = (target, name, data) => target.dispatchEvent(new CustomEvent(name, {
+            bubbles: true,
             detail: data
         }));
-
-        AlbyJs.Router = new Router(routes);
-    };
-
-    const initAuthentication = async () => {
-
-        const display = $("#login");
-
-        if (await AlbyJs.Authentication.tryLoadUser()) {
-            display.text(AlbyJs.Authentication.user.profile.name);
-        } else {
-            display.html(` <span onclick="AlbyJs.Authentication.signin()" class="nav-link">Login</span>`);
-        }
     };
 
     return class App {
 
-        static async init() {
+        constructor() {
 
             // Services
-
-            initServices();
-
-            const services = [_resourceService, _alertService];
+            registerServices(this);
 
             // Components
-
-            const formCtrl = new Controller(FormController, services);
-            const menuCtrl = new Controller(MenuController, services);
-            const infoCtrl = new Controller(InfoController, services);
-            const ordersCtrl = new Controller(OrdersController, services);
-            const creatorCtrl = new Controller(CreatorController, services);
-            const notFoundCtrl = new Controller(NotFoundController);
-            const signedInCtrl = new Controller(SignedInController, _alertService);
+            registerControllers(this);
 
             // Routes
+            registerRoutes(this);
 
-            const outlet = $('#container');
-
-            const routes = new Map()
-                .set("/", new Route(formCtrl, outlet))
-                .set("/menu", new Route(menuCtrl, outlet))
-                .set("/info", new Route(infoCtrl, outlet))
-                .set("/week-orders", new Route(ordersCtrl, outlet))
-                .set('/crea-la-tua-pizza', new Route(creatorCtrl, outlet))
-                .set('/not-found', new Route(notFoundCtrl, outlet))
-                .set('/signed-in', new Route(signedInCtrl));
+            registerRouter(this);
 
             // Namespace
-            initNamespaces(routes);
-
-            // Authentication
-            await initAuthentication();
-
-            // Load HomePage
-            AlbyJs.Router.init();
+            registerNamespaces(this);
         }
     };
-
 })();
-

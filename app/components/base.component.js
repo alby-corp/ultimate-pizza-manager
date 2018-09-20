@@ -1,8 +1,8 @@
-export const BaseController = (function () {
+export const BaseComponent = (function () {
 
     const privateProps = new WeakMap();
 
-    return class BaseController {
+    return class {
 
         constructor(template, alertService) {
 
@@ -16,7 +16,7 @@ export const BaseController = (function () {
             return privateProps.get(this).template;
         }
 
-        get alertService(){
+        get alertService() {
             return privateProps.get(this).alertService;
         }
 

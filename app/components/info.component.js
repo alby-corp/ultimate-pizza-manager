@@ -1,13 +1,13 @@
 import template from '../views/info.html';
 
 import {List, AdminListItem} from '../model';
-import {BaseController} from "./base.controller";
+import {BaseComponent} from "./base.component";
 
-export const InfoController = (function () {
+export const InfoComponent = (function () {
 
     const privateProps = new WeakMap();
 
-    return class extends BaseController {
+    return class extends BaseComponent {
 
         constructor(services) {
 

@@ -4,9 +4,12 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/site.css';
 
-import {App}  from './app'
+import {App} from './app'
 
-$( document ).ready(function Main () {
+$(document).ready(() => {
 
-    App.init();
+    new App();
+
+    $('#login').html(AlbyJs.AuthService.user ? AlbyJs.AuthService.user.profile.name : `<span onclick="AlbyJs.AuthService.signin()" class="nav-link">Login</span>`);
+
 });

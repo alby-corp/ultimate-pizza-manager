@@ -1,37 +1,8 @@
-export const Route = (function () {
-
-    const privateProps = new WeakMap();
-
-    return class {
-        constructor(controller, outlet) {
-
-            privateProps.set(this, {
-                controller: controller,
-                outlet: (data) => {
-                    if (outlet != undefined && data != undefined)
-                    {
-                        outlet.empty().html(data);
-                    }
-                }
-            });
-        }
-
-        get controller() {
-            return privateProps.get(this).controller;
-        }
-
-        get outlet() {
-            return privateProps.get(this).outlet;
-        }
-    }
-
-})();
-
 export const Router = (function () {
 
     const privateProps = new WeakMap();
 
-    const manage = async function () {
+    const route = async function () {
         let key = window.location.pathname;
 
         const routes = privateProps.get(this).routes;
@@ -50,7 +21,7 @@ export const Router = (function () {
     };
 
     const initEvents = (self) => {
-        window.addEventListener("popstate", manage.bind(self));
+        window.addEventListener("popstate", route.bind(self));
     };
 
     return class {
@@ -61,22 +32,19 @@ export const Router = (function () {
             });
 
             initEvents(this);
+
+            route.call(this);
         }
 
         link(uri) {
 
             let key = window.location.pathname;
 
-            if(`/${uri}` !== key)
-            {
+            if (`/${uri}` !== key) {
                 history.pushState(null, null, uri);
             }
 
-            manage.call(this);
-        }
-
-        init(){
-            manage.call(this);
+            route.call(this);
         }
     };
 
