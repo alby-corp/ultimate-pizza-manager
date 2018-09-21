@@ -4,12 +4,9 @@ export const Router = (function () {
 
     return class {
 
-        constructor(routes, readCtrl, writeCtrl) {
+        constructor(routes, readCtrl, writeCtrl, passport) {
 
-            routes.route('/users')
-                .get((req, res) => {
-                    readCtrl.getUsers()(res)
-                });
+            routes.route('/users').get(passport.authenticate('oauth-bearer', { session: false }), (req, res)=> readCtrl.getUsers()(res));
 
             routes.route('/foods')
                 .get((req, res) => readCtrl.getFoods()(res));

@@ -36,6 +36,8 @@
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
     "jquery": "^3.3.1",
+    "passport": "^0.4.0",
+    "passport-azure-ad": "^4.0.0",
     "pg": "^7.4.1",
     "popper.js": "^1.14.3",
     "promise": "^8.0.1",

@@ -1,6 +1,8 @@
 import path from 'path';
 import express from 'express';
 import bodyParser from 'body-parser';
+import passport from "passport";
+import azureAD from "passport-azure-ad";
 
 import {ReadController, WriteController} from './api';
 import {UltimatePizzaManagerContext} from './data-layer/ultimate-pizza-manager-context';
@@ -22,8 +24,25 @@ export const App = (function () {
             const readCtrl = new ReadController(context);
             const writeCtrl = new WriteController(context);
 
+            const configAD = {
+                instance: 'instance',
+                tenant: 'tenant',
+                clientId: 'clientId',
+                postLogoutRedirectUri: window.location.origin,
+                cacheLocation: 'localStorage',
+                redirectUri: 'redirectUri'
+            };
+
+            passport.use(new azureAD.BearerStrategy(
+                configAD,
+                (token, done) => done(null, "Alberto", token)
+            ));
+
             const routes = express.Router();
-            const router = new Router(routes, readCtrl, writeCtrl);
+            const router = new Router(routes, readCtrl, writeCtrl, passport);
+
+            app.use(passport.initialize());
+            app.use(passport.session());
 
             app.use(express.urlencoded({extended: false}));
 
