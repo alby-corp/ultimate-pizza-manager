@@ -24,17 +24,8 @@ export const App = (function () {
             const readCtrl = new ReadController(context);
             const writeCtrl = new WriteController(context);
 
-            const configAD = {
-                instance: 'instance',
-                tenant: 'tenant',
-                clientId: 'clientId',
-                postLogoutRedirectUri: window.location.origin,
-                cacheLocation: 'localStorage',
-                redirectUri: 'redirectUri'
-            };
-
             passport.use(new azureAD.BearerStrategy(
-                configAD,
+                config["azure-ad-debug-config"],
                 (token, done) => done(null, "Alberto", token)
             ));
 

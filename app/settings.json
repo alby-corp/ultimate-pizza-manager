@@ -1,0 +1,10 @@
+{
+  "azure-ad-prod-config": {
+    "instance": "instance",
+    "tenant": "tenant",
+    "clientId": "clientId",
+    "postLogoutRedirectUri": "http://localhost",
+    "cacheLocation": "localStorage",
+    "redirectUri": "http://localhost"
+  }
+}

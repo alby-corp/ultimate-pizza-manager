@@ -1,17 +1,9 @@
 import * as AuthContext from 'adal-angular';
+import config from '../settings';
 
 export const AuthService = (function () {
 
     const privateProps = new WeakMap();
-
-    const config = {
-        instance: 'instance',
-        tenant: 'tenant',
-        clientId: 'clientId',
-        postLogoutRedirectUri: window.location.origin,
-        cacheLocation: 'localStorage', // enable this for IE, as sessionStorage does not work for localhost.
-        redirectUri: 'redirectUri'
-    };
 
     const acquireToken = (self, clientId) => {
         const promise = new Promise((resolve, reject) => {
@@ -31,7 +23,7 @@ export const AuthService = (function () {
 
         constructor() {
             privateProps.set(this, {
-                authContext: new AuthContext(config)
+                authContext: new AuthContext(config["azure-ad-prod-config"])
             });
 
             this.user = () => {
@@ -52,8 +44,6 @@ export const AuthService = (function () {
 
             this.completeSignin = () => {
                 privateProps.get(this).authContext.handleWindowCallback();
-
-                return this.user;
             };
 
             this.signout = () => {
@@ -62,7 +52,7 @@ export const AuthService = (function () {
         }
 
         async interceptor(callback) {
-            const token = await acquireToken(this, config.clientId);
+            const token = await acquireToken(this, config["azure-ad-prod-config"].clientId);
             return await callback(token);
         }
     };
