@@ -46,7 +46,7 @@ export const CreatorController = (function () {
                             id: food.id,
                             name: food.name,
                             price: sumPrices(food, model.selected),
-                            unknownIngredients: additions.filter(addition => !addition.price),
+                            unknownIngredients: additions.filter(addition => addition.price === null),
                             additions: additions,
                             removals: _.without(food.ingredients, ...model.selected),
                         }
@@ -101,7 +101,7 @@ export const CreatorController = (function () {
                     user: undefined,
                     users: users,
                     available: ingredients,
-                    selected: ingredients.filter(ingredient => ingredient.name === 'pomodoro' || ingredient.name === 'mozzarella'),
+                    selected: ingredients.filter(ingredient => ingredient.id === 46 || ingredient.id === 30),
                     active: undefined,
                     results: []
                 };
@@ -157,7 +157,7 @@ export const CreatorController = (function () {
                             <div><b>${result.name}</b> -  <span>${result.price.toFixed(2)}${result.unknownIngredients.length ? '+' : ''} &euro;</span><div>
                             <div ${!result.additions.length ? 'hidden' : ''}>
                                 <span style="color: green">+ Aggiunte</span>
-                                <ul>${result.additions.map(ingredient => `<li>${ingredient.name} ${!ingredient.price ? '(prezzo sconosciuto)' : ''}</li>`).join('')}</ul>
+                                <ul>${result.additions.map(ingredient => `<li>${ingredient.name} ${ingredient.price === null ? '(prezzo sconosciuto)' : ''}</li>`).join('')}</ul>
                             </div>
                             <div ${!result.removals.length ? 'hidden' : ''}>
                                 <span style="color: red">- Rimozioni</span>
