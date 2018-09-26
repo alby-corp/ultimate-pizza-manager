@@ -18,5 +18,5 @@ export default {
         "loggingLevel": "info"
     },
 
-    "azure-ad-prod-config": process.env.AD_SERVER_CONFIG
+    "azure-ad-prod-config": JSON.parse(process.env.AD_SERVER_CONFIG)
 }
