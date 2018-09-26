@@ -19,6 +19,7 @@ export const UltimatePizzaManagerContext = (function () {
                                         FROM food       f
                                         LEFT JOIN       food_ingredient fi ON f.id = fi.food
                                         LEFT JOIN       ingredient i ON fi.ingredient = i.id
+                                        WHERE           f.visible = true
                                         GROUP BY        f.id, f.name, f.type, f.price
                                         ORDER BY        f.name
                                     )
