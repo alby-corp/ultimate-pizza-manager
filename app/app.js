@@ -10,6 +10,7 @@ import {
     CreatorComponent,
     SignedinComponent
 } from './components';
+import {Login} from "./components/authentication/login.component";
 
 export const App = (function () {
 
@@ -95,6 +96,10 @@ export const App = (function () {
         }));
     };
 
+    const registerWebComponents = () => {
+        customElements.define('alby-login', Login(AlbyJs.AuthService));
+    };
+
     return class App {
 
         constructor() {
@@ -110,8 +115,11 @@ export const App = (function () {
 
             registerRouter(this);
 
-            // Namespace
+            // Namespaces
             registerNamespaces(this);
+
+            // WebComponents
+            registerWebComponents();
         }
     };
 })();
