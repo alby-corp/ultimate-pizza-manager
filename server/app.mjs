@@ -25,7 +25,7 @@ export const App = (function () {
             const writeCtrl = new WriteController(context);
 
             passport.use(new azureAD.BearerStrategy(
-                JSON.parse(config["azure-ad-debug-config"]),
+                JSON.parse(config["azure-ad-prod-config"]),
                 (token, done) => done(null, "Alberto", token)
             ));
 
