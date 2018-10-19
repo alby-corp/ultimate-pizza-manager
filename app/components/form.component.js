@@ -2,7 +2,6 @@ import template from '../views/form.html';
 
 import {Option, Common, Order, DropDownList, Button} from '../model';
 import {BaseComponent} from "./base.component";
-import {ChatComponent} from "./chat.component";
 
 export const FormComponent = (function () {
 
@@ -141,7 +140,7 @@ export const FormComponent = (function () {
 
             const result = await service.postOrder(order.toDTO());
 
-            alertService.success(result, [new Button('Vai agli Ordini', new Map([['class', 'btn btn-success'], ['onclick', "AlbyJs.Router.link('week-orders')"]]))]);
+            alertService.success(result, [new Button('Vai agli Ordini', new Map([['class', 'btn btn-success'], ['onclick', "AlbyJs.Router.navigate('week-orders')"]]))]);
 
             return false;
         };
@@ -149,19 +148,21 @@ export const FormComponent = (function () {
 
     return class extends BaseComponent {
 
-        constructor(services) {
+        constructor(service, alertService) {
 
-            super(template, services[1]);
+            super(alertService);
 
             privateProps.set(this, {
-                service: services[0],
-                alertService: services[1],
+                service: service,
+                alertService: alertService,
             });
         }
 
-        async execute() {
+        static get template() {
+            return template;
+        }
 
-            await new ChatComponent().execute();
+        async execute() {
 
             initDDLs();
 

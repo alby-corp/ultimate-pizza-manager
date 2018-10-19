@@ -7,14 +7,17 @@ export const CreatorComponent = (function () {
 
     return class extends BaseComponent {
 
-        constructor(services) {
-            super(template);
+        static get template() {
+            return template;
+        }
+
+        constructor(service, alertService) {
+            super(service, alertService);
 
             const execute = async () => {
 
                 const element = $('#creator-outlet');
-                const api = services[0];
-                const alertService = services[1];
+                const api = service;
 
                 const users = await api.getUsers();
                 const foods = (await api.getFoods())
@@ -213,7 +216,7 @@ export const CreatorComponent = (function () {
 
                     const result = await api.postOrder(order.toDTO());
 
-                    alertService.success(result, [new Button('Vai agli Ordini', new Map([['class', 'btn btn-success'], ['onclick', "AlbyJs.Router.link('week-orders')"]]))]);
+                    alertService.success(result, [new Button('Vai agli Ordini', new Map([['class', 'btn btn-success'], ['onclick', "AlbyJs.Router.navigate('week-orders')"]]))]);
                 });
 
                 element.html(render(model));

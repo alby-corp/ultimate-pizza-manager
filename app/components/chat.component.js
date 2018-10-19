@@ -1,9 +1,13 @@
-import template from '../views/creator.html';
+import template from '../views/chat.html';
 
 import {BaseComponent} from "./base.component";
 import {albiReply, ALBITHOUGHTS} from "../services"
 
 export class ChatComponent extends BaseComponent {
+
+    static get template() {
+        return template;
+    }
 
     constructor() {
         super(template);
@@ -134,5 +138,6 @@ export class ChatComponent extends BaseComponent {
 
             return this;
         };
+
     }
 }

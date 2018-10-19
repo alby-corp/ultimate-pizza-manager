@@ -1,60 +1,62 @@
-import * as AuthContext from 'adal-angular';
-import config from '../settings';
 
 export const AuthService = (function () {
 
-    const privateProps = new WeakMap();
-
-    const acquireToken = (self, clientId) => {
-        const promise = new Promise((resolve, reject) => {
-            privateProps.get(self).authContext.acquireToken(clientId, (error, token) => {
-                if (error !== undefined) {
-                    resolve(token)
-                } else {
-                    reject(error);
-                }
-            })
-        });
-
-        return promise;
-    };
+    let _userPromise;
 
     return class {
 
-        constructor() {
-            privateProps.set(this, {
-                authContext: new AuthContext(config["azure-ad-prod-config"])
-            });
+        constructor(authContextFactory) {
+            const _authContext = authContextFactory();
 
-            this.user = () => {
-                const user = privateProps.get(this).authContext.getCachedUser();
+            _userPromise = new Promise((resolve) => {
+                    function resolveUser(_, token) {
+                        return resolve({
+                            token,
+                            user: this.getUser()
+                        })
+                    }
 
-                if (user && !user.expired) {
-                    return user;
+                    const authContext = authContextFactory(resolveUser);
+
+                    authContext.acquireTokenSilent(['openid']).then(function (accessToken) {
+                        const user = authContext.getUser();
+                        const now = (+new Date() / 1000) | 0;
+
+                        if (user.idToken.exp > now) {
+                            resolve({
+                                token: accessToken,
+                                user
+                            });
+
+                        } else {
+                            authContext.clearCache();
+                            resolve({});
+                        }
+                    }, _ => resolve({}));
                 }
-                return undefined;
-            };
+            );
 
             this.signin = () => {
-
-                privateProps.get(this).authContext.login({
+                _authContext.loginRedirect(['openid'], {
                     state: window.location.href
                 });
             };
 
-            this.completeSignin = () => {
-                privateProps.get(this).authContext.handleWindowCallback();
-            };
-
             this.signout = () => {
-                privateProps.get(this).authContext.logOut();
-            }
+                _authContext.logout();
+            };
+        }
+
+        get user() {
+            return _userPromise.then(u => u.user);
+        }
+
+        get token() {
+            return _userPromise.then(u => u.token);
         }
 
         async interceptor(callback) {
-            const token = await acquireToken(this, config["azure-ad-prod-config"].clientId);
-            return await callback(token);
+            return await callback(await this.token);
         }
-    };
-
+    }
 })();

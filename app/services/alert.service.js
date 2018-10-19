@@ -45,7 +45,6 @@ export const ModalService = (function () {
     return class {
         constructor(display, name) {
             privateProps.set(this, {
-                display: display,
                 name: name
             });
         }
@@ -53,14 +52,21 @@ export const ModalService = (function () {
         success(body, buttons) {
 
             buttons.forEach(button => button.attrs.set('data-dismiss', 'modal'));
-            create(privateProps.get(this).display, 'Success', body, buttons, privateProps.get(this).name, 'alert alert-success');
+            create($('#alert-service'), 'Success', body, buttons, privateProps.get(this).name, 'alert alert-success');
 
             open(privateProps.get(this).name);
         }
 
         error(body) {
 
-            create(privateProps.get(this).display, 'Error', body, [], privateProps.get(this).name, 'alert alert-danger');
+            create($(`#alert-service`), 'Error', body, [], privateProps.get(this).name, 'alert alert-danger');
+
+            open(privateProps.get(this).name);
+        }
+
+
+        warning(body) {
+            create($(`#alert-service`), 'Warning', body, [], privateProps.get(this).name, 'alert alert-warning');
 
             open(privateProps.get(this).name);
         }

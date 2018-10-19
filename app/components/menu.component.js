@@ -10,14 +10,19 @@ export const MenuComponent = (function () {
 
     return class extends BaseComponent {
 
-        constructor(services) {
-            super(template);
+        constructor(service, alertService) {
+            super();
 
             privateProps.set(this, {
-                service: services[0],
-                alertService: services[1]
+                service: service,
+                alertService: alertService
             });
         }
+
+        static get template() {
+            return template;
+        }
+
 
         async execute() {
             let menu;

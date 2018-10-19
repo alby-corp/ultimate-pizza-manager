@@ -9,18 +9,18 @@ export const OrdersComponent = (function () {
 
     return class extends BaseComponent {
 
-        static get template() {
-            return template;
-        }
-
-        constructor(services) {
+        constructor(service, alertService) {
 
             super(template);
 
             privateProps.set(this, {
-                service: services[0],
-                alertService: services[1]
+                service: service,
+                alertService: alertService
             });
+        }
+
+        static get template() {
+            return template;
         }
 
         async execute() {

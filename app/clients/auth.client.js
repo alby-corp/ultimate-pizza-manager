@@ -10,11 +10,9 @@ export const AuthClient = (function () {
                 authService: authService
             });
 
-            this.get = (uri) => privateProps.get(this).authService.interceptor(privateProps.get(this).httpClient.get(uri));
+            this.get = (url) => privateProps.get(this).authService.interceptor(privateProps.get(this).httpClient.get(url));
 
-            this.getById = (uri, id) => privateProps.get(this).authService.interceptor(privateProps.get(this).httpClient.getById(uri, id));
-
-            this.post = (uri, body) => privateProps.get(this).authService.interceptor(privateProps.get(this).httpClient.post(uri, body));
+            this.post = (url, body) => privateProps.get(this).authService.interceptor(privateProps.get(this).httpClient.post(url, body));
         }
-    };
+    }
 })();

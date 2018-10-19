@@ -7,38 +7,18 @@
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
-    <a class="navbar-brand pointer">Ultimate Pizza Manager</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse pointer" id="navbarNav">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <span onclick="AlbyJs.Router.link('/')" class="nav-link">Home</span>
-            </li>
-            <li class="nav-item">
-                <span onclick="AlbyJs.Router.link('menu')" class="nav-link">Menu</span>
-            </li>
-            <li class="nav-item">
-                <span onclick="AlbyJs.Router.link('week-orders')" class="nav-link">Ordini</span>
-            </li>
-            <li class="nav-item">
-                <span onclick="AlbyJs.Router.link('info')" class="nav-link">Info</span>
-            </li>
-        </ul>
 
-        <alby-login></alby-login>
-
-    </div>
-</nav>
+<alby-menu></alby-menu>
 
 <div class="container">
-    <div id="alert-serivice"></div>
-    <div id="container"></div>
+
+    <div id="alert-service"></div>
+
+    <div class="row justify-content-lg-center">
+        <router-outlet class="w-100"></router-outlet>
+
+    </div>
 </div>
 
 </body>
 </html>
-

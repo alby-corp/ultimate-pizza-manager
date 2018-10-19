@@ -1,6 +1,6 @@
 export const HttpClient = (function () {
 
-    const headers = (token) => {
+    const setHeaders = (token) => {
         return {headers: {'Content-Type': 'application/json', 'Authorization': `bearer ${token}`}}
     };
 
@@ -14,17 +14,12 @@ export const HttpClient = (function () {
             });
 
             this.get = uri => token => {
-                $.ajaxSetup(headers(token));
+                $.ajaxSetup(setHeaders(token));
                 return $.get(`${ privateProps.get(this).url}/${uri}`) || [];
             };
 
-            this.getById = (uri, id) => token => {
-                $.ajaxSetup(headers(token));
-                return $.get(`${privateProps.get(this).url}${uri}?id=${id}`) || {};
-            };
-
             this.post = (uri, body) => token => {
-                $.ajaxSetup(headers(token));
+                $.ajaxSetup(setHeaders(token));
                 return $.post(`${ privateProps.get(this).url}/${uri}`, JSON.stringify(body));
             }
         }

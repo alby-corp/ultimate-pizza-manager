@@ -1,12 +1,13 @@
 import 'jquery';
 import 'underscore';
 import 'bootstrap';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/site.css';
 
-import {App} from './app'
+import {Core} from './core'
+import {AppModule} from './app.module'
 
-$(document).ready(() => {
-
-    new App();
+document.addEventListener('DOMContentLoaded', () => {
+    Core.bootstrapModule(AppModule);
 });

@@ -1,51 +1,107 @@
+import {AuthService} from "../services";
+
 export const Router = (function () {
 
     const privateProps = new WeakMap();
 
-    const route = async function () {
-        let key = window.location.pathname;
+    async function navigate() {
 
-        const routes = privateProps.get(this).routes;
+        const uri = window.location.pathname.replace(/^\//, "");
+        this.currentUri = uri || '/';
 
-        if (!routes.has(key)) {
-            key = '/not-found';
-            history.pushState({url: window.location.href}, '404 - Not Found', key);
+        let routes = privateProps.get(this).configuration.routes.filter(r => r.path === uri);
+
+        if (routes.length === 0) {
+            routes = privateProps.get(this).configuration.routes.filter(r => `${r.path}` === '**');
         }
 
-        const route = routes.get(key);
+        for (let route of routes) {
+            for (let guard of route.canActivate) {
 
-        const view = route.controller.instance.template;
+                const canActivate = await new guard(privateProps.get(this).configuration.container.get(AuthService)).canActivate();
 
-        route.outlet(view);
-        route.controller.instance.execute();
-    };
+                if (!canActivate) {
+                    return;
+                }
+            }
+        }
 
-    const initEvents = (self) => {
-        window.addEventListener("popstate", route.bind(self));
+        for (let route of routes) {
+
+            const outlet = document.getElementsByTagName(route.outlet);
+
+            if (outlet.length > 1) {
+                throw new Error('Multiple outlets with same name have been detected!')
+            }
+
+            try {
+                outlet[0].innerHTML = route.component.template;
+            } catch (e) {
+                throw new Error(`Cannot find outlet: ${e}`);
+            }
+
+            const component = privateProps.get(this).configuration.container.get(route.component);
+
+            if (!!component.execute) {
+                await component.execute();
+            }
+        }
+    }
+
+    function registerNavigationServices() {
+
+        if (window.AlbyJs === undefined) {
+            const router = this;
+            window.AlbyJs = {
+                Router: {
+                    get currentUri(){
+                        return router.currentUri;
+                    }
+                },
+                trigger: (target, name,  data) => target.dispatchEvent(new CustomEvent(name, {
+                    bubbles:true,
+                    detail: data
+                }))
+            };
+        }
+
+        AlbyJs.Router.navigate = this.navigate.bind(this);
+    }
+
+    const Router = class {
+        constructor(configuration) {
+
+            privateProps.set(this, {
+                configuration: configuration
+            });
+
+            registerNavigationServices.call(this);
+        }
+
+        navigate(uri) {
+
+            if (!!uri) {
+                let key = window.location.pathname;
+                if (`/${uri}` !== key) {
+                    history.pushState(null, null, uri);
+                }
+            }
+
+            navigate.call(this);
+        }
     };
 
     return class {
-        constructor(routes) {
 
-            privateProps.set(this, {
-                routes: routes
-            });
+        static async build(config) {
+            const router = new Router(config);
 
-            initEvents(this);
+            await router.navigate();
 
-            route.call(this);
+            return router;
         }
 
-        link(uri) {
 
-            let key = window.location.pathname;
-
-            if (`/${uri}` !== key) {
-                history.pushState(null, null, uri);
-            }
-
-            route.call(this);
-        }
     };
 
 })();

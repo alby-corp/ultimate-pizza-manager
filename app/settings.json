@@ -1,10 +1,11 @@
 {
   "azure-ad-prod-config": {
-    "instance": "instance",
-    "tenant": "tenant",
-    "clientId": "clientId",
-    "postLogoutRedirectUri": "http://localhost",
-    "cacheLocation": "localStorage",
-    "redirectUri": "http://localhost"
+    "clientId": "97b8377a-5c1c-4b1c-a630-6299b71718fe",
+    "options": {
+      "postLogoutRedirectUri": "http://localhost:8080",
+      "cacheLocation": "localStorage",
+      "redirectUri": "http://localhost:8080/signed-in",
+      "storeAuthStateInCookie": true
+    }
   }
 }

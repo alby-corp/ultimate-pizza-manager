@@ -8,7 +8,11 @@ export const NotFoundComponent = (function () {
     return class extends BaseComponent {
 
         constructor() {
-            super(template);
+            super();
+        }
+
+        static get template() {
+            return template;
         }
 
         async execute() {
