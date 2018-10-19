@@ -1,0 +1,26 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
+    <a class="navbar-brand pointer">Ultimate Pizza Manager</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#master-menu-navbar-nav"
+            aria-controls="master-menu-navbar-nav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse pointer" id="master-menu-navbar-nav">
+        <ul class="navbar-nav mr-auto">
+            <li id="master-menu-home" class="nav-item" onclick="AlbyJs.Router.navigate('/')">
+                <span class="nav-link">Home</span>
+            </li>
+            <li id="master-menu-price-list" class="nav-item" onclick="AlbyJs.Router.navigate('menu')">
+                <span class="nav-link">Menu</span>
+            </li>
+            <li id="master-menu-week-orders" class="nav-item" onclick="AlbyJs.Router.navigate('week-orders')">
+                <span class="nav-link">Ordini</span>
+            </li>
+            <li id="master-menu-info" class="nav-item" onclick="AlbyJs.Router.navigate('info')">
+                <span class="nav-link">Info</span>
+            </li>
+        </ul>
+
+        <alby-login></alby-login>
+
+    </div>
+</nav>
