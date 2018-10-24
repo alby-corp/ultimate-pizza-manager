@@ -1,7 +1,7 @@
-import template from '../views/menu.html';
+import template from './menu.html';
 
-import {Table, FoodRow, IngredientRow} from '../model';
-import {BaseComponent} from "./base.component";
+import {Table, FoodRow, IngredientRow} from '../../model/index';
+import {BaseComponent} from "../base.component";
 
 
 export const MenuComponent = (function () {

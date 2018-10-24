@@ -1,8 +1,8 @@
-import template from '../views/form.html';
+import template from './form.html';
 
-import {Option, Common, Order, DropDownList,FoodWithRemovals,FixedFood, Button} from '../model';
-import {BaseComponent} from "./base.component";
-import {ChatComponent} from "./chat.component";
+import {Option, Common, Order, DropDownList,FoodWithRemovals,FixedFood, Button} from '../../model/index';
+import {BaseComponent} from "../base.component";
+import {ChatComponent} from "../chat/chat.component";
 import { integer } from '@oclif/parser/lib/flags';
 
 export const FormComponent = (function () {

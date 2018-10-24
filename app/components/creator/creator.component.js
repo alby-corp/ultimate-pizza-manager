@@ -1,7 +1,7 @@
-import template from '../views/creator.html';
+import template from './creator.html';
 
-import {BaseComponent} from "./base.component";
-import {Button, Common, Order} from "../model";
+import {BaseComponent} from "../base.component";
+import {Button, Common, Order} from "../../model/index";
 
 export const CreatorComponent = (function () {
 

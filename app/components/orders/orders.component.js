@@ -1,7 +1,7 @@
-import template from '../views/orders.html';
+import template from './orders.html';
 
-import {OrdersRow, Table, SummaryRow, Span} from '../model';
-import {BaseComponent} from "./base.component";
+import {OrdersRow, Table, SummaryRow, Span} from '../../model/index';
+import {BaseComponent} from "../base.component";
 
 export const OrdersComponent = (function () {
 

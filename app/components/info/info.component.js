@@ -1,7 +1,7 @@
-import template from '../views/info.html';
+import template from './info.html';
 
-import {List, AdminListItem} from '../model';
-import {BaseComponent} from "./base.component";
+import {List, AdminListItem} from '../../model/index';
+import {BaseComponent} from "../base.component";
 
 export const InfoComponent = (function () {
 
