@@ -5,7 +5,7 @@ import {
     CreatorComponent,
     FormComponent,
     InfoComponent, LoginAdvisorComponent,
-    MenuComponent,
+    MenuComponent, NotFoundComponent,
     OrdersComponent, SignedInComponent,
     UserComponent
 } from "../components";
@@ -23,5 +23,6 @@ Object.defineProperty(Container.prototype, "initComponents", {
         this.singleton(ChatComponent, []);
         this.singleton(SignedInComponent, [AuthService, ModalService]);
         this.singleton(LoginAdvisorComponent, [AuthService]);
+        this.singleton(NotFoundComponent, []);
     }
 });

@@ -23,6 +23,10 @@ export const ReadController = (function () {
             });
         }
 
+        getFoodTypes() {
+            return responseHandler(this, privateProps.get(this).context.getFoodTypes);
+        };
+
         getFoods() {
             return responseHandler(this, privateProps.get(this).context.getFoods)
         };

@@ -11,7 +11,7 @@ export const NotFoundComponent = (function () {
             super();
         }
 
-        static get template() {
+        get template() {
             return template;
         }
 

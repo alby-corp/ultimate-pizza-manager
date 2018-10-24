@@ -11,7 +11,7 @@ export const BaseComponent = (function () {
             });
         }
 
-        static get template() {
+        get template() {
             throw new Error('Abstract Property!')
         }
 

@@ -1,22 +1,22 @@
+import {AlbyGuard} from "../core";
+
+
 export const AuthGuard = (function () {
-    const privateProps = new WeakMap();
 
-    return class {
+    const canActivate = (authService) => async () => {
+
+        const user = await authService.user;
+
+        return user !== undefined;
+    };
+
+    const callback = () => AlbyJs.Router.navigate('login-requested?returnUrl=' + AlbyJs.Router.currentUri());
+
+    return class extends AlbyGuard {
+
         constructor(authService) {
-            privateProps.set(this, {
-                authService: authService
-            });
+
+            super(canActivate(authService), callback);
         };
-
-        async canActivate() {
-
-            const isAuthenticated = await privateProps.get(this).authService.user !== undefined;
-
-            if(!isAuthenticated) {
-                AlbyJs.Router.navigate.call(this, 'login-requested?returnUrl=' + AlbyJs.Router.currentUri);
-            }
-
-            return isAuthenticated;
-        }
     };
 })();

@@ -5,17 +5,36 @@ export const DropDownList = (function () {
     const privateProps = new WeakMap();
 
     return class {
-        constructor(select, options) {
-            privateProps.set(this, {
-                select: select,
-                options: options
-            });
+        //args =[select,options]
+        //args =['supplements',options,'Supplementi',"multiple",8, $('#foodTypeSuplementi')]
+        constructor(select,options,...args) {
+            
+            if (args.length === 0){
+                privateProps.set(this, {
+                    select: $(`#${select}`),
+                    options: options
+                });
+            } else if (args.length === 4) {
+                
+                const html =  `<div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon3">${args[0]}:</span>
+                                </div>
+                                <select ${args[1]} id="${select}" class="form-control" name="${select}" size=${args[2]}></select>`;
+
+                args[3].empty().html(html);
+                
+                //Prima si deve creare il elemto html per poi prendere l'Id
+                privateProps.set(this, {
+                    select: $(`#${select}`),
+                    options: options
+                });
+            }
         };
 
         populate() {
             privateProps.get(this).select.empty();
             for (let option of privateProps.get(this).options) {
-                privateProps.get(this).select.append(option.render())
+                privateProps.get(this).select.append(option.render());
             }
 
             return this;
@@ -31,7 +50,7 @@ export const DropDownList = (function () {
             return this;
         };
 
-        autoRefresh(master, func) {
+        populateWithFilter(master, func) {
             master.change(() => {
 
                 const id = master.val();
@@ -42,6 +61,13 @@ export const DropDownList = (function () {
 
             return this;
         }
+
+        onChangeEvent(lamdaFunction){
+
+            privateProps.get(this).select.change(lamdaFunction);
+
+            return this;
+        };
     };
 })();
 

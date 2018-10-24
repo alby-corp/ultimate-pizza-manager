@@ -19,7 +19,7 @@ export const InfoComponent = (function () {
             });
         }
 
-        static get template() {
+        get template() {
             return template;
         }
 

@@ -19,7 +19,10 @@ export const Router = (function () {
 
             routes.route('/orders')
                 .get((req, res) => readCtrl.getOrders()(res))
-                .post((req, res) => writeCtrl.insertOrder(req.body)(res));
+                .post(passport.authenticate('oauth-bearer', { session: false }), (req, res) => writeCtrl.insertOrder(req.body)(res));
+
+            routes.route('/foodTypes')
+                .get((req, res) => readCtrl.getFoodTypes()(res));
 
             privateProps.set(this, {
                 routes: routes

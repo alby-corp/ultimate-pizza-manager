@@ -1,213 +1,247 @@
 import template from '../views/form.html';
 
-import {Option, Common, Order, DropDownList, Button} from '../model';
+import {Option, Common, Order, DropDownList,FoodWithRemovals,FixedFood, Button} from '../model';
 import {BaseComponent} from "./base.component";
+import {ChatComponent} from "./chat.component";
+import { integer } from '@oclif/parser/lib/flags';
 
 export const FormComponent = (function () {
 
-    let _usersDDL;
-
-    let _kitchenDDL;
-    let _dessertsDDL;
-
-    let _pizzasDDL;
-    let _supplementsDDL;
-    let _removalsDDL;
-
-    let _sandwichesDDL;
-    let _sandwichesSupplementsDDL;
-    let _sandwichesRemovalsDDL;
-
-    const hideShowButton = (DDL, target, collapsableObject) => () => {
-        if (DDL.val() == "") {
-            collapsableObject.collapse('hide');
-            target.hide();
-        } else {
-            target.show();
-        }
-    };
-
-    const initDDLs = () => {
-        _usersDDL = $('#users');
-
-        _kitchenDDL = $('#kitchen');
-        _dessertsDDL = $('#desserts');
-
-        _pizzasDDL = $('#pizzas');
-        _supplementsDDL = $('#supplements');
-        _removalsDDL = $('#removals');
-
-        _sandwichesDDL = $('#sandwiches');
-        _sandwichesSupplementsDDL = $('#sandwiches-supplements');
-        _sandwichesRemovalsDDL = $('#sandwiches-removals');
-    };
+    let _foodElementDDL;
+    let _foods;
+    let _supplements;
+    let _foodNelCarrello = [];
+    let _self;
 
     const privateProps = new WeakMap();
 
-    const buildSupplementsFactory = (foods, supplements) => (DDL, masterDDL) =>
-        new DropDownList(DDL, getIngredientsOptions(supplements, Common.Ingredient.prototype.toString))
-            .populate()
-            .conditionalEnable(masterDDL)
-            .autoRefresh(
-                masterDDL,
-                (id) => id
-                    ? getIngredientsOptions(exception(supplements, foods.find(f => f.id === +id).ingredients), Common.Ingredient.prototype.toString)
-                    : getIngredientsOptions(supplements, Common.Ingredient.prototype.toString)
-            );
+    const foodTypesChangeValue = (DDL) => () => {
+        let foodType = DDL.val();
+        $(`#foodTypeSuplementi`).empty();
+        $(`#foodTypeRimozioni`).empty();
+        $("#SupplementiRimozioni").collapse('hide');
+        $("#btnRimozioni").hide();
+        $("#ordinaSubito").prop("disabled",true);
+        $("#carrello").prop("disabled",true); 
 
-    const buildRemovalFactory = (foods) => (DDL, masterDDL) =>
-        new DropDownList(DDL, null)
-            .conditionalEnable(masterDDL)
-            .autoRefresh(
-                masterDDL,
-                (id) => id
-                    ? getIngredientsOptions(foods.find(f => f.id === +id).ingredients, getPropertyDescriptor(Common.Ingredient.prototype, 'name').get)
-                    : []
-            );
-
-    const getFoodsOptions = (foods, type) => {
-        const options = foods.filter(food => food.type === type).map(food => new Option(food.id, food.toString(), false));
-        options.unshift(Option.getBlankOption());
-
-        return options;
+        switch(foodType) {
+            case "2":
+                new FixedFood('piatti',2,_foods); 
+                _foodElementDDL =  $(`#piatti`);
+                break;
+            case "3":
+                new FixedFood('dolce',3,_foods);
+                _foodElementDDL =  $(`#dolce`);
+                break;
+            case "4":
+                new FoodWithRemovals('sandwiches', 4, _foods, _supplements);
+                _foodElementDDL =  $(`#sandwiches`);
+                break;
+            default:
+                new FoodWithRemovals('pizzas', 1, _foods, _supplements);
+                _foodElementDDL =  $(`#pizzas`);
+        }
     };
+    
+    const readFoodData = () => {
+        const foods = [];
+        const elementId = _foodElementDDL.val();
+        const hasRemovals = $(`#removals`).val();
 
-    const getIngredientsOptions = (data, func) => {
-        const options = data.map(s => new Option(s.id, func.call(s), false));
-        options.unshift(Option.getBlankOption());
+        if (hasRemovals && elementId) {
+            const removals = $(`#removals`).val().filter(id => !!id).map(r => new Common.Ingredient(+r));
+            const supplements = $(`#supplements`).val().filter(id => !!id).map(s => new Common.Ingredient(+s));
+            
+            const orderedFood = new Common.OrderedFood(new Common.Food(+elementId), supplements, removals);
 
-        return options;
-    };
-
-    const exception = (all, filters) => all.filter((e) => filters.map(a => a.id).indexOf(e.id) === -1);
-
-    // WORKAROUND: if used by Object.prototype break jQuery from 2009.
-    const getPropertyDescriptor = (obj, key) => Object.getOwnPropertyDescriptor(obj, key) || getPropertyDescriptor(obj, Object.getPrototypeOf(obj), key);
-
-    const buildOverrideOnSubmitHandler = (service, alertService) => {
-        document.getElementById('order-form').onsubmit = async (event) => {
-
-            event.preventDefault();
-
-            const foods = [];
-            let user;
-
-            const userId = _usersDDL.val();
-            if (userId) {
-                user = new Common.User(+userId);
-            }
-
-            const pizzaId = _pizzasDDL.val();
-            if (pizzaId) {
-                const removals = _removalsDDL.val().filter(id => !!id).map(r => new Common.Ingredient(+r));
-                const supplements = _supplementsDDL.val().filter(id => !!id).map(s => new Common.Ingredient(+s));
-
-                const pizza = new Common.OrderedFood(new Common.Food(+pizzaId), supplements, removals);
-
-                foods.push(pizza);
-            }
-
-            const sandwichId = _sandwichesDDL.val();
-            if (sandwichId) {
-                const removals = _sandwichesRemovalsDDL.val().filter(id => !!id).map(r => new Common.Ingredient(+r));
-                const supplements = _sandwichesSupplementsDDL.val().filter(id => !!id).map(s => new Common.Ingredient(+s));
-
-                const sandwich = new Common.OrderedFood(new Common.Food(+sandwichId), supplements, removals);
-
-                foods.push(sandwich);
-            }
-
-            const kitchenIds = _kitchenDDL.val().filter(id => !!id);
+            foods.push(orderedFood);
+        }
+        else if (elementId){
+            const kitchenIds = elementId.filter(id => !!id);
 
             kitchenIds.forEach(id => {
                 foods.push(new Common.OrderedFood(new Common.Food(+id)));
             });
+        }
 
-            const dessertsIds = _dessertsDDL.val().filter(id => !!id);
+        return foods;
+    };  
 
-            dessertsIds.forEach(id => {
-                foods.push(new Common.OrderedFood(new Common.Food(+id)));
-            });
+    const renderCarrello = () =>{
+        let id = 0;
+        let total = 0.0;
+        let foodIds = [];
+        let html = `<div >
+                        <ul> ${!_foodNelCarrello.length ? '' : `${_foodNelCarrello.map(f => {
+                            let food = _foods.find(fs => fs.id == f.food.id);
+                            let additions = f.supplements.map(i => _supplements.find(sp => sp.id == i.id));
+                            let removals = f.removals.map(ri => food.ingredients.find(fi => fi.id == ri.id));
+                            total += food.price + additions.reduce((acc, supplement) => acc += supplement.price, 0);
+                            foodIds.push(food.id);
+                            id++
+                            return `<li>
+                                <div>
+                                    <b>${food.name}</b> - <span>${food.price.toFixed(2)} &euro;</span>
+                                    <button id=btnDelete_${id} type="button" class="badge badge-danger btn-close">x</button>
+                                         
+                                    <div>${!additions.length > 0 ? '' : 
+                                        `<span style="color: green">+ Aggiunte</span>
+                                        <ul>
+                                            ${additions.map(ingredient =>
+                                                `<li>
+                                                    ${ingredient.name} ${ingredient.price === null ? '(prezzo sconosciuto)' :
+                                                    `- <span>${ingredient.price.toFixed(2)} &euro;</span>` }
+                                                </li>`).join('')}
+                                        </ul>`}
+                                    </div>
+                                    <div>${!removals.length > 0 ? '' : 
+                                        `<span style="color: red">- Rimozioni</span>
+                                        <ul>${removals.map(ingredient => 
+                                            `<li>
+                                                ${ingredient.name} 
+                                            </li>`).join('')}
+                                        </ul>`}
+                                    </div>
+                                </div>
+                            </li>`}).join('')} 
+                            <li>
+                                 <b>Totale ordine</b> - <span>${total.toFixed(2)} &euro;</span>
+                            </li>`
+                            }
+                        </ul>
+                        <button id="cancellaCarrello" disabled=true class="btn btn-danger">Cancella</button>
+                        <button id="ordinaCarrello" disabled=true class="btn btn-primary">Ordina</button>
+                    </div>`
 
-            const order = new Order(user, foods);
+        $(`#orders`).empty().html(html);
+        document.getElementById('ordinaCarrello').addEventListener('click', ordinaCarrello);
+        document.getElementById('cancellaCarrello').addEventListener('click', cancellaCarrello); 
+         
+        id = 0
+        foodIds.map(foodId => {
+            id++
+            let elementSelector = document.getElementById(`btnDelete_${id}`);
+            elementSelector.addEventListener('click', deleteOrdine);
+            elementSelector.foodId = foodId;
+        });
 
-            try {
-                order.validate();
-            } catch (error) {
-                alertService.error(error.message);
-                return false;
-            }
+        if(_foodNelCarrello.length ==0){
+            $("#ordinaCarrello").prop("disabled",true);
+            $("#cancellaCarrello").prop("disabled",true);          
+        }
+        else{
+            $("#ordinaCarrello").prop("disabled",false);
+            $("#cancellaCarrello").prop("disabled",false);                      
+        } 
+        if(_foodElementDDL.val() == ""){
+            $("#ordinaSubito").prop("disabled",true);
+        }      
+    };
 
-            const result = await service.postOrder(order.toDTO());
-
-            alertService.success(result, [new Button('Vai agli Ordini', new Map([['class', 'btn btn-success'], ['onclick', "AlbyJs.Router.navigate('week-orders')"]]))]);
-
-            return false;
+    const buildOverrideOnSubmitHandler = () => {
+        document.getElementById('order-form').onsubmit =  (event) => {
+            event.preventDefault();
         };
+    };
+
+    const ordinaSubito = () => {
+        submitOrder(readFoodData());
+    };
+
+    const aggiungiAlCarrello = () => {
+        _foodNelCarrello = _foodNelCarrello.concat(readFoodData());
+        renderCarrello();
+    };
+
+    const ordinaCarrello = () => {
+        submitOrder( _foodNelCarrello);
+    };
+
+    const deleteOrdine = (evt) => {
+        const item = _foodNelCarrello.find(of => of.food.id === evt.target.foodId);
+        _foodNelCarrello = _.without(_foodNelCarrello, item);
+        renderCarrello();
+    };
+
+    const cancellaCarrello = () =>{
+        _foodNelCarrello = [];
+        renderCarrello();
+    };
+
+    const submitOrder = async (totalFood) => {
+
+        let user;
+
+        const userId = 10;
+        if (userId) {
+            user = new Common.User(+userId);
+        }
+
+        const order = new Order(user, totalFood);
+
+        try {
+            order.validate();
+        } catch (error) {
+            privateProps.get(_self).alertService.error(error.message);
+            return false;
+        }
+
+        const result = await privateProps.get(_self).service.postOrder(order.toDTO());
+
+        privateProps.get(_self).alertService.success(result, [new Button('Vai agli Ordini', new Map([['class', 'btn btn-success'], ['onclick', "AlbyJs.Router.navigate('week-orders')"]]))]);
+
+        _foodNelCarrello = [];
+
+        return false;
     };
 
     return class extends BaseComponent {
 
         constructor(service, alertService) {
 
-            super(alertService);
+            super(template, alertService);
+
+            const element = $('#creator-outlet');
+            _self = this;
 
             privateProps.set(this, {
-                service: service,
-                alertService: alertService,
+                service,
+                alertService,
             });
-        }
+        };
 
-        static get template() {
+        get template() {
             return template;
         }
 
         async execute() {
 
-            initDDLs();
+            await new ChatComponent().execute();
 
+            document.getElementById('ordinaSubito').addEventListener('click', ordinaSubito);
+            document.getElementById('carrello').addEventListener('click', aggiungiAlCarrello);
+            
             buildOverrideOnSubmitHandler(privateProps.get(this).service, privateProps.get(this).alertService);
-
-            let users;
-            let foods;
-            let supplements;
+            
+            let foodTypes;
 
             try {
-                users = await super.invokeWithCatcher(privateProps.get(this).service.getUsers);
-                foods = await super.invokeWithCatcher(privateProps.get(this).service.getFoods);
-                supplements = await super.invokeWithCatcher(privateProps.get(this).service.getSupplements);
-
+                foodTypes = await super.invokeWithCatcher(privateProps.get(this).service.getFoodTypes);
+                _foods = await super.invokeWithCatcher(privateProps.get(this).service.getFoods);
+                _supplements = await super.invokeWithCatcher(privateProps.get(this).service.getSupplements);
             } catch (error) {
                 return;
             }
 
-            let pizzasHideShowButton = hideShowButton(_pizzasDDL, $("#btnRimozioniPizza"), $("#SupplementiRimozioniPizze"));
+            let foodTypesDoSomething = foodTypesChangeValue($('#foodTypes'));
+            new DropDownList('foodTypes', foodTypes.map(ft => new Option(ft.id, ft.description, false)))
+                    .populate()
+                    .onChangeEvent(foodTypesDoSomething);
 
-            let paniniHideShowButton = hideShowButton(_sandwichesDDL, $("#btnRimozioniPanini"), $("#SupplementiPanini"));
+            new FoodWithRemovals('pizzas', 1, _foods, _supplements);
+            _foodElementDDL =  $(`#pizzas`);  
 
-            _pizzasDDL.change(pizzasHideShowButton);
-
-            _sandwichesDDL.change(paniniHideShowButton);
-
-            new DropDownList(_usersDDL, users.map(user => new Option(user.id, user.name, false))).populate();
-
-            new DropDownList(_pizzasDDL, getFoodsOptions(foods, 1)).populate();
-
-            new DropDownList(_kitchenDDL, getFoodsOptions(foods, 2)).populate();
-
-            new DropDownList(_dessertsDDL, getFoodsOptions(foods, 3)).populate();
-
-            new DropDownList(_sandwichesDDL, getFoodsOptions(foods, 4)).populate();
-
-            const removalsFactory = buildRemovalFactory(foods);
-
-            removalsFactory(_removalsDDL, _pizzasDDL);
-            removalsFactory(_sandwichesRemovalsDDL, _sandwichesDDL);
-
-            const supplementsFactory = buildSupplementsFactory(foods, supplements);
-
-            supplementsFactory(_supplementsDDL, _pizzasDDL);
-            supplementsFactory(_sandwichesSupplementsDDL, _sandwichesDDL);
+            renderCarrello();
 
             return this;
         }

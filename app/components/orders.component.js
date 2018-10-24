@@ -19,7 +19,7 @@ export const OrdersComponent = (function () {
             });
         }
 
-        static get template() {
+        get template() {
             return template;
         }
 

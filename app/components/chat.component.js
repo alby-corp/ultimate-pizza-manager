@@ -5,7 +5,7 @@ import {albiReply, ALBITHOUGHTS} from "../services"
 
 export class ChatComponent extends BaseComponent {
 
-    static get template() {
+    get template() {
         return template;
     }
 
@@ -42,7 +42,7 @@ export class ChatComponent extends BaseComponent {
 
                 const renderButton = () => {
                     return `
-                    <div class="btn-chat-open" onclick="AlbyJs.trigger(this, 'open')">
+                    <div class="btn-chat-open" onclick="AlbyJs.CustomEvents.trigger(this, 'open')">
                     </div>`;
                 };
 
@@ -50,14 +50,14 @@ export class ChatComponent extends BaseComponent {
                     return `                   
                         <div class="chat-ui">
                             <div class="chat-header">
-                                Alby<a class="btn-chat-close" onclick="AlbyJs.trigger(this, 'close')">&times;</a>
+                                Alby<a class="btn-chat-close" onclick="AlbyJs.CustomEvents.trigger(this, 'close')">&times;</a>
                             </div>
                             <div class="chat-messages">    
                             </div>
                             <div class="chat-typing">Sto scrivendo...</div>
                             <div class="chat-input">
-                                <input class="form-control" type="text" placeholder="Come posso aiutarti?" onkeypress="if (event.keyCode === 13){ event.preventDefault(); AlbyJs.trigger(this, 'send')}">    
-                                <a class="btn-chat-send" onclick="AlbyJs.trigger(this, 'send')">&#x27a4;</a>  
+                                <input class="form-control" type="text" placeholder="Come posso aiutarti?" onkeypress="if (event.keyCode === 13){ event.preventDefault(); AlbyJs.CustomEvents.trigger(this, 'send')}">    
+                                <a class="btn-chat-send" onclick="AlbyJs.CustomEvents.trigger(this, 'send')">&#x27a4;</a>  
                             </div>
                     </div>`;
                 };

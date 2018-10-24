@@ -27,9 +27,13 @@ export const ALBITHOUGHTS = {
         'sai che toglieranno la macchinetta del caffè?',
         'ma si dice porcina? dai come cazzo si dice',
         'Scommettiamo?? quanto scommettiamo?'
+    ],
+    alby: [
+        'Alberto 1 Roald 0',
+        'Giorgio is a tennis looser',
+        'Come si chiama questa mano? TrueTennis!',
+        'Come si chiama l\'altra mano? TrueProgramming'
     ]
-
-
 };
 
 function worthMatching(s1, s2) {
@@ -91,7 +95,7 @@ function exploreThoghtsTree(inputMsg, thoughts, weakSentenceMatch, bestMatch) {
 }
 
 function cosaProbability() {
-    return getRandomArbitrary(1, 3) > 1.5;
+    return getRandomArbitrary(1, 3) > 2.5;
 }
 
 export function albiReply(inputMsg, thoughts) {

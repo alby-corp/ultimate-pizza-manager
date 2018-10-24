@@ -19,7 +19,7 @@ export const MenuComponent = (function () {
             });
         }
 
-        static get template() {
+        get template() {
             return template;
         }
 

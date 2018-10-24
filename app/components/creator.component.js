@@ -7,7 +7,7 @@ export const CreatorComponent = (function () {
 
     return class extends BaseComponent {
 
-        static get template() {
+        get template() {
             return template;
         }
 
@@ -23,7 +23,7 @@ export const CreatorComponent = (function () {
                 const foods = (await api.getFoods())
                     .filter(food => food.type === 1);
 
-                const ingredients = _.uniq(_.flatten(foods.map(food => food.ingredients)), ingredient => ingredient.id);
+                const ingredients = await api.getSupplements();
                 const pizzas = foods
                     .map(food => ({
                         id: food.id,
@@ -99,11 +99,12 @@ export const CreatorComponent = (function () {
                     return mins;
                 };
 
+                const selected = ingredients.filter(ingredient => ingredient.id === 46 || ingredient.id === 30);
                 const model = {
                     user: undefined,
                     users: users,
-                    available: ingredients,
-                    selected: ingredients.filter(ingredient => ingredient.id === 46 || ingredient.id === 30),
+                    available: _.without(ingredients, ...selected),
+                    selected: selected,
                     active: undefined,
                     results: []
                 };
@@ -124,7 +125,7 @@ export const CreatorComponent = (function () {
 
                     return `
                     <b>Utente</b>
-                    <select class="form-control" onchange="AlbyJs.trigger(this, 'set-user', {id: +this.options[this.selectedIndex].value})">
+                    <select class="form-control" onchange="AlbyJs.CustomEvents.trigger(this, 'set-user', {id: +this.options[this.selectedIndex].value})">
                         <option value="" ${!model.user ? 'selected' : ''}>- seleziona -</option>
                         ${model.users.map(user => `<option ${model.user === user.id ? 'selected' : ''} value="${user.id}">${user.name}</option>`).join('')}
                     </select>
@@ -134,14 +135,14 @@ export const CreatorComponent = (function () {
                             <h4>Ingredienti</h4>
                             <ul class="list-group">
                                 ${model.selected.map(ingredient => `<li class="list-group-item">
-                                    ${ingredient}<span class="btn btn-danger btn-close" onclick="AlbyJs.trigger(this, 'remove', {id: ${ingredient.id}})">X</span>
+                                    ${ingredient}<span class="btn btn-danger btn-close" onclick="AlbyJs.CustomEvents.trigger(this, 'remove', {id: ${ingredient.id}})">X</span>
                                 </li>`).join('')}
                             </ul>
-                            <select class="form-control active-ingredient" onchange="AlbyJs.trigger(this, 'set-active', {id: +this.options[this.selectedIndex].value})">
+                            <select class="form-control active-ingredient" onchange="AlbyJs.CustomEvents.trigger(this, 'set-active', {id: +this.options[this.selectedIndex].value})">
                                 <option value="" ${!model.active ? 'selected' : ''}>- seleziona -</option>
                                 ${model.available.map(ingredient => `<option ${model.active === ingredient ? 'selected' : ''} value="${ingredient.id}">${ingredient}</option>`).join('')}
                             </select>
-                            <button class="btn btn-primary btn-add" onclick="AlbyJs.trigger(this, 'add')">Aggiungi</button>
+                            <button class="btn btn-primary btn-add" onclick="AlbyJs.CustomEvents.trigger(this, 'add')">Aggiungi</button>
                         </div>
                         <div class="results">
                             <h4>Risultati</h4>
@@ -164,10 +165,10 @@ export const CreatorComponent = (function () {
                             <div ${!result.removals.length ? 'hidden' : ''}>
                                 <span style="color: red">- Rimozioni</span>
                                 <ul>${result.removals.map(ingredient => `
-                                    <li>${ingredient.name} <span class="badge badge-primary btn-add-removal" onclick="AlbyJs.trigger(this, 'add-removal', {id: ${ingredient.id}})">+</span></li>`).join('')}
+                                    <li>${ingredient.name} <span class="badge badge-primary btn-add-removal" onclick="AlbyJs.CustomEvents.trigger(this, 'add-removal', {id: ${ingredient.id}})">+</span></li>`).join('')}
                                 </ul>
                             </div>
-                            <button class="btn btn-primary btn-order" onclick="AlbyJs.trigger(this, 'order', {index: ${index}})">Ordina</button>
+                            <button class="btn btn-primary btn-order" onclick="AlbyJs.CustomEvents.trigger(this, 'order', {index: ${index}})">Ordina</button>
                         </div>
                     `;
                 };

@@ -6,6 +6,12 @@ export const UltimatePizzaManagerContext = (function () {
 
     const privateProps = new WeakMap();
 
+    const foodTypesQuery = `WITH foodTypes AS (
+                                SELECT * FROM Type
+                            ) 
+
+                            SELECT json_agg(ft) FROM foodTypes ft`;
+
     const usersQuery = `            WITH users AS (
                                         SELECT m.id, m.username
                                         FROM muppet m
@@ -113,9 +119,9 @@ export const UltimatePizzaManagerContext = (function () {
                 context: context
             });
 
+            this.getFoodTypes = () =>  privateProps.get(this).context.scalar(foodTypesQuery);
 
             this.getUsers = () => privateProps.get(this).context.scalar(usersQuery);
-
 
             this.getFoods = () => privateProps.get(this).context.scalar(foodsQuery);
 

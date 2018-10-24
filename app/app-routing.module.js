@@ -1,11 +1,23 @@
+import {AlbyRoutingModule} from "./core/modules/alby-routing.module";
 import {Route} from "./core";
-import {CreatorComponent, ChatComponent, FormComponent, InfoComponent, MenuComponent, NotFoundComponent, OrdersComponent, SignedInComponent, UserComponent, LoginAdvisorComponent} from "./components";
+
+import {
+    CreatorComponent,
+    ChatComponent,
+    FormComponent,
+    InfoComponent,
+    MenuComponent,
+    NotFoundComponent,
+    OrdersComponent,
+    SignedInComponent,
+    UserComponent,
+    LoginAdvisorComponent
+} from "./components";
 import {AuthGuard} from "./guards";
-import {AlbyModule} from "./core/model/alby-module";
 
 export const AppRoutingModule = (function () {
 
-    const routes = [
+    const _routes = () => [
         new Route({
             path: '',
             component: FormComponent,
@@ -52,12 +64,11 @@ export const AppRoutingModule = (function () {
         })
     ];
 
-    return class extends AlbyModule {
+    return class extends AlbyRoutingModule {
 
-        static get configuration(){
-            return routes;
+        constructor() {
+            super(_routes());
         }
     }
-
 })();
 

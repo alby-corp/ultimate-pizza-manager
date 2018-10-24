@@ -1,10 +1,31 @@
 export const Common = (function () {
-    const toPrice = (value) => (value === undefined || value === null) ? undefined : value.toFixed(2);
+
+    const FoodTypes = (function () {
+        const privateProps = new WeakMap();
+
+        return class {
+            constructor(id, description) {
+                privateProps.set(this, {
+                    id: id,
+                    description: description
+                });
+            };
+
+            get id() {
+                return privateProps.get(this).id;
+            };
+
+            get description() {
+                return privateProps.get(this).description;
+            }
+        }
+
+    })();
 
     const User = (function () {
         const privateProps = new WeakMap();
 
-        class User {
+        return class {
             constructor(id, name) {
                 privateProps.set(this, {
                     id: id,
@@ -21,7 +42,6 @@ export const Common = (function () {
             }
         }
 
-        return User;
     })();
 
     const Administrator = (function () {
@@ -243,7 +263,8 @@ export const Common = (function () {
         Ingredient: Ingredient,
         OrderedFood: OrderedFood,
         Order: Order,
-        Administrator: Administrator
+        Administrator: Administrator,
+        FoodTypes : FoodTypes
     };
 
 })();

@@ -1,23 +1,22 @@
-
 export const CustomElement = (function () {
 
     const privateProps = new WeakMap();
 
     return class {
 
-        constructor(tag, c){
+        constructor(tag, clazz) {
 
             privateProps.set(this, {
                 tag: tag,
-                class: c
+                class: clazz
             });
         }
 
-        get tag(){
+        get tag() {
             return privateProps.get(this).tag;
         }
 
-        get class(){
+        get class() {
             return privateProps.get(this).class
         }
     }

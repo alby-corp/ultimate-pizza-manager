@@ -1,26 +1,27 @@
+import {AlbyModule} from "./core/modules/alby.module";
 import {Container} from "./core/container";
+import {CustomElement} from "./core/model/custom-element";
 
 import {AppRoutingModule} from './app-routing.module';
-import {CustomElement} from "./core/model/custom-element";
-import {LoginElement, MenuElement} from "./elements";
-import {AlbyModule} from "./core/model/alby-module";
-
 import './middelwares';
+import {LoginElement, MenuElement} from "./elements";
 
-export class AppModule extends AlbyModule {
+export const AppModule = (function () {
 
-    static get configuration() {
+    return class extends AlbyModule {
 
-        const container = new Container();
+        constructor() {
 
-        container.initServices();
-        container.initComponents();
-        container.initCustomElements();
+            const container  = new Container();
 
-        this.container = container;
-        this.routes = AppRoutingModule.configuration;
-        this.customElements = [new CustomElement('alby-menu', container.get(MenuElement)), new CustomElement('alby-login', container.get(LoginElement))];
+            container.initServices();
+            container.initComponents();
+            container.initCustomElements();
+            container.initGuards();
 
-        return this;
+            const customElements = [new CustomElement('alby-menu', container.get(MenuElement)), new CustomElement('alby-login', container.get(LoginElement))];
+
+            super(container, AppRoutingModule, customElements);
+        }
     }
-}
+})();

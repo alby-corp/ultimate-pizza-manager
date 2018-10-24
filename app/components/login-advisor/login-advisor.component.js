@@ -10,7 +10,7 @@ export class LoginAdvisorComponent extends BaseComponent {
         this._authService = authService;
     }
 
-    static get template() {
+    get template() {
         return template;
     }
 

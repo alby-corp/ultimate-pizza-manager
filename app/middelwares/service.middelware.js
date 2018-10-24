@@ -7,7 +7,7 @@ import settings from "../settings";
 Object.defineProperty(Container.prototype, "initServices", {
     value: function () {
 
-        this.singleton(HttpClient, [window.location.origin]);
+        this.singleton(HttpClient, [`${window.location.origin}/api`]);
         this.singleton(AuthService, [AuthContext.UserAgentApplication]);
         this.singleton(AuthClient, [HttpClient, AuthService]);
         this.singleton(ResourceService, [AuthClient]);
