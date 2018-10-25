@@ -29,7 +29,7 @@ export const App = (function () {
             console.log(config["azure-ad-prod-config"]);
 
             passport.use(new azureAD.BearerStrategy(
-                JSON.parse(config["azure-ad-prod-config"]),
+                config["azure-ad-prod-config"],
                 (token, done) => {
                     const user = new Common.User(token.oid, token.name);
                     context.createUser(user)
