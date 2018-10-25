@@ -22,14 +22,14 @@ export const App = (function () {
 
         constructor(app) {
 
-            const context = new UltimatePizzaManagerContext(config["ultimate-pizza-manager-debug-connection-string"]);
+            const context = new UltimatePizzaManagerContext(config["ultimate-pizza-manager-prod-connection-string"]);
             const readCtrl = new ReadController(context);
             const writeCtrl = new WriteController(context);
 
-            console.log(config["azure-ad-debug-config"]);
+            console.log(config["azure-ad-prod-config"]);
 
             passport.use(new azureAD.BearerStrategy(
-                JSON.parse(config["azure-ad-debug-config"]),
+                JSON.parse(config["azure-ad-prod-config"]),
                 (token, done) => {
                     const user = new Common.User(token.oid, token.name);
                     context.createUser(user)
