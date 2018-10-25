@@ -26,6 +26,8 @@ export const App = (function () {
             const readCtrl = new ReadController(context);
             const writeCtrl = new WriteController(context);
 
+            console.log(config["azure-ad-debug-config"]);
+
             passport.use(new azureAD.BearerStrategy(
                 JSON.parse(config["azure-ad-debug-config"]),
                 (token, done) => {
