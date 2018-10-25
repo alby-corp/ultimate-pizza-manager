@@ -35,12 +35,11 @@ export const FoodWithRemovals = (function () {
 
     const findDifferentValues = (all, filters) => all.filter((e) => filters.map(a => a.id).indexOf(e.id) === -1);
 
-    return class extends CommonFunctions {
+    return class  {
         constructor(id, type, foods, supplements) {
-            super();
             let label = id.charAt(0).toUpperCase() + id.slice(1);
             //Creo la master dropdown
-            let masterDropdown = new DropDownList(id, super.getFoodsOptions(foods, type), label, "",1,$('#foodTypeDropdown'));
+            let masterDropdown = new DropDownList(id, CommonFunctions.getFoodsOptions(foods, type), label, "",1,$('#foodTypeDropdown'));
             let masterDDL = $(`#${id}`);
             let masterHideShowButton = hideShowButton(masterDDL, $("#btnRimozioni"), $("#SupplementiRimozioni"));
             masterDropdown.populate()

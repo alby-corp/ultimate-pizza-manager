@@ -1,7 +1,7 @@
-import template from '../views/chat.html';
+import template from './chat.html';
 
-import {BaseComponent} from "./base.component";
-import {albiReply, ALBITHOUGHTS} from "../services"
+import {BaseComponent} from "../base.component";
+import {albiReply, ALBITHOUGHTS} from "../../services/index"
 
 export class ChatComponent extends BaseComponent {
 

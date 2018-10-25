@@ -1,7 +1,7 @@
-import template from '../views/info.html';
+import template from './info.html';
 
-import {List, AdminListItem} from '../model';
-import {BaseComponent} from "./base.component";
+import {List, AdminListItem} from '../../model/index';
+import {BaseComponent} from "../base.component";
 
 export const InfoComponent = (function () {
 
@@ -11,7 +11,7 @@ export const InfoComponent = (function () {
 
         constructor(service, alertService) {
 
-            super();
+            super(template, alertService);
 
             privateProps.set(this, {
                 service: service,
@@ -27,7 +27,7 @@ export const InfoComponent = (function () {
             let administrators;
 
             try {
-                administrators = await super.invokeWithCatcher(privateProps.get(this).service.getAdministrators);
+                administrators = await this.invokeWithCatcher(privateProps.get(this).service.getAdministrators);
             } catch (error) {
                 return;
             }

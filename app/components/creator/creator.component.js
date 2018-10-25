@@ -1,7 +1,7 @@
-import template from '../views/creator.html';
+import template from './creator.html';
 
-import {BaseComponent} from "./base.component";
-import {Button, Common, Order} from "../model";
+import {BaseComponent} from "../base.component";
+import {Button, Common, Order} from "../../model/index";
 
 export const CreatorComponent = (function () {
 
@@ -19,7 +19,6 @@ export const CreatorComponent = (function () {
                 const element = $('#creator-outlet');
                 const api = service;
 
-                const users = await api.getUsers();
                 const foods = (await api.getFoods())
                     .filter(food => food.type === 1);
 
@@ -29,7 +28,7 @@ export const CreatorComponent = (function () {
                         id: food.id,
                         name: food.name,
                         price: food.price,
-                        ingredients: food.ingredients.map(ingredient => ingredients.find(item => item.id === ingredient.id))
+                        ingredients: food.ingredients.map(ingredient => ingredients.find(item => item.id === ingredient.id)).filter(item => !!item)
                     }));
 
                 const action = (name, handler) => {
@@ -101,8 +100,6 @@ export const CreatorComponent = (function () {
 
                 const selected = ingredients.filter(ingredient => ingredient.id === 46 || ingredient.id === 30);
                 const model = {
-                    user: undefined,
-                    users: users,
                     available: _.without(ingredients, ...selected),
                     selected: selected,
                     active: undefined,
@@ -123,13 +120,7 @@ export const CreatorComponent = (function () {
                         return left.price - right.price;
                     });
 
-                    return `
-                    <b>Utente</b>
-                    <select class="form-control" onchange="AlbyJs.CustomEvents.trigger(this, 'set-user', {id: +this.options[this.selectedIndex].value})">
-                        <option value="" ${!model.user ? 'selected' : ''}>- seleziona -</option>
-                        ${model.users.map(user => `<option ${model.user === user.id ? 'selected' : ''} value="${user.id}">${user.name}</option>`).join('')}
-                    </select>
-                    
+                    return `                 
                     <div class="editor">
                         <div class="ingredients">
                             <h4>Ingredienti</h4>
@@ -202,18 +193,13 @@ export const CreatorComponent = (function () {
                 });
 
                 action('set-active', e => model.active = model.available.find(ingredient => ingredient.id === e.detail.id));
-                action('set-user', e => model.user = e.detail.id);
 
                 action('order', async e => {
-                    if (!model.user) {
-                        alertService.error('Devi selezionare un utente per cui effettuare l\'ordine.');
-                        return;
-                    }
-                    const user = new Common.User(+model.user);
+
                     const food = model.results[e.detail.index];
                     const pizza = new Common.OrderedFood(new Common.Food(food.id), food.additions, food.removals);
 
-                    const order = new Order(user, [pizza]);
+                    const order = new Order({}, [pizza]);
 
                     const result = await api.postOrder(order.toDTO());
 

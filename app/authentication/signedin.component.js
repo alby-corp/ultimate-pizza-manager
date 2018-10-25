@@ -18,6 +18,6 @@ export const SignedInComponent = (function () {
         async execute() {
         }
 
-        static get template(){ return ''; }
+        get template(){ return ''; }
     };
 })();

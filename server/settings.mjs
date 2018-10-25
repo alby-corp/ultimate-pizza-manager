@@ -13,7 +13,7 @@ export default {
     "azure-ad-debug-config": {
         "identityMetadata": "identityMetadata",
         "clientID": "clientID",
-        "passReqToCallback": maybe,
+        "passReqToCallback": false,
         "policyName": "policyName",
         "loggingLevel": "info"
     },

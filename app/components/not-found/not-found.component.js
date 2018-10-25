@@ -1,7 +1,7 @@
-import template from '../views/not-found.html';
+import template from './not-found.html';
 
-import {Span} from '../model';
-import {BaseComponent} from './base.component'
+import {Span} from '../../model/index';
+import {BaseComponent} from '../base.component'
 
 export const NotFoundComponent = (function () {
 

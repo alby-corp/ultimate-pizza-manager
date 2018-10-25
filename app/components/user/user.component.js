@@ -1,7 +1,7 @@
-import template from '../views/user.html';
+import template from './user.html';
 
-import {List, AdminListItem} from '../model';
-import {BaseComponent} from "./base.component";
+import {List, AdminListItem} from '../../model/index';
+import {BaseComponent} from "../base.component";
 
 export const UserComponent = (function () {
 

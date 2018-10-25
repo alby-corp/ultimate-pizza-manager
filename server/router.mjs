@@ -6,6 +6,7 @@ export const Router = (function () {
 
         constructor(routes, readCtrl, writeCtrl, passport) {
 
+            // TODO: remove
             routes.route('/users').get(passport.authenticate('oauth-bearer', { session: false }), (req, res)=> readCtrl.getUsers()(res));
 
             routes.route('/foods')
@@ -19,7 +20,7 @@ export const Router = (function () {
 
             routes.route('/orders')
                 .get((req, res) => readCtrl.getOrders()(res))
-                .post(passport.authenticate('oauth-bearer', { session: false }), (req, res) => writeCtrl.insertOrder(req.body)(res));
+                .post(passport.authenticate('oauth-bearer', { session: false }), (req, res) => writeCtrl.insertOrder(req)(res));
 
             routes.route('/foodTypes')
                 .get((req, res) => readCtrl.getFoodTypes()(res));
