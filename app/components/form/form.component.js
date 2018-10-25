@@ -170,14 +170,7 @@ export const FormComponent = (function () {
 
     const submitOrder = async (totalFood) => {
 
-        let user;
-
-        const userId = 10;
-        if (userId) {
-            user = new Common.User(+userId);
-        }
-
-        const order = new Order(user, totalFood);
+        const order = new Order({}, totalFood);
 
         try {
             order.validate();

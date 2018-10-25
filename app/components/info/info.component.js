@@ -11,7 +11,7 @@ export const InfoComponent = (function () {
 
         constructor(service, alertService) {
 
-            super();
+            super(template, alertService);
 
             privateProps.set(this, {
                 service: service,
@@ -27,7 +27,7 @@ export const InfoComponent = (function () {
             let administrators;
 
             try {
-                administrators = await super.invokeWithCatcher(privateProps.get(this).service.getAdministrators);
+                administrators = await this.invokeWithCatcher(privateProps.get(this).service.getAdministrators);
             } catch (error) {
                 return;
             }

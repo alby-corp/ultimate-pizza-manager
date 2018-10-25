@@ -41,7 +41,6 @@ export class OrderDTO {
             throw 'Order has to be instance of AlbyJs.Common.Order';
         }
 
-        this.user = new UserDTO(order.user.id);
         this.foods = order.foods.map(orderedFood => new OrderedFoodDTO(orderedFood));
         this.data = order.data;
     }

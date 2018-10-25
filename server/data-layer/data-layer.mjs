@@ -64,7 +64,7 @@ export const DataLayer = (function () {
                 }
 
             } catch (error) {
-                console.log(`ERROR: ${err}`);
+                console.log(`ERROR: ${error}`);
 
                 await client.query('ROLLBACK');
                 client.end();

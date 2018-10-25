@@ -6,6 +6,8 @@ export const UltimatePizzaManagerContext = (function () {
 
     const privateProps = new WeakMap();
 
+    const escape = value => value.replace(new RegExp("'", 'g'), "''")
+
     const foodTypesQuery = `WITH foodTypes AS (
                                 SELECT * FROM Type
                             ) 
@@ -13,9 +15,9 @@ export const UltimatePizzaManagerContext = (function () {
                             SELECT json_agg(ft) FROM foodTypes ft`;
 
     const usersQuery = `            WITH users AS (
-                                        SELECT m.id, m.username
+                                        SELECT m.id, m.real_name
                                         FROM muppet m
-                                        ORDER BY m.username
+                                        ORDER BY m.real_name
                                     )
 
                                     SELECT json_agg(u) FROM users u`;
@@ -74,7 +76,7 @@ export const UltimatePizzaManagerContext = (function () {
                                     ,order_cte AS (
                                         SELECT
                                                m.id as user_id,
-                                               m.username as user_name,
+                                               m.real_name as user_name,
                                                o.date,
                                                f.order_id,
                                                json_build_object('food', json_build_object('id', f.id, 'name', f.name, 'description', f.description, 'type', f.type, 'price', f.price)
@@ -82,7 +84,7 @@ export const UltimatePizzaManagerContext = (function () {
                                         FROM 			order_foods_cte f
                                                     INNER JOIN 		"order" o ON f.order_id = o.id
                                                     INNER JOIN		muppet m ON o.muppet = m.id
-                                        ORDER BY m.username, f.type ASC, f.name
+                                        ORDER BY m.real_name, f.type ASC, f.name
                                         )
                                     ,grouped_order_cte AS (
                                         SELECT json_build_object('id', o.user_id, 'name', o.user_name) as user, o.date, json_agg(o.foods) as foods
@@ -93,11 +95,16 @@ export const UltimatePizzaManagerContext = (function () {
                                     
                                     SELECT json_agg(to_json(go)) FROM grouped_order_cte go`;
 
+
+    const createUserQuery = (id, name) => `
+        INSERT INTO muppet (id, real_name) VALUES ('${escape(id)}', '${escape(name)}') ON CONFLICT (id) DO UPDATE SET real_name = '${escape(name)}';
+    `;
+
     const insertQueryFactory = (order) => {
         const queries = [];
 
         const orderId = uuid();
-        queries.push(`INSERT INTO "order"(id, muppet, date) VALUES ('${orderId}', ${order.user.id}, NOW() AT TIME ZONE 'Europe/Rome');`);
+        queries.push(`INSERT INTO "order"(id, muppet, date) VALUES ('${orderId}', '${escape(order.user.id)}', NOW() AT TIME ZONE 'Europe/Rome');`);
 
         order.foods.forEach(f => {
             const foodOrderId = uuid();
@@ -127,14 +134,14 @@ export const UltimatePizzaManagerContext = (function () {
 
             this.getSupplements = () => privateProps.get(this).context.scalar(supplementsQuery);
 
-
             this.getOrders = () => privateProps.get(this).context.scalar(ordersQuery);
-
 
             this.getAdministrators = () => privateProps.get(this).context.scalar(administratorsQuery);
 
+            this.insertOrder = (order) => privateProps.get(this).context.execute(insertQueryFactory(order));
 
-            this.insertOrder = (order) => privateProps.get(this).context.execute(insertQueryFactory(order))
+            this.createUser = (user) => privateProps.get(this).context.execute([createUserQuery(user.id, user.name)]);
+
         };
     }
 })

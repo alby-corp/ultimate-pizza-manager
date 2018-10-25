@@ -47,6 +47,10 @@ export const Router = (function () {
 
             new RouterPipe(router).runSync();
 
+            window.addEventListener('popstate', function(event) {
+                router.navigate(window.location.pathname + window.location.search);
+            });
+
             router.navigate(window.location.pathname + window.location.search);
         }
     };

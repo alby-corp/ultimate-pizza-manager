@@ -12,9 +12,10 @@ export const WriteController = (function () {
             });
         };
 
-        insertOrder(body) {
+        insertOrder(req) {
 
-            const user = new Common.User(+body.user.id);
+            const body = req.body;
+            const user = new Common.User(req.user.id);
             const foods = body.foods.map(f => new Common.OrderedFood(new Common.Food(+f.id), f.supplements, f.removals));
 
             const order = new OrderDao(privateProps.get(this).context, user, foods);
